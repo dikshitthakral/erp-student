@@ -1,0 +1,124 @@
+// Create admission
+curl --location --request POST 'http://localhost:8080/api/v1/student/admission' \
+--form 'academicYear="2022-2023"' \
+--form 'section="A"' \
+--form 'category="63e7fe7ba407b229ae22e41e"' \
+--form 'studentClass="9th"' \
+--form 'registerNo="1213457"' \
+--form 'rollNo="2"' \
+--form 'admissionDate="2023-02-09"' \
+--form 'firstName="Mohit Kumar"' \
+--form 'type="TYPE-A"' \
+--form 'dob="2009-07-04"' \
+--form 'number="9876598766"' \
+--form 'email="mohitkumar@gmail.com"' \
+--form 'lastName="Arora"' \
+--form 'gender="Male"' \
+--form 'bloodGroup="O+"' \
+--form 'motherTongue="Punjabi"' \
+--form 'religion="Hindu"' \
+--form 'caste="Punjabi"' \
+--form 'city="Amritsar"' \
+--form 'state="Punjab"' \
+--form 'presentAddress="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+--form 'permanentAddress="House No 13 , Street 22 Kulcha market 
+Subhash Nagar"' \
+--form 'previousSchoolName="DPS International"' \
+--form 'previousQualification="8th"' \
+--form 'guardian[userName]="AmanArora"' \
+--form 'guardian[password]="test4321"' \
+--form 'guardian[firstName]="Aman"' \
+--form 'guardian[relation]="father"' \
+--form 'guardian[fatherName]="Aman Arora"' \
+--form 'guardian[motherName]="Karishma"' \
+--form 'guardian[alreadyExists]="false"' \
+--form 'guardian[occupation]="Government"' \
+--form 'guardian[number]="9876598765"' \
+--form 'guardian[email]="amanarora@gmail.com"' \
+--form 'guardian[city]="Amritsar"' \
+--form 'guardian[state]="Punjab"' \
+--form 'guardian[permanentAddress]="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+--form 'image=@"/path/to/file/pexels-valeria-boltneva-580613.jpg"' \
+--form 'idCardDocument=@"/path/to/file/screen02category.pdf"' \
+--form 'guardian.image=@"/path/to/file/pexels-christina-morillo-1181533.jpg"' \
+--form 'guardian.idProofDocument=@"/path/to/file/screen01createadmission.pdf"'
+
+
+// Upload CSV 
+curl --location --request POST 'http://localhost:8080/api/v1/student/uploadcsv' \
+--form 'file=@"/path/to/file/file.csv"' \
+--form 'studentClass="8th"' \
+--form 'section="B"' \
+--form 'academicYear="2023-2024"'
+
+// Add category
+curl --location --request POST 'http://localhost:8080/api/v1/category' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "categoryName": "CBSE",
+    "description": "India Board",
+    "branch": "Oxford International"
+}'
+
+// Get all category
+curl --location --request GET 'http://localhost:8080/api/v1/category/all'
+
+// Update category
+curl --location --request PUT 'http://localhost:8080/api/v1/category' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "id": "63e7fe09a407b229ae22e41c",
+    "categoryName": "ICSC"
+}'
+
+// Delete category
+curl --location --request DELETE 'http://localhost:8080/api/v1/category/63e7fe09a407b229ae22e41c'
+
+
+
+
+curl --location --request PUT 'http://localhost:8080/api/v1/student/63e94d3cd685b2bc3c52410a' \
+--form 'academicYear="2021-2022"' \
+--form 'section="B"' \
+--form 'category="63e7fe7ba407b229ae22e41e"' \
+--form 'studentClass="8th"' \
+--form 'registerNo="1213456"' \
+--form 'rollNo="30"' \
+--form 'admissionDate="2021-02-07"' \
+--form 'firstName="Mohit Kumar"' \
+--form 'type="TYPE-A"' \
+--form 'dob="2009-07-04"' \
+--form 'number="9876598767"' \
+--form 'email="mohitkumar@gmail.com"' \
+--form 'lastName="Arora"' \
+--form 'gender="Male"' \
+--form 'bloodGroup="O+"' \
+--form 'motherTongue="Punjabi"' \
+--form 'religion="Hindu"' \
+--form 'caste="Punjabi"' \
+--form 'city="Amritsar"' \
+--form 'state="Punjab"' \
+--form 'presentAddress="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+--form 'permanentAddress="House No 13 , Street 22 Kulcha market 
+Subhash Nagar"' \
+--form 'previousSchoolName="DPS International"' \
+--form 'previousQualification="8th"' \
+--form 'guardian[firstName]="Aman Kumar"' \
+--form 'guardian[relation]="father"' \
+--form 'guardian[fatherName]="Aman Kumar Arora"' \
+--form 'guardian[motherName]="Karishma Manchanda"' \
+--form 'guardian[city]="Amritsar"' \
+--form 'guardian[state]="Punjab"' \
+--form 'guardian[permanentAddress]="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+
+
+--form 'guardian[userName]="AmanArora"' \
+--form 'guardian[password]="test4321"' \
+--form 'guardian[alreadyExists]="false"' \
+--form 'guardian[occupation]="Government"' \
+--form 'guardian[number]="9876598765"' \
+--form 'guardian[email]="amanarora@gmail.com"' \
+--form 'image=@"/path/to/file/pexels-valeria-boltneva-580613.jpg"' \
+--form 'idCardDocument=@"/path/to/file/screen02category.pdf"' \
+--form 'guardian.image=@"/path/to/file/pexels-christina-morillo-1181533.jpg"' \
+--form 'guardian.idProofDocument=@"/path/to/file/screen01createadmission.pdf"'
