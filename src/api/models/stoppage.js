@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const stopPageSchema = new mongoose.Schema({
-    stopPage: {
+const stoppageSchema = new mongoose.Schema({
+    stoppageName: {
         type: String,
         required: true
     },
@@ -15,6 +15,6 @@ const stopPageSchema = new mongoose.Schema({
     }
   });
   
-  const stopPage = new mongoose.model("stopPage", stopPageSchema);
+  const stoppage = new mongoose.model("stoppage", stoppageSchema);
   
-  module.exports = stopPage;
+  module.exports = stoppage;

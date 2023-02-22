@@ -1,16 +1,16 @@
-const route = require('../models/route');
+const stoppage = require('../models/stoppage');
 const mongoose = require('mongoose');
 
 const save = async (req, res) => {
     try {
-        const { routeName, startPlace, stopPlace, remarks } = req.body;
+        const { stoppageName, stopTime, routeFare } = req.body;
         let payload = {
-            routeName, startPlace, stopPlace, remarks
+            stoppageName, stopTime, routeFare
         }
-        let response = await route.create(payload);
+        let response = await stoppage.create(payload);
         return res.status(200).json({
-            route: response,
-            message: "Added New Route Successfully",
+            stoppage: response,
+            message: "Added New Stoppage Successfully",
             success: true,
         });
     }   catch(err) {
@@ -20,17 +20,17 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let routes = await route.find();
-        if (routes) {
+        let stoppages = await stoppage.find();
+        if (stoppages) {
            return res.status(200).send({
-                routes ,
-                messge: "All Routes",
+                stoppages ,
+                messge: "All Stoppages",
                 success: true,
             });
         } 
           
         return res.status(200).send({
-            messge: "Routes does not exist",
+            messge: "Stoppages does not exist",
             success: false,
         });
     }   catch (error) {
@@ -41,34 +41,32 @@ const getAll = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params['id'];
-        const { routeName, startPlace, stopPlace, remarks } = req.body;
-        const routeObj = await route.findById({ _id: mongoose.Types.ObjectId(id) });
-        if(routeObj === null || routeObj === undefined || routeObj === '') {
+        const { stoppageName, stopTime, routeFare } = req.body;
+        const stoppageObj = await stoppage.findById({ _id: mongoose.Types.ObjectId(id) });
+        if(stoppageObj === null || stoppageObj === undefined || stoppageObj === '') {
             return res.status(400).json({
-                message: "Route not found in system",
+                message: "Stoppage not found in system",
                 success: true,
             });
         }
-
-        const payload = { routeName, startPlace, stopPlace, remarks };
-        let response = await route.findOneAndUpdate(
+        
+        const payload = { stoppageName, stopTime, routeFare };
+        let response = await stoppage.findOneAndUpdate(
             { _id: mongoose.Types.ObjectId(id) },
             payload
         );
-
         if (response) {
             return res.status(200).json({
-                message: "Route updated Successfully",
+                message: "Stoppage updated Successfully",
                 success: true,
             });
         }
         
         return res.status(200).json([{ 
-            msg: "Route not found!!!",
+            msg: "Stoppage not found!!!",
             res: "error" 
         }]);
     }   catch(err) {
-        console.log('err', err);
         return res.status(500).json({ message: err.message, success: false });
     }
 };
@@ -76,18 +74,18 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     try {
         const id = req.params['id'];
-        let deleteRoute = await route.deleteOne({ _id: id });
-        if (deleteRoute["deletedCount"] === 1) {
+        let deleteStoppage = await stoppage.deleteOne({ _id: id });
+        if (deleteStoppage["deletedCount"] === 1) {
             return res.status(200).json({
                 id,
-                message: "Route Deleted Successfully !!! ",
+                message: "Stoppage Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
             id,
-            message: "Route Not found ",
+            message: "Stoppage Not found ",
             success: true,
         });
     } catch (error) {

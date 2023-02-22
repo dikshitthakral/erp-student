@@ -3,8 +3,10 @@ const joi = require('joi');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
 const routeController = require('../controllers/route');
+const stoppageController = require('../controllers/stoppage');
 
 const routeValidator = require('../validators/route');
+const stoppageValidator = require('../validators/stoppage');
 
 const router = express.Router();
 const upload = require("../../common");
@@ -26,10 +28,15 @@ router.delete('/category/:id',categoryController.remove);
 router.put('/category',categoryController.update);
 // BooksIssue Routes
 
-//Transport
+//Transport-Route
 router.post('/route', routeValidator, routeController.save);
 router.get('/route/all', routeController.getAll);
 router.put('/route/:id', routeValidator, routeController.update);
 router.delete('/route/:id', routeController.remove);
+//Transport-Stoppage
+router.post('/stoppage', stoppageValidator, stoppageController.save);
+router.get('/stoppage/all', stoppageController.getAll);
+router.put('/stoppage/:id', stoppageValidator, stoppageController.update);
+router.delete('/stoppage/:id', stoppageController.remove);
 
 module.exports = router;
