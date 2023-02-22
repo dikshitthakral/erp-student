@@ -1,6 +1,11 @@
 const express = require('express');
+const joi = require('joi');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
+const routeController = require('../controllers/route');
+
+const routeValidator = require('../validators/route');
+
 const router = express.Router();
 const upload = require("../../common");
 
@@ -20,5 +25,11 @@ router.get('/category/all',categoryController.getAll);
 router.delete('/category/:id',categoryController.remove);
 router.put('/category',categoryController.update);
 // BooksIssue Routes
+
+//Transport
+router.post('/route', routeValidator, routeController.save);
+router.get('/route/all', routeController.getAll);
+router.put('/route/:id', routeValidator, routeController.update);
+router.delete('/route/:id', routeController.remove);
 
 module.exports = router;
