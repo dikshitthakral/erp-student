@@ -1,11 +1,12 @@
 const vehicle = require('../models/vehicle');
 const mongoose = require('mongoose');
+const { v4 : uuidv4 } = require('uuid');
 
 const save = async (req, res) => {
     try {    
-        const { vehicleNo, capacity, insuranceRenewalDate, driverName,driverPhoneNo,driverLicense } = req.body;
         let payload = {
-            vehicleNo, capacity, insuranceRenewalDate, driverName,driverPhoneNo,driverLicense
+            ...req.body,
+            vehicleId: uuidv4()
         }
         let response = await vehicle.create(payload);
         return res.status(200).json({
@@ -34,15 +35,15 @@ const getAll = async (req, res) => {
             success: false,
         });
     }   catch (error) {
-        return res.status(400).json({ message: err.message, success: false });
+        return res.status(400).json({ message: error.message, success: false });
     }
 };
 
 const update = async (req, res) => {
     try {
-        const id = req.params['id'];
-        const { vehicleNo, capacity, insuranceRenewalDate, driverName,driverPhoneNo,driverLicense } = req.body;
-        const vehicleObj = await vehicle.findById({ _id: mongoose.Types.ObjectId(id) });
+        const vehicleId = req.params['id'];
+        const payload = req.body;
+        const vehicleObj = await vehicle.findOne({ vehicleId });
         if(vehicleObj === null || vehicleObj === undefined || vehicleObj === '') {
             return res.status(400).json({
                 message: "Vehicle not found in system",
@@ -50,9 +51,8 @@ const update = async (req, res) => {
             });
         }
 
-        const payload = { vehicleNo, capacity, insuranceRenewalDate, driverName,driverPhoneNo,driverLicense };
         let response = await vehicle.findOneAndUpdate(
-            { _id: id },
+            { vehicleId },
             payload
         );
 
@@ -68,30 +68,29 @@ const update = async (req, res) => {
             res: "error" 
         }]);
     }   catch(err) {
-        console.log('err', err);
         return res.status(500).json({ message: err.message, success: false });
     }
 };
 
 const remove = async (req, res) => {
     try {
-        const id = req.params['id'];
-        let deleteVehicle = await vehicle.deleteOne({ _id: id });
+        const vehicleId = req.params['id'];
+        let deleteVehicle = await vehicle.deleteOne({ vehicleId });
         if (deleteVehicle["deletedCount"] === 1) {
             return res.status(200).json({
-                id,
+                vehicleId,
                 message: "Vehicle Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            id,
+            vehicleId,
             message: "Vehicle Not found ",
             success: true,
         });
     } catch (error) {
-        return res.status(500).json({ message: err.message, success: false });
+        return res.status(500).json({ message: error.message, success: false });
     }
 }
 

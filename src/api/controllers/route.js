@@ -1,11 +1,12 @@
-const route = require('../models/route');
+const { v4 : uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
+const route = require('../models/route');
 
 const save = async (req, res) => {
     try {
-        const { routeName, startPlace, stopPlace, remarks } = req.body;
         let payload = {
-            routeName, startPlace, stopPlace, remarks
+            ...req.body,
+            routeId: uuidv4()
         }
         let response = await route.create(payload);
         return res.status(200).json({
@@ -34,15 +35,15 @@ const getAll = async (req, res) => {
             success: false,
         });
     }   catch (error) {
-        return res.status(400).json({ message: err.message, success: false });
+        return res.status(400).json({ message: error.message, success: false });
     }
 };
 
 const update = async (req, res) => {
     try {
-        const id = req.params['id'];
-        const { routeName, startPlace, stopPlace, remarks } = req.body;
-        const routeObj = await route.findById({ _id: mongoose.Types.ObjectId(id) });
+        const routeId = req.params['id'];
+        const payload = req.body;
+        const routeObj = await route.findOne({ routeId });
         if(routeObj === null || routeObj === undefined || routeObj === '') {
             return res.status(400).json({
                 message: "Route not found in system",
@@ -50,9 +51,8 @@ const update = async (req, res) => {
             });
         }
 
-        const payload = { routeName, startPlace, stopPlace, remarks };
         let response = await route.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(id) },
+            { routeId },
             payload
         );
 
@@ -68,30 +68,29 @@ const update = async (req, res) => {
             res: "error" 
         }]);
     }   catch(err) {
-        console.log('err', err);
         return res.status(500).json({ message: err.message, success: false });
     }
 };
 
 const remove = async (req, res) => {
     try {
-        const id = req.params['id'];
-        let deleteRoute = await route.deleteOne({ _id: id });
+        const routeId = req.params['id'];
+        let deleteRoute = await route.deleteOne({ routeId });
         if (deleteRoute["deletedCount"] === 1) {
             return res.status(200).json({
-                id,
+                routeId,
                 message: "Route Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            id,
+            routeId,
             message: "Route Not found ",
             success: true,
         });
     } catch (error) {
-        return res.status(500).json({ message: err.message, success: false });
+        return res.status(500).json({ message: error.message, success: false });
     }
 }
 

@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 
 const routeSchema = new mongoose.Schema({
+    routeId: {
+        type: String,
+        unique: true, 
+        required: true
+    },
     routeName: {
         type: String,
-        unique: true, // TO-DO: Should be unique ?
+        unique: true, 
         required: true
     },
     startPlace: {

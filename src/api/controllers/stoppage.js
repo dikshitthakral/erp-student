@@ -1,11 +1,12 @@
-const stoppage = require('../models/stoppage');
 const mongoose = require('mongoose');
+const { v4 : uuidv4 } = require('uuid');
+const stoppage = require('../models/stoppage');
 
 const save = async (req, res) => {
     try {
-        const { stoppageName, stopTime, routeFare } = req.body;
         let payload = {
-            stoppageName, stopTime, routeFare
+            ...req.body,
+            stoppageId: uuidv4()
         }
         let response = await stoppage.create(payload);
         return res.status(200).json({
@@ -34,15 +35,15 @@ const getAll = async (req, res) => {
             success: false,
         });
     }   catch (error) {
-        return res.status(400).json({ message: err.message, success: false });
+        return res.status(400).json({ message: error.message, success: false });
     }
 };
 
 const update = async (req, res) => {
     try {
-        const id = req.params['id'];
-        const { stoppageName, stopTime, routeFare } = req.body;
-        const stoppageObj = await stoppage.findById({ _id: mongoose.Types.ObjectId(id) });
+        const stoppageId = req.params['id'];
+        const payload = req.body;
+        const stoppageObj = await stoppage.findOne({ stoppageId });
         if(stoppageObj === null || stoppageObj === undefined || stoppageObj === '') {
             return res.status(400).json({
                 message: "Stoppage not found in system",
@@ -50,9 +51,8 @@ const update = async (req, res) => {
             });
         }
         
-        const payload = { stoppageName, stopTime, routeFare };
         let response = await stoppage.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(id) },
+            { stoppageId },
             payload
         );
         if (response) {
@@ -73,23 +73,23 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        const id = req.params['id'];
-        let deleteStoppage = await stoppage.deleteOne({ _id: id });
+        const stoppageId = req.params['id'];
+        let deleteStoppage = await stoppage.deleteOne({ stoppageId });
         if (deleteStoppage["deletedCount"] === 1) {
             return res.status(200).json({
-                id,
+                stoppageId,
                 message: "Stoppage Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            id,
+            stoppageId,
             message: "Stoppage Not found ",
             success: true,
         });
     } catch (error) {
-        return res.status(500).json({ message: err.message, success: false });
+        return res.status(500).json({ message: error.message, success: false });
     }
 }
 

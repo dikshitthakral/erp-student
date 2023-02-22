@@ -1,3 +1,4 @@
+const { v4 : uuidv4 } = require('uuid');
 const vehicleRoute = require('../models/vehicleRoute');
 const route = require('../models/route');
 const stoppage = require('../models/stoppage');
@@ -6,9 +7,9 @@ const mongoose = require('mongoose');
 
 const validateVehicleRoute = async (routeId, stoppageId, vehicleId, res) => {
     const promises = [
-        route.findById({_id: mongoose.Types.ObjectId(routeId)}),
-        stoppage.findById({_id: mongoose.Types.ObjectId(stoppageId)}),
-        vehicle.findById({_id: mongoose.Types.ObjectId(vehicleId)})
+        route.findOne({ routeId }),
+        stoppage.findOne({ stoppageId }),
+        vehicle.findOne({ vehicleId })
     ];
     const [routeObj, stoppageObj, vehicleObj] = await Promise.all(promises);
 
@@ -29,7 +30,10 @@ const save = async (req, res) => {
             });
         }
         
-        const payload = { routeId, stoppageId, vehicleId };
+        const payload = { 
+            ...req.body, 
+            vehicleRouteId: uuidv4()
+        };
         let response = await vehicleRoute.create(payload);
         return res.status(200).json({
             vehicleRoute: response,
@@ -37,14 +41,56 @@ const save = async (req, res) => {
             success: true,
         });
     }   catch(err) {
-        console.log('err', err);
         return res.status(500).json({ message: err.message, success: false });
     }
 };
 
 const getAll = async (req, res) => {
     try {
-        let vehicleRoutes = await vehicleRoute.find();
+        let vehicleRoutes = await vehicleRoute.aggregate([
+            {
+               "$lookup":{
+                  "from":"routes",
+                  "localField":"routeId",
+                  "foreignField":"routeId",
+                  "as":"route_info"
+               }
+            },
+            { "$unwind" : "$route_info" },
+            {
+               "$lookup":{
+                  "from":"vehicles",
+                  "localField":"vehicleId",
+                  "foreignField":"vehicleId",
+                  "as":"vehicle_info"
+               }
+            } ,
+            { "$unwind" : "$vehicle_info" },
+            {
+               "$lookup":{
+                  "from":"stoppages",
+                  "localField":"stoppageId",
+                  "foreignField":"stoppageId",
+                  "as":"stoppage_info"
+               }
+            },
+            { "$unwind" : "$stoppage_info" },
+            {
+                "$project" :{
+                    "routeId": 1,
+                    "vehicleId": 1,
+                    "stoppageId": 1,
+                    "vehicleRouteId": 1,
+                    "routeName": "$route_info.routeName",
+                    "startPlace": "$route_info.startPlace",
+                    "stopPlace": "$route_info.stopPlace",
+                    "stoppageName": "$stoppage_info.stoppageName",
+                    "stopTime": "$stoppage_info.stopTime",
+                    "routeFare": "$stoppage_info.routeFare",
+                    "vehicleNo": "vehicle_info.vehicleNo",
+                }
+            }   
+        ]);
         if (vehicleRoutes) {
            return res.status(200).send({
                 vehicleRoutes ,
@@ -58,14 +104,21 @@ const getAll = async (req, res) => {
             success: false,
         });
     }   catch (error) {
-        return res.status(400).json({ message: err.message, success: false });
+        return res.status(400).json({ message: error.message, success: false });
     }
 };
 
 const update = async (req, res) => {
     try {
-        const id = req.params['id'];
+        const vehicleRouteId = req.params['id'];
         const { routeId, stoppageId, vehicleId } = req.body;
+        const vehicleRouteObj = await vehicleRoute.findOne({ vehicleRouteId });
+        if(!vehicleRouteObj) {
+            return res.status(400).json({
+                message: "Vehicle Route not found in system",
+                success: true,
+            });
+        }
         const isValid = await validateVehicleRoute(routeId, stoppageId, vehicleId);
         if(!isValid) {
             return res.status(200).json({
@@ -76,7 +129,7 @@ const update = async (req, res) => {
 
         const payload = { routeId, stoppageId, vehicleId };
         let response = await vehicleRoute.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(id) },
+            { vehicleRouteId },
             payload
         );
 
@@ -92,30 +145,29 @@ const update = async (req, res) => {
             res: "error" 
         }]);
     }   catch(err) {
-        console.log('err', err);
         return res.status(500).json({ message: err.message, success: false });
     }
 };
 
 const remove = async (req, res) => {
     try {
-        const id = req.params['id'];
-        let deleteVehicleRoute = await vehicleRoute.deleteOne({ _id: id });
+        const vehicleRouteId = req.params['id'];
+        let deleteVehicleRoute = await vehicleRoute.deleteOne({ vehicleRouteId });
         if (deleteVehicleRoute["deletedCount"] === 1) {
             return res.status(200).json({
-                id,
+                vehicleRouteId,
                 message: "Vehicle Route Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            id,
+            vehicleRouteId,
             message: "Vehicle Route Not found ",
             success: true,
         });
     } catch (error) {
-        return res.status(500).json({ message: err.message, success: false });
+        return res.status(500).json({ message: error.message, success: false });
     }
 };
 
