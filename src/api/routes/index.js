@@ -4,9 +4,11 @@ const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
 const routeController = require('../controllers/route');
 const stoppageController = require('../controllers/stoppage');
+const vehicleController = require('../controllers/vehicle');
 
 const routeValidator = require('../validators/route');
 const stoppageValidator = require('../validators/stoppage');
+const vehicleValidator = require('../validators/vehicle');
 
 const router = express.Router();
 const upload = require("../../common");
@@ -38,5 +40,12 @@ router.post('/stoppage', stoppageValidator, stoppageController.save);
 router.get('/stoppage/all', stoppageController.getAll);
 router.put('/stoppage/:id', stoppageValidator, stoppageController.update);
 router.delete('/stoppage/:id', stoppageController.remove);
+
+//Vehicle
+router.post('/vehicle', vehicleValidator, vehicleController.save);
+router.get('/vehicle/all', vehicleController.getAll);
+router.put('/vehicle/:id', vehicleValidator, vehicleController.update);
+router.delete('/vehicle/:id', vehicleController.remove);
+
 
 module.exports = router;
