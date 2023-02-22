@@ -10,7 +10,7 @@ const stoppageValidator = async (req, res, next) => {
 	const { error } = validation.validate(req.body);
 	if (error) {
 		res.status(422);
-		return res.json({ message: `Error in Route Data : ${error.message}`, success: false });
+		return res.json({ message: `Error in Stoppage Data : ${error.message}`, success: false });
 	} else {
 		next();
 	}

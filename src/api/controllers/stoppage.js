@@ -10,7 +10,7 @@ const save = async (req, res) => {
         let response = await stoppage.create(payload);
         return res.status(200).json({
             stoppage: response,
-            message: "Added New Stoppage Successfully",
+            message: "Added new Stoppage Successfully",
             success: true,
         });
     }   catch(err) {
@@ -57,7 +57,7 @@ const update = async (req, res) => {
         );
         if (response) {
             return res.status(200).json({
-                message: "Stoppage updated Successfully",
+                message: "Stoppage updated successfully",
                 success: true,
             });
         }

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const assignVehicleSchema = new mongoose.Schema({
+const vehicleRouteSchema = new mongoose.Schema({
     routeId: {
         type: String,
         required: true
@@ -9,12 +9,12 @@ const assignVehicleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    stopPageId: {
+    stoppageId: {
         type: String,
         required: true
     }
   });
   
-  const assignVehicle = new mongoose.model("AssignVehicle", assignVehicleSchema);
+  const vehicleRoute = new mongoose.model("VehicleRoute", vehicleRouteSchema);
   
-  module.exports = assignVehicle;
+  module.exports = vehicleRoute;

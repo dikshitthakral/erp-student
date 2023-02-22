@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const stoppageSchema = new mongoose.Schema({
     stoppageName: {
         type: String,
+        unique: true,
         required: true
     },
     stopTime: {

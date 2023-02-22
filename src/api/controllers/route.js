@@ -10,7 +10,7 @@ const save = async (req, res) => {
         let response = await route.create(payload);
         return res.status(200).json({
             route: response,
-            message: "Added New Route Successfully",
+            message: "Added new Route successfully",
             success: true,
         });
     }   catch(err) {
@@ -58,7 +58,7 @@ const update = async (req, res) => {
 
         if (response) {
             return res.status(200).json({
-                message: "Route updated Successfully",
+                message: "Route updated successfully",
                 success: true,
             });
         }
