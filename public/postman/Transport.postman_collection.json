@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "1ee4edd0-1e5d-434d-b6e2-fa61b05e8a7c",
+		"name": "Transport",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Route",
+			"item": [
+				{
+					"name": "Create Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\" : \"Test Route 7\",\n    \"startPlace\" : \"Place 1\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/route",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"route"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Route",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\" : \"Test Route 7\",\n    \"startPlace\" : \"Place 2\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/route/db2c4762-e23f-489c-8da8-c0431019616c",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"route",
+								"db2c4762-e23f-489c-8da8-c0431019616c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Route",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 1\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/route/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"route",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Route",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"63f5fe3b0e68fa5c658cb928\",\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 2\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/route/19d9515a-7db2-4aac-8c5d-daa6df9c4697",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"route",
+								"19d9515a-7db2-4aac-8c5d-daa6df9c4697"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "Get Vehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleNo\": \"vehicleNo4\",\n    \"capacity\": 6,\n    \"insuranceRenewalDate\": \"12/03/2023\",\n    \"driverName\": \"driverName\",\n    \"driverPhoneNo\":\"driverPhoneNo\",\n    \"driverLicense\": \"driverLicense\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Vehicle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleNo\": \"vehicleNo4\",\n    \"capacity\": 6,\n    \"insuranceRenewalDate\": \"12/03/2023\",\n    \"driverName\": \"driverName\",\n    \"driverPhoneNo\":\"driverPhoneNo\",\n    \"driverLicense\": \"driverLicense\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle/59b3c3bd-292e-408f-bfb4-1e7cde2ec6da",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"59b3c3bd-292e-408f-bfb4-1e7cde2ec6da"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Vehicle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle/59b3c3bd-292e-408f-bfb4-1e7cde2ec6da",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"59b3c3bd-292e-408f-bfb4-1e7cde2ec6da"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stoppage",
+			"item": [
+				{
+					"name": "Create Stoppage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stoppageName\": \"Test stopPage 8\",\n    \"stopTime\": \"11:22\",\n    \"routeFare\": \"5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/stoppage",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stoppage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Stoppage",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stoppageName\" : \"Test Stoppage 6\",\n    \"stopTime\" : \"23:24\",\n    \"routeFare\" : \"6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/stoppage/b489b1aa-da03-4899-8312-b3a67b3f90ac",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stoppage",
+								"b489b1aa-da03-4899-8312-b3a67b3f90ac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Stoppage",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 1\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/stoppage/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stoppage",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Stoppage",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"63f5fe3b0e68fa5c658cb928\",\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 2\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/stoppage/1526d268-9907-4963-a96f-675fe8d73b6e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stoppage",
+								"1526d268-9907-4963-a96f-675fe8d73b6e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicle Route",
+			"item": [
+				{
+					"name": "Create Vehicle Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": \"517c4465-7ac1-4611-a8ea-03c2cfc5aa05\",\n    \"stoppageId\": \"269b2ad0-d21f-4af2-b759-a94f3ac7a225\",\n    \"vehicleId\": \"4daa02be-2cbd-44bd-93e2-73b7b2cafa11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicleroute",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicleroute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Vehicle Route Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeId\": \"e84d4abc-435c-414f-8b8a-23dbde429db1\",\n    \"stoppageId\": \"b489b1aa-da03-4899-8312-b3a67b3f90ac\",\n    \"vehicleId\": \"fdd915de-10e4-4b4b-8972-11304ac02b17\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicleroute/41cc50b4-4762-49b4-aec1-ebeb22b62422",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicleroute",
+								"41cc50b4-4762-49b4-aec1-ebeb22b62422"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Vehicle Route",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 1\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicleroute/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicleroute",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Vehicle Route",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"63f5fe3b0e68fa5c658cb928\",\n    \"routeName\" : \"Test Route 1\",\n    \"startPlace\" : \"Place 2\",\n    \"stopPlace\" : \"Place 2\",\n    \"remarks\": \"remarks\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicleroute/392c8f1a-0c6f-49ae-af58-43e69375000a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicleroute",
+								"392c8f1a-0c6f-49ae-af58-43e69375000a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
