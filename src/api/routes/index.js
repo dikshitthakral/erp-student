@@ -1,11 +1,13 @@
 const express = require('express');
-const joi = require('joi');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
 const routeController = require('../controllers/route');
 const stoppageController = require('../controllers/stoppage');
 const vehicleController = require('../controllers/vehicle');
 const vehicleRouteController = require('../controllers/vehicleRoute');
+const departmentController = require('../controllers/department');
+const designationController = require('../controllers/designation');
+const employeeController = require('../controllers/employee');
 
 const routeValidator = require('../validators/route');
 const stoppageValidator = require('../validators/stoppage');
@@ -53,5 +55,23 @@ router.get('/vehicle/all', vehicleController.getAll);
 router.put('/vehicle/:id', vehicleValidator, vehicleController.update);
 router.delete('/vehicle/:id', vehicleController.remove);
 
+//Department Routes
+router.post('/department',departmentController.create);
+router.get('/department/all',departmentController.getAll);
+router.delete('/department/:id',departmentController.remove);
+router.put('/department',departmentController.update);
+
+//Designation Routes
+router.post('/designation',designationController.create);
+router.get('/designation/all',designationController.getAll);
+router.delete('/designation/:id',designationController.remove);
+router.put('/designation',designationController.update);
+
+// Employee Routes
+router.post('/employee', upload.single('file'), employeeController.save);
+router.get('/employee/all', employeeController.getAll);
+router.delete('/employee/:id', employeeController.remove);
+router.put('/employee', upload.single('file'), employeeController.update);
+router.post('/employee/uploadcsv', upload.single('file'), employeeController.bulkSave);
 
 module.exports = router;

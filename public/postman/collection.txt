@@ -111,14 +111,77 @@ Subhash Nagar"' \
 --form 'guardian[state]="Punjab"' \
 --form 'guardian[permanentAddress]="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
 
+// Upload Employee CSV 
+curl --location --request POST 'http://localhost:8080/api/v1/employee/uploadcsv' \
+--form 'file=@"/path/to/file/file.csv"'
 
---form 'guardian[userName]="AmanArora"' \
---form 'guardian[password]="test4321"' \
---form 'guardian[alreadyExists]="false"' \
---form 'guardian[occupation]="Government"' \
---form 'guardian[number]="9876598765"' \
---form 'guardian[email]="amanarora@gmail.com"' \
---form 'image=@"/path/to/file/pexels-valeria-boltneva-580613.jpg"' \
---form 'idCardDocument=@"/path/to/file/screen02category.pdf"' \
---form 'guardian.image=@"/path/to/file/pexels-christina-morillo-1181533.jpg"' \
---form 'guardian.idProofDocument=@"/path/to/file/screen01createadmission.pdf"'
+// Upload Department
+
+curl --location --request POST 'http://localhost:8080/api/v1/department' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Commerce"
+}'
+
+// Upload Designation
+
+curl --location --request POST 'http://localhost:8080/api/v1/designation' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Senior Teacher"
+}'
+
+
+// Create Employee
+
+curl --location --request POST 'http://localhost:8080/api/v1/employee' \
+--form 'joiningDate="2022-02-09"' \
+--form 'qualification="BCOM"' \
+--form 'experienceDetails="2 Years as clear with XYZ School"' \
+--form 'totalExperience="5 Year"' \
+--form 'name="Vikas Gajraj"' \
+--form 'bloodGroup="B+"' \
+--form 'religion="Christan"' \
+--form 'dob="1989-04-12"' \
+--form 'number="9123456124"' \
+--form 'email="vikasgajraj@gmail.com"' \
+--form 'city="Mathura"' \
+--form 'state="UP"' \
+--form 'presentAddress="Chaurasia Street 56 Lane Near Mandir"' \
+--form 'permanentAddress="Chaurasia Street 56 Lane Near Mandir"' \
+--form 'userName="vgajraj"' \
+--form 'password="employee12345"' \
+--form 'facebook=""' \
+--form 'twitter=""' \
+--form 'linkedin=""' \
+--form 'skipBankDetails="false"' \
+--form 'bankName="HDFC"' \
+--form 'holderName="Vikas"' \
+--form 'bankBranch="Mathura Town"' \
+--form 'bankAddress="Town City Mathura"' \
+--form 'ifscCode="HDFC0000045"' \
+--form 'accountNumber="12340000045"' \
+--form 'designation="63f7ac65f55a171e0f7828d5"' \
+--form 'department="63f7ac0df55a171e0f7828d2"' \
+--form 'file=@"/Users/dikshitthakral/Downloads/pexels-christina-morillo-1181533.jpg"' \
+--form 'employeeId="63f7b012650e7646dc406590"'
+
+// Update Employee
+curl --location --request PUT 'http://localhost:8080/api/v1/employee' \
+--form 'bloodGroup="B+"' \
+--form 'religion="Christan"' \
+--form 'dob="1989-04-12"' \
+--form 'number="9123456124"' \
+--form 'email="vikasgajraj@gmail.com"' \
+--form 'city="Mathura"' \
+--form 'state="UP"' \
+--form 'userName="vgajraj"' \
+--form 'password="employee12345"' \
+--form 'skipBankDetails="false"' \
+--form 'bankName="HDFC"' \
+--form 'holderName="Vikas"' \
+--form 'bankBranch="Mathura Town"' \
+--form 'bankAddress="Town City Mathura"' \
+--form 'ifscCode="HDFC0000045"' \
+--form 'accountNumber="12340000045"' \
+--form 'employeeId="63f7b012650e7646dc406590"'

@@ -1,43 +1,32 @@
 const mongoose = require("mongoose");
 
-const studentSchema = new mongoose.Schema({
-    registerNo: {
-        type: Number,
-        required: true
-    },
-    rollNo: {
-        type: Number,
-        required: true
-    },
-    admissionDate: {
+const employeeSchema = new mongoose.Schema({
+    joiningDate: {
         type: Date,
-        default:null
+        default:null,
+        required: true
     },
-    firstName: {
+    qualification: {
         type: String,
         required: true
     },
-    lastName: {
+    experienceDetails: {
         type: String,
         required: false
+    },
+    totalExperience: {
+        type: String,
+        required: false
+    },
+    name: {
+        type: String,
+        required: true
     },
     gender: {
         type: String,
         required: false
     },
-    type: {
-        type: String,
-        required: true
-    },
     bloodGroup: {
-        type: String,
-        required: false
-    },
-    dob: {
-        type: String,
-        required: true
-    },
-    motherTongue: {
         type: String,
         required: false
     },
@@ -45,7 +34,7 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    caste: {
+    dob: {
         type: String,
         required: false
     },
@@ -74,41 +63,46 @@ const studentSchema = new mongoose.Schema({
     },
     permanentAddress: {
         type: String,
-        required: false
+        required: true
     },
     image: {
         type: String,
         required: false
     },
-    idCardDocument : {
+    userName: {
+        type: String,
+        required: true
+    },
+    password: {
         type: String,
         required: false
     },
-    previousSchoolName: {
+    facebook: {
         type: String,
         required: false
     },
-    previousQualification: {
+    twitter: {
         type: String,
         required: false
     },
-    previousRemarks: {
+    linkedin: {
         type: String,
         required: false
     },
-    transportRoute: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'VehicleRoute'
+    skipBankDetails: {
+        type: Boolean,
+        default: false
     },
-    vehicleNo: {
-        type: String,
-        required: false
-    },
-    academic: { type: mongoose.Schema.Types.ObjectId, ref: 'Academic'},
-    guardian: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian'},
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+    bankName: { type: String, required: false },
+    holderName: { type: String, required: false },
+    bankBranch: { type: String, required: false },
+    bankAddress: { type: String, required: false },
+    ifscCode: { type: String, required: false },
+    accountNumber: { type: String, required: false },
+    designation: { type: mongoose.Schema.Types.ObjectId, ref: 'Designation'},
+    department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department'},
   });
   
-  const students = new mongoose.model("Student", studentSchema);
+  const employees = new mongoose.model("Employee", employeeSchema);
   
-  module.exports = students;
+  module.exports = employees;

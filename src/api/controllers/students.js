@@ -116,12 +116,7 @@ const createBulkAdmission = async (req, res) => {
             // guardian section
             const guardianRes = await guardianService.createGuardian(guardian);
             studentObj["guardian"] = guardianRes._id;
-            const studentRes = await studentService.add(studentObj, admissionObj);
-            return res.status(200).json({
-                student: studentRes,
-                message: "Added New Student Successfully",
-                success: true,
-            });
+            await studentService.add(studentObj, admissionObj);
         }
         await unlink(file.path);
         console.log(`successfully deleted file from path : ${file.path}`);
