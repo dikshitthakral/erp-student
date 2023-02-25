@@ -134,7 +134,7 @@ const createBulkAdmission = async (req, res) => {
 
 const getAllStudents = async (req, res) => {
     try {
-        let allStudents = await students.find().populate('academic').populate('guardian').populate('category').exec();
+        let allStudents = await students.find().populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
         if (
             allStudents !== undefined &&
             allStudents.length !== 0 &&
@@ -169,7 +169,7 @@ const searchByAcademics = async (req, res) => {
                 success: false,
             });
         }
-        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category').exec();
+        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
         if (
             filteredStudents !== undefined &&
             filteredStudents.length !== 0 &&
