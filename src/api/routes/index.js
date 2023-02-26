@@ -11,6 +11,7 @@ const employeeController = require('../controllers/employee');
 const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
+const homeworkController = require('../controllers/homework');
 
 const routeValidator = require('../validators/route');
 const stoppageValidator = require('../validators/stoppage');
@@ -97,4 +98,9 @@ router.post('/schedule/academics',scheduleController.getScheduleByAcademics);
 router.post('/schedule/academics/:day',scheduleController.getScheduleDayByAcademics);
 router.post('/schedule/teacher',scheduleController.getScheduleByTeacher);
 
+// Homework Routes
+router.post('/homework', upload.single('file'), homeworkController.create);
+router.get('/homework/all', homeworkController.getAll);
+router.delete('/homework/:id', homeworkController.remove);
+router.put('/homework', upload.single('file'), homeworkController.update);
 module.exports = router;
