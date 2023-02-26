@@ -1,5 +1,4 @@
 const { isEmpty } = require('lodash');
-const mongoose = require('mongoose');
 const academics = require("../models/academic");
 
 const getIdIfAcademicExists = async (academicObj) => {

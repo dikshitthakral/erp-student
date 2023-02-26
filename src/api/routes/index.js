@@ -8,6 +8,9 @@ const vehicleRouteController = require('../controllers/vehicleRoute');
 const departmentController = require('../controllers/department');
 const designationController = require('../controllers/designation');
 const employeeController = require('../controllers/employee');
+const academicController = require('../controllers/academic');
+const subjectController = require('../controllers/subject');
+const scheduleController = require('../controllers/schedule');
 
 const routeValidator = require('../validators/route');
 const stoppageValidator = require('../validators/stoppage');
@@ -73,5 +76,25 @@ router.get('/employee/all', employeeController.getAll);
 router.delete('/employee/:id', employeeController.remove);
 router.put('/employee', upload.single('file'), employeeController.update);
 router.post('/employee/uploadcsv', upload.single('file'), employeeController.bulkSave);
+
+// Academic Routes
+router.post('/academic',academicController.create);
+router.get('/academic/all',academicController.getAll);
+router.delete('/academic/:id',academicController.remove);
+router.put('/academic',academicController.update);
+router.put('/academic/subject/add', academicController.addSubject);
+router.put('/academic/subject/remove', academicController.removeSubject);
+// Subject Routes
+router.post('/subject',subjectController.create);
+router.get('/subject/all',subjectController.getAll);
+router.delete('/subject/:id',subjectController.remove);
+router.put('/subject',subjectController.update);
+
+// Schedule Routes
+router.post('/schedule',scheduleController.add);
+router.get('/schedule/:id',scheduleController.getSchedule);
+router.post('/schedule/academics',scheduleController.getScheduleByAcademics);
+router.post('/schedule/academics/:day',scheduleController.getScheduleDayByAcademics);
+router.post('/schedule/teacher',scheduleController.getScheduleByTeacher);
 
 module.exports = router;

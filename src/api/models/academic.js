@@ -13,7 +13,16 @@ const academicSchema = new mongoose.Schema({
     section: {
         type: String,
         required: true
-    }
+    },
+    classNumeric: {
+        type: String,
+        required: false
+    },
+    name: {
+        type: String,
+        required: false
+    },
+    subjects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Subject', default: []}]
   });
   
   const academics = new mongoose.model("Academic", academicSchema);

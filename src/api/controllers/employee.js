@@ -5,7 +5,6 @@ const { isEmpty } = require("lodash");
 const employeeService = require('../services/employee');
 const csvtojsonV2=require("csvtojson/v2");
 const util = require("util");
-const fs = require("fs");
 
 const save = async (req, res) => {
     try {
