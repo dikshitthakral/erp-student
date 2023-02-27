@@ -21,6 +21,6 @@ const stoppageSchema = new mongoose.Schema({
     }
   });
   
-  const stoppage = new mongoose.model("stoppage", stoppageSchema);
+  const stoppage = new mongoose.model("Stoppage", stoppageSchema);
   
   module.exports = stoppage;

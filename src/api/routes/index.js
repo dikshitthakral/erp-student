@@ -12,11 +12,10 @@ const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
 const homeworkController = require('../controllers/homework');
+const { enquiryController, callLogController, visitorLogController } = require('../controllers/reception');
 
-const routeValidator = require('../validators/route');
-const stoppageValidator = require('../validators/stoppage');
-const vehicleValidator = require('../validators/vehicle');
-const vehicleRouteValidator = require('../validators/vehicleRoute');
+const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
+const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 
 const router = express.Router();
 const upload = require("../../common");
@@ -64,6 +63,22 @@ router.post('/department',departmentController.create);
 router.get('/department/all',departmentController.getAll);
 router.delete('/department/:id',departmentController.remove);
 router.put('/department',departmentController.update);
+
+//Reception-Enquiry
+router.post('/enquiry', enquiryValidator, enquiryController.save);
+router.put('/enquiry/:id', enquiryValidator, enquiryController.update);
+router.get('/enquiry/all', enquiryController.getAll);
+router.delete('/enquiry/:id', enquiryController.remove);
+//Reception-CallLog
+router.post('/calllog', callLogValidator, callLogController.save);
+router.put('/calllog/:id', callLogValidator, callLogController.update);
+router.get('/calllog/all', callLogController.getAll);
+router.delete('/calllog/:id', callLogController.remove);
+//Reception-CallLog
+router.post('/visitorlog', visitorLogValidator, visitorLogController.save);
+router.put('/visitorlog/:id', visitorLogValidator, visitorLogController.update);
+router.get('/visitorlog/all', visitorLogController.getAll);
+router.delete('/visitorlog/:id', visitorLogController.remove);
 
 //Designation Routes
 router.post('/designation',designationController.create);

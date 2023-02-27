@@ -24,7 +24,7 @@ const getAll = async (req, res) => {
         let vehicles = await vehicle.find();
         if (vehicles) {
            return res.status(200).send({
-            vehicles ,
+                vehicles,
                 messge: "All Vehicles",
                 success: true,
             });
@@ -92,7 +92,6 @@ const remove = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
-}
-
+};
 
 module.exports = { save, getAll, update, remove };
