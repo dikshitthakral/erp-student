@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
-const { v4 : uuidv4 } = require('uuid');
-const stoppage = require('../models/stoppage');
+const stoppage = require('../../models/transport/stoppage');
 
 const save = async (req, res) => {
     try {
-        let payload = {
-            ...req.body,
-            stoppageId: uuidv4()
-        }
-        let response = await stoppage.create(payload);
+        let response = await stoppage.create(req.body);
         return res.status(200).json({
             stoppage: response,
             message: "Added new Stoppage Successfully",
@@ -41,9 +36,9 @@ const getAll = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const stoppageId = req.params['id'];
+        const id = req.params['id'];
         const payload = req.body;
-        const stoppageObj = await stoppage.findOne({ stoppageId });
+        const stoppageObj = await stoppage.findOne({ _id : mongoose.Types.ObjectId(id) });
         if(stoppageObj === null || stoppageObj === undefined || stoppageObj === '') {
             return res.status(400).json({
                 message: "Stoppage not found in system",
@@ -52,7 +47,7 @@ const update = async (req, res) => {
         }
         
         let response = await stoppage.findOneAndUpdate(
-            { stoppageId },
+            { _id : mongoose.Types.ObjectId(id) },
             payload
         );
         if (response) {
@@ -73,18 +68,18 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        const stoppageId = req.params['id'];
-        let deleteStoppage = await stoppage.deleteOne({ stoppageId });
+        const id = req.params['id'];
+        let deleteStoppage = await stoppage.deleteOne({ _id : mongoose.Types.ObjectId(id) });
         if (deleteStoppage["deletedCount"] === 1) {
             return res.status(200).json({
-                stoppageId,
+                id,
                 message: "Stoppage Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            stoppageId,
+            id,
             message: "Stoppage Not found ",
             success: true,
         });

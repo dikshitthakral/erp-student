@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 
-const vehicleRouteSchema = new mongoose.Schema({
-    vehicleRouteId: {
+const routeSchema = new mongoose.Schema({
+    routeName: {
         type: String,
-        unique: true,
+        unique: true, 
         required: true
     },
-    routeId: {
-        type: String,
-        required: true
-    },
-    vehicleId: {
+    startPlace: {
         type: String,
         required: true
     },
-    stoppageId: {
+    stopPlace: {
+        type: String,
+        required: true
+    },
+    remarks: {
         type: String,
         required: true
     }
   });
   
-  const vehicleRoute = new mongoose.model("VehicleRoute", vehicleRouteSchema);
+  const route = new mongoose.model("Route", routeSchema);
   
-  module.exports = vehicleRoute;
+  module.exports = route;

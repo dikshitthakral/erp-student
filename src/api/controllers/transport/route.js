@@ -1,17 +1,12 @@
-const vehicle = require('../models/vehicle');
 const mongoose = require('mongoose');
-const { v4 : uuidv4 } = require('uuid');
+const route = require('../../models/transport/route');
 
 const save = async (req, res) => {
-    try {    
-        let payload = {
-            ...req.body,
-            vehicleId: uuidv4()
-        }
-        let response = await vehicle.create(payload);
+    try {
+        let response = await route.create(req.body);
         return res.status(200).json({
-            vehicle: response,
-            message: "Added New vehicle Successfully",
+            route: response,
+            message: "Added new Route successfully",
             success: true,
         });
     }   catch(err) {
@@ -21,17 +16,17 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let vehicles = await vehicle.find();
-        if (vehicles) {
+        let routes = await route.find();
+        if (routes) {
            return res.status(200).send({
-                vehicles,
-                messge: "All Vehicles",
+                routes ,
+                messge: "All Routes",
                 success: true,
             });
         } 
           
         return res.status(200).send({
-            messge: "Vehicle does not exist",
+            messge: "Routes does not exist",
             success: false,
         });
     }   catch (error) {
@@ -41,32 +36,32 @@ const getAll = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const vehicleId = req.params['id'];
+        const id = req.params['id'];
         const payload = req.body;
-        const vehicleObj = await vehicle.findOne({ vehicleId });
-        if(vehicleObj === null || vehicleObj === undefined || vehicleObj === '') {
+        const routeObj = await route.findOne({ _id : mongoose.Types.ObjectId(id) });
+        if(routeObj === null || routeObj === undefined || routeObj === '') {
             return res.status(400).json({
-                message: "Vehicle not found in system",
+                message: "Route not found in system",
                 success: true,
             });
         }
 
-        let response = await vehicle.findOneAndUpdate(
-            { vehicleId },
+        let response = await route.findOneAndUpdate(
+            { _id : mongoose.Types.ObjectId(id) },
             payload
         );
 
         if (response) {
             return res.status(200).json({
-                message: "Vehicle updated Successfully",
+                message: "Route updated successfully",
                 success: true,
             });
         }
         
-        return res.status(200).json([{ 
-            msg: "Vehicle not found!!!",
+        return res.status(200).json({ 
+            msg: "Route not found!!!",
             res: "error" 
-        }]);
+        });
     }   catch(err) {
         return res.status(500).json({ message: err.message, success: false });
     }
@@ -74,24 +69,25 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        const vehicleId = req.params['id'];
-        let deleteVehicle = await vehicle.deleteOne({ vehicleId });
-        if (deleteVehicle["deletedCount"] === 1) {
+        const routeId = req.params['id'];
+        let deleteRoute = await route.deleteOne({ _id : mongoose.Types.ObjectId(routeId) });
+        if (deleteRoute["deletedCount"] === 1) {
             return res.status(200).json({
-                vehicleId,
-                message: "Vehicle Deleted Successfully !!! ",
+                routeId,
+                message: "Route Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            vehicleId,
-            message: "Vehicle Not found ",
+            routeId,
+            message: "Route Not found ",
             success: true,
         });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
-};
+}
+
 
 module.exports = { save, getAll, update, remove };

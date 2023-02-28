@@ -107,6 +107,7 @@ const studentSchema = new mongoose.Schema({
     academic: { type: mongoose.Schema.Types.ObjectId, ref: 'Academic'},
     guardian: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian'},
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+    vehicleRoute: { type: mongoose.Schema.Types.ObjectId, ref: 'VehicleRoute'}
   });
   
   const students = new mongoose.model("Student", studentSchema);

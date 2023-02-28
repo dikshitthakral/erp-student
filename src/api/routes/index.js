@@ -1,10 +1,9 @@
 const express = require('express');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
-const routeController = require('../controllers/route');
-const stoppageController = require('../controllers/stoppage');
-const vehicleController = require('../controllers/vehicle');
-const vehicleRouteController = require('../controllers/vehicleRoute');
+const { routeController, stoppageController, vehicleController, vehicleRouteController } = require('../controllers/transport');
+const { enquiryController, callLogController, visitorLogController } = require('../controllers/reception');
+const { certificateController } = require('../controllers/certificate');
 const departmentController = require('../controllers/department');
 const designationController = require('../controllers/designation');
 const employeeController = require('../controllers/employee');
@@ -12,10 +11,10 @@ const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
 const homeworkController = require('../controllers/homework');
-const { enquiryController, callLogController, visitorLogController } = require('../controllers/reception');
 
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
+const certificateValidator = require('../validators/certificate/certificate');
 
 const router = express.Router();
 const upload = require("../../common");
@@ -79,6 +78,14 @@ router.post('/visitorlog', visitorLogValidator, visitorLogController.save);
 router.put('/visitorlog/:id', visitorLogValidator, visitorLogController.update);
 router.get('/visitorlog/all', visitorLogController.getAll);
 router.delete('/visitorlog/:id', visitorLogController.remove);
+
+//Certificate
+router.post('/certificate', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 }, { name: 'backgroundImage', maxCount: 1 }]), certificateValidator, certificateController.save);
+router.put('/certificate/:id', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 }, { name: 'backgroundImage', maxCount: 1 }]), certificateController.update);
+router.get('/certificate/all', certificateController.getAll);
+router.delete('/certificate/:id', certificateController.remove);
+router.get('/certificate/student', certificateController.getStudentCertificate);
+router.get('/certificate/employee', certificateController.getEmployeeCertificate);
 
 //Designation Routes
 router.post('/designation',designationController.create);

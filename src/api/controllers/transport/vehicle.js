@@ -1,17 +1,12 @@
-const { v4 : uuidv4 } = require('uuid');
+const vehicle = require('../../models/transport/vehicle');
 const mongoose = require('mongoose');
-const route = require('../models/route');
 
 const save = async (req, res) => {
-    try {
-        let payload = {
-            ...req.body,
-            routeId: uuidv4()
-        }
-        let response = await route.create(payload);
+    try {  
+        let response = await vehicle.create(req.body);
         return res.status(200).json({
-            route: response,
-            message: "Added new Route successfully",
+            vehicle: response,
+            message: "Added New vehicle Successfully",
             success: true,
         });
     }   catch(err) {
@@ -21,17 +16,17 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let routes = await route.find();
-        if (routes) {
+        let vehicles = await vehicle.find();
+        if (vehicles) {
            return res.status(200).send({
-                routes ,
-                messge: "All Routes",
+                vehicles,
+                messge: "All Vehicles",
                 success: true,
             });
         } 
           
         return res.status(200).send({
-            messge: "Routes does not exist",
+            messge: "Vehicle does not exist",
             success: false,
         });
     }   catch (error) {
@@ -41,32 +36,32 @@ const getAll = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const routeId = req.params['id'];
+        const id = req.params['id'];
         const payload = req.body;
-        const routeObj = await route.findOne({ routeId });
-        if(routeObj === null || routeObj === undefined || routeObj === '') {
+        const vehicleObj = await vehicle.findOne({ _id : mongoose.Types.ObjectId(id) });
+        if(vehicleObj === null || vehicleObj === undefined || vehicleObj === '') {
             return res.status(400).json({
-                message: "Route not found in system",
+                message: "Vehicle not found in system",
                 success: true,
             });
         }
 
-        let response = await route.findOneAndUpdate(
-            { routeId },
+        let response = await vehicle.findOneAndUpdate(
+            { _id : mongoose.Types.ObjectId(id) },
             payload
         );
 
         if (response) {
             return res.status(200).json({
-                message: "Route updated successfully",
+                message: "Vehicle updated Successfully",
                 success: true,
             });
         }
         
-        return res.status(200).json({ 
-            msg: "Route not found!!!",
+        return res.status(200).json([{ 
+            msg: "Vehicle not found!!!",
             res: "error" 
-        });
+        }]);
     }   catch(err) {
         return res.status(500).json({ message: err.message, success: false });
     }
@@ -74,25 +69,24 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        const routeId = req.params['id'];
-        let deleteRoute = await route.deleteOne({ routeId });
-        if (deleteRoute["deletedCount"] === 1) {
+        const vehicleId = req.params['id'];
+        let deleteVehicle = await vehicle.deleteOne({ _id : mongoose.Types.ObjectId(vehicleId) });
+        if (deleteVehicle["deletedCount"] === 1) {
             return res.status(200).json({
-                routeId,
-                message: "Route Deleted Successfully !!! ",
+                vehicleId,
+                message: "Vehicle Deleted Successfully !!! ",
                 success: true,
             });
         }
 
         return res.status(404).json({
-            routeId,
-            message: "Route Not found ",
+            vehicleId,
+            message: "Vehicle Not found ",
             success: true,
         });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
-}
-
+};
 
 module.exports = { save, getAll, update, remove };

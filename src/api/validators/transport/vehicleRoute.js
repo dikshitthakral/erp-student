@@ -1,9 +1,9 @@
 const joi = require('joi');
 
 const validation = joi.object({
-    routeId: joi.string().required(), 
-    stoppageId: joi.string().required(), 
-    vehicleId: joi.string().required(), 
+    route: joi.string().required(), 
+    stoppage: joi.string().required(), 
+    vehicle: joi.string().required(), 
 });
 
 const vehicleRouteValidator = async (req, res, next) => {

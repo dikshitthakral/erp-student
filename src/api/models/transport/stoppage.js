@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const stoppageSchema = new mongoose.Schema({
-    stoppageId: {
-        type: String,
-        unique: true,
-        required: true
-    },
     stoppageName: {
         type: String,
         unique: true,
