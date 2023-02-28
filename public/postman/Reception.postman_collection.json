@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "ec119621-2ce2-4ed3-ac9d-5fec8649d4d3",
+		"name": "Reception",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Enquiry",
+			"item": [
+				{
+					"name": "Enquiry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aarush\",\n    \"gender\": \"Male\",\n    \"dob\": \"2019-01-28T00:00:00.000+0000\",\n    \"fatherName\": \"Amit\",\n    \"motherName\": \"Shraddha\",\n    \"mobileNo\": \"98346788893\",\n    \"email\": \"aaa@qq.ccc\",\n    \"assigned\": \"sswsw\",\n    \"response\": \"response\",\n    \"classApplyFor\": \"9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/enquiry",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"enquiry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Enquiry",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aarush\",\n    \"gender\": \"Male\",\n    \"dob\": \"2019-01-30T00:00:00.000+0000\",\n    \"fatherName\": \"Amit\",\n    \"motherName\": \"Shraddha\",\n    \"mobileNo\": \"98346788893\",\n    \"email\": \"aaa@qq.ccc\",\n    \"assigned\": \"sswsw\",\n    \"response\": \"response\",\n    \"classApplyFor\": \"9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/enquiry/63f9e1a6bcd1d1f5a7948762",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"enquiry",
+								"63f9e1a6bcd1d1f5a7948762"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Enquiry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/enquiry/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"enquiry",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Enquiry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Arush\",\n    \"gender\": \"Male\",\n    \"dob\": \"2019-01-28T00:00:00.000+0000\",\n    \"fatherName\": \"Amit\",\n    \"motherName\": \"Shraddha\",\n    \"mobileNo\": \"98346788893\",\n    \"email\": \"aaa@qq.ccc\",\n    \"assigned\": \"sswsw\",\n    \"response\": \"response\",\n    \"classApplyFor\": \"9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/enquiry/63f9e1a6bcd1d1f5a7948762",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"enquiry",
+								"63f9e1a6bcd1d1f5a7948762"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Call Log",
+			"item": [
+				{
+					"name": "Call log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"callType\": \"Email\",\n    \"purpose\": \"Admission\",\n    \"name\": \"Abhsihek\",\n    \"mobileNo\" : \"+917767721122\",\n    \"date\": \"03/22/2023\",\n    \"timeSlotTo\": \"11:22\",\n    \"timeSlotFrom\": \"12:22\",\n    \"followUpDate\": \"03/24/2023\",\n    \"note\": \"Admission call log\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/calllog",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"calllog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Call Log",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"callType\": \"Email\",\n    \"purpose\": \"Admission\",\n    \"name\": \"Abhsihek\",\n    \"mobileNo\" : \"+917767721122\",\n    \"date\": \"03/22/2023\",\n    \"timeSlotTo\": \"11:22\",\n    \"timeSlotFrom\": \"12:22\",\n    \"followUpDate\": \"03/24/2023\",\n    \"note\": \"Admission call log\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/calllog/63fc9a90fda2f3c1236cba3e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"calllog",
+								"63fc9a90fda2f3c1236cba3e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Call Log",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/calllog/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"calllog",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Call Log",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/calllog/63fc8ceb01199a851ef3d9ab",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"calllog",
+								"63fc8ceb01199a851ef3d9ab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visitor Log",
+			"item": [
+				{
+					"name": "Create Visitor log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"visitingPuprose\": \"Admission\",\n    \"name\": \"Abhsihek\",\n    \"mobileNo\" : \"+917767721122\",\n    \"date\": \"03/22/2023\",\n    \"entryTime\": \"11:22\",\n    \"exitTime\": \"12:22\",\n    \"noOfVisitors\": 2,\n    \"idNumber\": \"545679o29019\",\n    \"token\": \"Token Or Pass\",\n    \"note\": \"Admission call log\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/visitorlog",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"visitorlog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Visitor Log",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"callType\": \"Email\",\n    \"purpose\": \"Admission\",\n    \"name\": \"Abhsihek\",\n    \"mobileNo\" : \"+917767721122\",\n    \"date\": \"03/22/2023\",\n    \"timeSlotTo\": \"11:22\",\n    \"timeSlotFrom\": \"12:22\",\n    \"followUpDate\": \"03/24/2023\",\n    \"note\": \"Admission call log\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/visitorlog/63fc9a90fda2f3c1236cba3e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"visitorlog",
+								"63fc9a90fda2f3c1236cba3e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Visitor Log",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/visitorlog/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"visitorlog",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Visitor Log",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/visitorlog/63fc8ceb01199a851ef3d9ab",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"visitorlog",
+								"63fc8ceb01199a851ef3d9ab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

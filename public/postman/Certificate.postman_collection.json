@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "76dc2c44-72d7-4306-a736-ec0d4105a9ad",
+		"name": "Certificate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Certificate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"applicableStudent\": \"63e9353e2b93962bfb2d6c8f\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Certificate",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"applicableEmployee\": \"63f7b012650e7646dc406590\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"backgroundImage\": \"\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate/63fd99a50c73647222642dcc",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate",
+						"63fd99a50c73647222642dcc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Certificate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Certificate",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate/63fd99a50c73647222642dcc",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate",
+						"63fd99a50c73647222642dcc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Student Certificate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate/student?class=8th&section=A&template=63fdafdf74b07223260fae88",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate",
+						"student"
+					],
+					"query": [
+						{
+							"key": "class",
+							"value": "8th"
+						},
+						{
+							"key": "section",
+							"value": "A"
+						},
+						{
+							"key": "template",
+							"value": "63fdafdf74b07223260fae88"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee Certificate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/certificate/employee?role=Teacher&template=63fd99820c73647222642dca",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"certificate",
+						"employee"
+					],
+					"query": [
+						{
+							"key": "role",
+							"value": "Teacher"
+						},
+						{
+							"key": "template",
+							"value": "63fd99820c73647222642dca"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
