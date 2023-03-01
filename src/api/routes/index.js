@@ -11,7 +11,9 @@ const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
 const homeworkController = require('../controllers/homework');
-
+const gradeController = require('../controllers/grade');
+const examController = require('../controllers/exam');
+const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const certificateValidator = require('../validators/certificate/certificate');
@@ -125,4 +127,21 @@ router.post('/homework', upload.single('file'), homeworkController.create);
 router.get('/homework/all', homeworkController.getAll);
 router.delete('/homework/:id', homeworkController.remove);
 router.put('/homework', upload.single('file'), homeworkController.update);
+
+// Grade routes
+router.post('/grade', gradeController.create);
+router.get('/grade/all', gradeController.getAll);
+router.delete('/grade/:id', gradeController.remove);
+router.put('/grade', gradeController.update);
+
+//Exam routes
+router.post('/exam', examController.create);
+router.get('/exam/all', examController.getAll);
+router.delete('/exam/:id', examController.remove);
+router.put('/exam', examController.update);
+// Marks Routes
+router.post('/marks', marksController.create);
+router.get('/marks/all', marksController.getAll);
+router.delete('/marks/:id', marksController.remove);
+router.put('/marks', marksController.update);
 module.exports = router;
