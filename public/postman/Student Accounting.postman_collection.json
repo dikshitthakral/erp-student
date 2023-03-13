@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "7188e735-61a5-4963-ab71-14ef3cbfd30c",
+		"name": "Student Accounting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add FeeType",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Feb-Month-Fee\", \n    \"code\": \"Feb-Month-Fee\", \n    \"amount\": 18000, \n    \"dueDate\": \"02-05-2023\", \n    \"description\": \"Feb Month Fee Type\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/feeType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"feeType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add FeeGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Exam-Fee\", \n    \"feeTypes\": [\"6405abaf3b8282eead1265cd\"], \n    \"description\": \"Exam Fee Group\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/feeGroup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"feeGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fine Setup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fineType\":\"Fixed\", \n    \"feeType\": \"64088f34f84f127e6cbaac28\", \n    \"fineValue\":  1000,\n    \"lateFeeFrequency\": \"Fixed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fineSetup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fineSetup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all fee Type",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/feeType/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"feeType",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FineSetup",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fineSetup/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fineSetup",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all fee Group",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/feeGroup/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"feeGroup",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update FineSetup",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fineSetupId\": \"6405bb68e40872c651aaa91d\",\n    \"fineType\":\"Percentage\",\n    \"fineValue\":  50,\n    \"lateFeeFrequency\": \"Monthly\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fineSetup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fineSetup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fee Allocation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\": \"63e9353e2b93962bfb2d6c8f\",\n    \"feeType\": \"64088f34f84f127e6cbaac28\", \n    \"discount\": 1000, \n    \"status\": \"UNPAID\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/student/allocate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"allocate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStudent Fees",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Update Fees for student",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\": \"63e9353e2b93962bfb2d6c8f\",\n    \"feeTypeIds\": [\"6405ab973b8282eead1265cb\", \"6405abaf3b8282eead1265cd\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/student/fees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"fees"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

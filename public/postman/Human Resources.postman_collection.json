@@ -1,0 +1,504 @@
+{
+	"info": {
+		"_postman_id": "a82560fb-db97-4ba7-bb4a-c4874feb25e2",
+		"name": "Human Resources",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Salary",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"salaryGrade\": \"Grade- B\", \n    \"basicSalary\": 42000, \n    \"allowances\": [{\n        \"name\": \"House Rent\",\n        \"amount\": 5000\n    },{\n        \"name\": \"Medical Allowance\",\n        \"amount\": 5000\n    }], \"deductions\": [{\n        \"name\": \"Provident Fund\",\n        \"amount\": 3200\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Salaries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salary/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salary",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receipt Of Salary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salary/receipt/640c7a55d9ecda5bd433ee68",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salary",
+						"receipt",
+						"640c7a55d9ecda5bd433ee68"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Archive Salary",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salary/640c7a55d9ecda5bd433ee68",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salary",
+						"640c7a55d9ecda5bd433ee68"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Salary",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"salaryId\": \"640c7a55d9ecda5bd433ee68\",\n    \"salaryGrade\": \"Grade- B\", \n    \"basicSalary\": 45000, \n    \"allowances\": [{\n        \"name\": \"House Rent\",\n        \"amount\": 5200\n    },{\n        \"name\": \"Medical Allowance\",\n        \"amount\": 5800\n    }], \"deductions\": [{\n        \"name\": \"Provident Fund\",\n        \"amount\": 4000\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployeesByDesignation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/designation/63f7ac71f55a171e0f7828d9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"designation",
+						"63f7ac71f55a171e0f7828d9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee Salary Grade",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"salaryGrades\": [{\n        \"employeeId\": \"63f7b012650e7646dc406590\",\n        \"salaryId\": \"640c7a55d9ecda5bd433ee68\"\n    },{\n        \"employeeId\": \"63f89a1ca63d99e5e2b96392\",\n        \"salaryId\": \"640c7a55d9ecda5bd433ee68\"\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/salaryGrade",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"salaryGrade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Leaves category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"Illness\",\n    \"days\": \"5\",\n    \"designation\": \"63f7ac65f55a171e0f7828d5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Leaves category",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"leavesCategoryId\": \"640cdb651902d2a3dc54e17e\",\n    \"name\" : \"Illness\",\n    \"days\": \"6\",\n    \"designation\": \"63f7ac65f55a171e0f7828d5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Leaves Category",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesCategory/640cdb651902d2a3dc54e17e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesCategory",
+						"640cdb651902d2a3dc54e17e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Leaves",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesCategory/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesCategory",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Leaves Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "toDate",
+							"value": "03-17-2023",
+							"type": "default"
+						},
+						{
+							"key": "fromDate",
+							"value": "03-15-2023",
+							"type": "default"
+						},
+						{
+							"key": "leaveType",
+							"value": "640cdb651902d2a3dc54e17e",
+							"type": "default"
+						},
+						{
+							"key": "employee",
+							"value": "63f89a1ca63d99e5e2b96392",
+							"type": "default"
+						},
+						{
+							"key": "reason",
+							"value": "Fever",
+							"type": "default"
+						},
+						{
+							"key": "status",
+							"value": "PENDING",
+							"type": "default"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesRequest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get ALL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesRequest/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesRequest",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Leave Request",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/leavesRequest/640e2b2232d8a7f4ec918fd0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"leavesRequest",
+						"640e2b2232d8a7f4ec918fd0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee Leave Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/leavesRequest/63f7ac71f55a171e0f7828d9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"leavesRequest",
+						"63f7ac71f55a171e0f7828d9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Award",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"employee\": \"63f7b012650e7646dc406590\",\n    \"designation\": \"Teacher\",\n    \"name\": \"Monthly Award\",\n    \"giftItem\": \"CashPrice\",\n    \"cashPrice\": 1000,\n    \"awardReason\": \"Best Teacher in class\",\n    \"givenDate\": \"03-20-2023\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/award",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"award"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Award",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"awardId\": \"640eda2e6d0c04cc75860f99\",\n    \"employee\": \"63f7b012650e7646dc406590\",\n    \"student\": \"63e9353e2b93962bfb2d6c8f\",\n    \"designation\": \"Student\",\n    \"name\": \"Monthly Award\",\n    \"giftItem\": \"CashPrice\",\n    \"cashPrice\": 500,\n    \"awardReason\": \"Best Student in class\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/award",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"award"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Awards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/award/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"award",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
