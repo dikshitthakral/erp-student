@@ -1,5 +1,38 @@
 const mongoose = require("mongoose");
 
+const expenseSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    amount: {
+        type: Number,
+        required: true
+    },
+    time: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: false
+    },
+    attachement1: {
+        type: String,
+        required: false
+    },
+    attachement2: {
+        type: String,
+        required: false
+    },
+    attachement3: {
+        type: String,
+        required: false
+    },
+  }, { autoIndex: false, autoCreate: false });
+  
+new mongoose.model("Expense", expenseSchema);
+
 const vehicleSchema = new mongoose.Schema({
     vehicleNo: {
         type: String,
@@ -25,7 +58,11 @@ const vehicleSchema = new mongoose.Schema({
     driverLicense: {
         type: String,
         required: true
-    }
+    },
+    expenses: {
+        type: [expenseSchema],
+        default: []
+    },
   });
   
   const vehicle = new mongoose.model("Vehicle", vehicleSchema);

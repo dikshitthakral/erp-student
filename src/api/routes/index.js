@@ -59,7 +59,7 @@ router.post('/vehicle', vehicleValidator, vehicleController.save);
 router.get('/vehicle/all', vehicleController.getAll);
 router.put('/vehicle/:id', vehicleValidator, vehicleController.update);
 router.delete('/vehicle/:id', vehicleController.remove);
-
+router.post('/vehicle/expense',upload.fields([{ name: 'expenseDocs1', maxCount: 1 }, { name: 'expenseDocs2', maxCount: 1 }, { name: 'expenseDocs3', maxCount: 1 }]),  vehicleController.addExpenseReport)
 //Department Routes
 router.post('/department',departmentController.create);
 router.get('/department/all',departmentController.getAll);

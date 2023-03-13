@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ee4edd0-1e5d-434d-b6e2-fa61b05e8a7c",
+		"_postman_id": "983b41e1-1674-491f-8f1f-6546e1893053",
 		"name": "Transport",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -142,7 +142,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vehicleNo\": \"vehicleNo6\",\n    \"capacity\": 6,\n    \"insuranceRenewalDate\": \"12/03/2023\",\n    \"driverName\": \"driverName\",\n    \"driverPhoneNo\":\"driverPhoneNo\",\n    \"driverLicense\": \"driverLicense\"\n}",
+							"raw": "{\n    \"vehicleNo\": \"vehicleNo7\",\n    \"capacity\": 6,\n    \"insuranceRenewalDate\": \"12/03/2023\",\n    \"driverName\": \"driverName\",\n    \"driverPhoneNo\":\"driverPhoneNo\",\n    \"driverLicense\": \"driverLicense\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -240,6 +240,73 @@
 								"v1",
 								"vehicle",
 								"63fdabf45ca38a20eba55323"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Add Expense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "vehicleId",
+									"value": "640f830212dffc056eb21df7",
+									"type": "default"
+								},
+								{
+									"key": "expenseName",
+									"value": "March Service",
+									"type": "default"
+								},
+								{
+									"key": "expenseValue",
+									"value": "5000",
+									"type": "default"
+								},
+								{
+									"key": "expenseTime",
+									"value": "03-2023",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Service as clutch was not working",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/vehicle/expense",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"expense"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": "640f830212dffc056eb21df7",
+									"disabled": true
+								}
 							]
 						}
 					},
