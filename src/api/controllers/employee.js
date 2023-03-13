@@ -5,6 +5,7 @@ const { isEmpty } = require("lodash");
 const employeeService = require('../services/employee');
 const csvtojsonV2=require("csvtojson/v2");
 const util = require("util");
+const { leavesRequest } = require("../models/humanResources");
 
 const save = async (req, res) => {
     try {
@@ -85,7 +86,7 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allEmployees = await Employee.find().populate('Designation').populate('Department').exec();
+        let allEmployees = await Employee.find().populate('designation').populate('department').exec();
         if (
             allEmployees !== undefined &&
             allEmployees.length !== 0 &&
@@ -300,4 +301,95 @@ const bulkSave = async (req, res) => {
     }
 }
 
-module.exports = { save, getAll, remove, update, bulkSave };
+const getByDesignation = async (req, res) => {
+  try {
+      const designationId = req.params['designationId'];
+      let getEmployeesByDesignation = await Employee.findOne({ designation: mongoose.Types.ObjectId(designationId)})
+          .populate('designation').populate('department').exec()
+      if (!isEmpty(getEmployeesByDesignation)) {
+        return res.status(200).send({
+          employees: getEmployeesByDesignation,
+          messge: "Employee By Designation",
+          success: true,
+        });
+      } else {
+        return res.status(400).send({
+          messge: "Employees does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Something went wrong",
+        success: false,
+      });
+    }
+}
+
+const updateSalaryGradeForEmployee = async (req, res) => {
+    try {
+      const { salaryGrades } = req.body;
+      const employeeIds = [];
+      for(let salaryGrade of salaryGrades) {
+        let employeeId = salaryGrade.employeeId;
+        let salaryId = salaryGrade.salaryId
+        employeeIds.push(employeeId);
+        let updateEmployeeWithGrade = await Employee.findOneAndUpdate(
+          { _id: employeeId },
+          { $set: { salaryGrade: salaryId } }
+        );
+        if (
+          updateEmployeeWithGrade.length === 0 ||
+          updateEmployeeWithGrade === undefined ||
+          updateEmployeeWithGrade === null ||
+          updateEmployeeWithGrade === ""
+        ) {
+            return res.status(200)
+                .json([{ msg: "Employee not found!!!", res: "error", }]);
+        }
+      }
+      const employeesData = await Employee.find({ _id: { $in: employeeIds }}).populate('salaryGrade').exec();
+      return res.status(200)
+          .json([{ msg: "Employee updated with salaryGrade successflly", data: employeesData, res: "success" }]);
+  } catch(err) {
+      return res.status(500).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+const getAllLeavesRequestByDesignation = async (req, res) => {
+  try {
+    const designationId = req.params['designationId'];
+    let getEmployeesByDesignation = await Employee.find({ designation: mongoose.Types.ObjectId(designationId)})
+        .populate('designation').populate('department').exec();
+    if (isEmpty(getEmployeesByDesignation)) {
+      return res.status(400).send({
+        messge: "Employees does not exist",
+        success: false,
+      });
+    }
+    let employeesLeavesRequest = [];
+    for(let employee of getEmployeesByDesignation) {
+        const result = await leavesRequest.find({ employee: employee._id});
+        employeesLeavesRequest.push({
+          employee: employee._doc,
+          leavesRequest: !isEmpty(result) ? result.map(leavesRequest => leavesRequest._doc) : undefined
+        });
+    }
+    if (!isEmpty(employeesLeavesRequest)) {
+      return res.status(200).send({
+        employees: employeesLeavesRequest,
+        messge: "Employee and Leaves Request",
+        success: true,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Something went wrong",
+      success: false,
+    });
+  }
+};
+module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation };

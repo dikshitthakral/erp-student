@@ -17,7 +17,8 @@ const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const certificateValidator = require('../validators/certificate/certificate');
-
+const { feeTypeController, feeGroupController, fineSetupController } = require('../controllers/studentAccounting');
+const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
 
@@ -101,6 +102,8 @@ router.get('/employee/all', employeeController.getAll);
 router.delete('/employee/:id', employeeController.remove);
 router.put('/employee', upload.single('file'), employeeController.update);
 router.post('/employee/uploadcsv', upload.single('file'), employeeController.bulkSave);
+router.get('/employee/designation/:designationId', employeeController.getByDesignation);
+router.put('/employee/salaryGrade', employeeController.updateSalaryGradeForEmployee);
 
 // Academic Routes
 router.post('/academic',academicController.create);
@@ -144,4 +147,50 @@ router.post('/marks', marksController.create);
 router.get('/marks/all', marksController.getAll);
 router.delete('/marks/:id', marksController.remove);
 router.put('/marks', marksController.update);
+//Student Accounting
+router.post('/feeType', feeTypeController.create);
+router.get('/feeType/all', feeTypeController.getAll);
+router.delete('/feeType/:id', feeTypeController.remove);
+router.put('/feeType', feeTypeController.update);
+
+router.post('/feeGroup', feeGroupController.create);
+router.get('/feeGroup/all', feeGroupController.getAll);
+router.delete('/feeGroup/:id', feeGroupController.remove);
+router.put('/feeGroup', feeGroupController.update);
+router.put('/feeGroup/feeType/add', feeGroupController.addFeeType);
+router.put('/feeGroup/feeType/remove', feeGroupController.removeFeeType);
+
+router.post('/fineSetup', fineSetupController.create);
+router.get('/fineSetup/all', fineSetupController.getAll);
+router.delete('/fineSetup/:id', fineSetupController.remove);
+router.put('/fineSetup', fineSetupController.update);
+router.post('/student/allocate', studentsController.addFeesStructure);
+router.post('/student/fees/all', studentsController.searchStudentsFeeByAcademics);
+router.put('/student/fees/:studentId', studentsController.updateFeeStatus);
+
+// Human Resources
+router.post('/salary', salaryController.add);
+router.get('/salary/all', salaryController.getAll);
+router.get('/salary/receipt/:id', salaryController.getById);
+router.delete('/salary/:id', salaryController.remove);
+router.put('/salary', salaryController.update);
+router.post('/salaryReceipt', salaryReceiptController.add);
+router.get('/salaryReceipt/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptByMonth);
+// Leaves
+router.post('/leavesCategory', leavesCategoryController.create);
+router.get('/leavesCategory/all', leavesCategoryController.getAll);
+router.delete('/leavesCategory/:id', leavesCategoryController.remove);
+router.put('/leavesCategory', leavesCategoryController.update);
+// LeavesRequest
+router.post('/leavesRequest', upload.single('file'), leavesRequestController.create);
+router.get('/leavesRequest/all', leavesRequestController.getAll);
+router.delete('/leavesRequest/:id', leavesRequestController.remove);
+router.put('/leavesRequest/status', leavesRequestController.updateStatus);
+router.get('/employee/leavesRequest/:designationId', employeeController.getAllLeavesRequestByDesignation);
+// Award
+router.post('/award', awardController.create);
+router.get('/award/all', awardController.getAll);
+router.delete('/award/:id', awardController.remove);
+router.put('/award', awardController.update);
+
 module.exports = router;

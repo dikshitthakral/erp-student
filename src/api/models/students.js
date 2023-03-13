@@ -1,5 +1,31 @@
 const mongoose = require("mongoose");
 
+const feesSchema = new mongoose.Schema({
+    feeType: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'FeeType',
+    },
+    discount: {
+        type: Number, required: false, default: 0
+    },
+    paidAmount: {
+        type: Number, default: 0
+    },
+    totalAmount: {
+        type: Number, default: 0
+    },
+    status: {
+        type: String, default: 'UNPAID'
+    },
+    balance: {
+        type: Number, default: 0
+    },
+    fine: {
+        type: Number, default: 0
+    }
+}, { autoIndex: false, autoCreate: false });
+
+new mongoose.model("Fees", feesSchema);
+
 const studentSchema = new mongoose.Schema({
     registerNo: {
         type: Number,
@@ -107,7 +133,11 @@ const studentSchema = new mongoose.Schema({
     academic: { type: mongoose.Schema.Types.ObjectId, ref: 'Academic'},
     guardian: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian'},
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
-    vehicleRoute: { type: mongoose.Schema.Types.ObjectId, ref: 'VehicleRoute'}
+    vehicleRoute: { type: mongoose.Schema.Types.ObjectId, ref: 'VehicleRoute'},
+    fees: {
+        type: [feesSchema],
+        default: []
+    },
   });
   
   const students = new mongoose.model("Student", studentSchema);

@@ -11,6 +11,8 @@ const csvtojsonV2=require("csvtojson/v2");
 const students = require('../models/students');
 const mongoose = require('mongoose');
 const jsonexport = require('jsonexport');
+const { feeTypeModel } = require('../models/studentAccounting');
+const fineSetup = require('../models/studentAccounting/fineSetup');
 
 const uploadImage = async (req, res) => {
     try {
@@ -382,4 +384,192 @@ const updateStudent = async (req, res) => {
     }
 }
 
-module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent }
+const addFeesStructure = async (req, res) => {
+  try {
+      const { studentId, feeType, discount, status, paidAmount } = req.body;
+      const feeTypeResult = await feeTypeModel.findOne({_id: mongoose.Types.ObjectId(feeType)});
+      if (isEmpty(feeTypeResult)) {
+          return res.status(400)
+              .json([{ msg: "FeeType not found.", res: "error", }]);
+      }
+      const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(studentId)});
+      if (isEmpty(studentRecord)) {
+        return res.status(400)
+            .json([{ msg: "Student not found.", res: "error", }]);
+      }
+      const feeObject = {
+        feeType,
+        discount: isNaN(discount) ? 0 : discount,
+        paidAmount : isNaN(paidAmount) ? 0 : paidAmount,
+        status: isEmpty(status) ? 'UNPAID' : status,
+        totalAmount: feeTypeResult.amount
+      }
+      const fees = isEmpty(studentRecord.fees) ? [feeObject] : [...studentRecord.fees, feeObject];
+      let updateStudent = await students.findOneAndUpdate(
+          { _id: mongoose.Types.ObjectId(studentId) },
+          { $set: { fees: fees } }
+      );
+      if (
+        updateStudent.length === 0 ||
+        updateStudent === undefined ||
+        updateStudent === null ||
+        updateStudent === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Update Fees in student", res: "error", }]);
+      } else {
+          const studentsData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate({
+            path: 'fees',
+            populate: [{
+              path: 'feeType',
+              model: 'FeeType'
+          }]
+          }).exec();
+          return res.status(200)
+              .json([{ msg: "Fees in Student updated successflly", data: studentsData, res: "success" }]);
+      }
+  } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+const searchStudentsFeeByAcademics = async (req, res) => {
+    try {
+      const { academicYear, section, studentClass } = req.body;
+      const academicsId = await academicsService.getIdIfAcademicExists({ academicYear, section, studentClass });
+      if(!mongoose.Types.ObjectId.isValid(academicsId)) {
+          return res.status(400).send({
+              messge: "No records found with above filter critera",
+              success: false,
+          });
+      }
+      const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate({
+        path: 'fees',
+        populate: [{
+          path: 'feeType',
+          model: 'FeeType'
+      }]
+      }).exec();
+      if (
+          filteredStudents === undefined ||
+          filteredStudents.length == 0 ||
+          filteredStudents === null
+      ) {
+        return res.status(200).send({
+          messge: "No Students found with above filtered criteria.",
+          success: false,
+        });
+      }
+      let updatedStudents = [];
+      for(let student of filteredStudents) {
+        let updatedFees = [];
+        for(let fee of student._doc.fees) {
+          let feeDoc = fee._doc
+          let feeTypeId = feeDoc.feeType._id;
+          const fineSetupResult = await fineSetup.findOne({feeType: mongoose.Types.ObjectId(feeTypeId)});
+          if (isEmpty(fineSetupResult)) {
+            updatedFees.push({...feeDoc, balance: feeDoc.totalAmount - feeDoc.discount });
+          } else {
+            let currentDate = new Date();
+            let dueDate = new Date(feeDoc.feeType.dueDate);
+            if(dueDate >= currentDate){
+              updatedFees.push({...feeDoc, balance: feeDoc.totalAmount - feeDoc.discount });
+            } else {
+              const fine = fineSetupResult.fineType === 'Fixed' ? fineSetupResult.fineValue : totalAmount - ((totalAmount * fineSetupResult.fineValue)/100);
+              updatedFees.push({...feeDoc, fine: fine, balance: feeDoc.totalAmount - feeDoc.discount + fine });
+            }
+          }
+      }
+      updatedStudents.push({ ...student._doc, fees: updatedFees});
+    }
+    return res. status(200).send({
+      students: updatedStudents,
+      messge: "All Filtered Students",
+      success: true,
+    });
+  } catch(err) {
+      return res.status(400).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+const updateFeeStatus = async (req, res) => {
+    try {
+      const { feeTypeIds } = req.body;
+      const studentId = req.params['studentId'];
+      const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(studentId) }).populate('academic').populate({
+        path: 'fees',
+        populate: [{
+          path: 'feeType',
+          model: 'FeeType'
+      }]
+      }).exec();
+      if (
+        studentRecord === undefined ||
+        studentRecord.length == 0 ||
+        studentRecord === null
+      ) {
+        return res.status(200).send({
+          messge: "No Students found with above filtered criteria.",
+          success: false,
+        });
+      }
+      let updatedFees = [];
+      for(let fee of studentRecord._doc.fees) {
+          let feeDoc = fee._doc
+          let feeTypeId = feeDoc.feeType._id;
+          if(feeTypeIds.includes(String(feeTypeId))) {
+            const fineSetupResult = await fineSetup.findOne({feeType: mongoose.Types.ObjectId(feeTypeId)});
+            if (isEmpty(fineSetupResult)) {
+              updatedFees.push({...feeDoc, balance: 0, status: 'PAID', paidAmount: feeDoc.totalAmount - feeDoc.discount });
+            } else {
+              let currentDate = new Date();
+              let dueDate = new Date(feeDoc.feeType.dueDate);
+              if(dueDate >= currentDate){
+                updatedFees.push({...feeDoc, balance: 0 , status: 'PAID', paidAmount: feeDoc.totalAmount - feeDoc.discount });
+              } else {
+                const fine = fineSetupResult.fineType === 'Fixed' ? fineSetupResult.fineValue : totalAmount - ((totalAmount * fineSetupResult.fineValue)/100);
+                updatedFees.push({...feeDoc, fine: fine, balance: 0, status: 'PAID',paidAmount: feeDoc.totalAmount - feeDoc.discount + fine });
+              }
+            }
+          } else {
+            updatedFees.push({...feeDoc})
+          }
+      }
+      let updateStudent = await students.findOneAndUpdate(
+          { _id: studentId },
+          { $set: { fees: updatedFees } }
+      );
+        if (
+          updateStudent.length === 0 ||
+          updateStudent === undefined ||
+          updateStudent === null ||
+          updateStudent === ""
+        ) {
+            return res.status(200)
+                .json([{ msg: "Student not found!!!", res: "error", }]);
+        } else {
+            const studentData = await students.findOne({ _id: studentId }).populate({
+              path: 'fees',
+              populate: [{
+                path: 'feeType',
+                model: 'FeeType'
+            }]
+            }).exec();
+            return res.status(200)
+                .json([{ msg: "Student Fees updated successflly", data: studentData, res: "success" }]);
+        }
+  } catch(err) {
+      return res.status(500).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, addFeesStructure, searchStudentsFeeByAcademics,updateFeeStatus }

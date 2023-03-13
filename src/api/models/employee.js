@@ -101,6 +101,7 @@ const employeeSchema = new mongoose.Schema({
     accountNumber: { type: String, required: false },
     designation: { type: mongoose.Schema.Types.ObjectId, ref: 'Designation'},
     department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department'},
+    salaryGrade: { type: mongoose.Schema.Types.ObjectId, ref: 'Salary'},
   });
   
   const employees = new mongoose.model("Employee", employeeSchema);
