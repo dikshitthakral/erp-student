@@ -138,6 +138,7 @@ const studentSchema = new mongoose.Schema({
         type: [feesSchema],
         default: []
     },
+    active: { type: Boolean, default: true }
   });
   
   const students = new mongoose.model("Student", studentSchema);

@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const jsonexport = require('jsonexport');
 const { feeTypeModel } = require('../models/studentAccounting');
 const fineSetup = require('../models/studentAccounting/fineSetup');
+const marks = require('../models/marks');
 
 const uploadImage = async (req, res) => {
     try {
@@ -572,4 +573,202 @@ const updateFeeStatus = async (req, res) => {
   }
 }
 
-module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, addFeesStructure, searchStudentsFeeByAcademics,updateFeeStatus }
+const fetchStudentsByFilter = async (req, res) => {
+    try {
+      const { gender, religion, fromDate, toDate } = req.body;
+      let query = [];
+      if(!isEmpty(gender)) {
+        query.push({ gender })
+      }
+      if(!isEmpty(religion)) {
+        query.push({ religion })
+      }
+      if(!isEmpty(fromDate) && !isEmpty(toDate)) {
+        query.push({ admissionDate: {
+          $gte: new Date(fromDate),
+          $lte: new Date(toDate),
+        }
+      })
+      }
+      const filteredStudents = await students.find({
+        $and: query
+      }).populate('academic').populate({
+        path: 'fees',
+        populate: [{
+          path: 'feeType',
+          model: 'FeeType'
+      }]
+      }).exec();
+      if (
+          filteredStudents === undefined ||
+          filteredStudents.length == 0 ||
+          filteredStudents === null
+      ) {
+        return res.status(200).send({
+          messge: "No Students found with above filtered criteria.",
+          success: false,
+        });
+      }
+    return res. status(200).send({
+      students: filteredStudents,
+      messge: "All Filtered Students",
+      success: true,
+    });
+  } catch(err) {
+      return res.status(400).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+const fetchStudentsByStatus = async (req, res) => {
+  try {
+      const status = req.params['status'];
+      const filteredStudents = await students.find({
+        active: Boolean(status)
+      }).populate('academic').populate({
+        path: 'fees',
+        populate: [{
+          path: 'feeType',
+          model: 'FeeType'
+      }]
+      }).exec();
+      if (
+          filteredStudents === undefined ||
+          filteredStudents.length == 0 ||
+          filteredStudents === null
+      ) {
+        return res.status(200).send({
+          messge: "No Students found with above filtered criteria.",
+          success: false,
+        });
+      }
+    return res. status(200).send({
+      students: filteredStudents,
+      messge: "All Filtered Students",
+      success: true,
+    });
+  } catch(err) {
+      return res.status(400).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+const updateStatus = async (req, res) => {
+  try {
+      const { studentId, status } = req.body;
+      let updateStudent = await students.findOneAndUpdate(
+        { _id: studentId },
+        { $set: {active: Boolean(status) }}
+      );
+      if (
+        updateStudent.length === 0 ||
+        updateStudent === undefined ||
+        updateStudent === null ||
+        updateStudent === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Student not found!!!", res: "error", }]);
+      } else {
+          const studentData = await students.findOne({ _id: studentId }).populate('academic').populate({
+            path: 'fees',
+            populate: [{
+              path: 'feeType',
+              model: 'FeeType'
+          }]
+          }).exec()
+          return res.status(200)
+              .json([{ msg: "Student Profile updated successflly", data: studentData, res: "success" }]);
+      }
+  } catch(err) {
+      return res.status(400).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
+const promoteStudent = async (req, res) => {
+  try {
+    const { studentId, academicYear, section, studentClass,rollNo } = req.body;
+    const studentData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) });
+    if(isEmpty(studentData)) {
+      return res.status(400).send({
+        messge: "Student not found with given id",
+        success: false,
+      });
+    }
+    // academic section
+    const academicId = await studentService.fetchAcademicsId({ academicYear, studentClass, section });
+    let updateObj = {
+      academic: academicId,
+      rollNo,
+    }
+    let updateStudent = await students.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(studentId) },
+      { $set: updateObj }
+    );
+    if (
+      updateStudent.length === 0 ||
+      updateStudent === undefined ||
+      updateStudent === null ||
+      updateStudent === ""
+    ) {
+        return res.status(200)
+            .json([{ msg: "Student not found!!!", res: "error", }]);
+    } else {
+        const studentData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
+        return res.status(200)
+            .json([{ msg: "Student Profile updated successflly", data: studentData, res: "success" }]);
+    }
+  } catch(err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+}
+
+const fetchStudentMarks = async (req, res) => {
+  try {
+    const studentId = req.params["studentId"];
+    const studentData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) });
+    if(isEmpty(studentData)) {
+      return res.status(400).send({
+        messge: "Student not found with given id",
+        success: false,
+      });
+    }
+    const fetchMarks = await marks.find({
+      academic: mongoose.Types.ObjectId(studentData.academic),
+      student: mongoose.Types.ObjectId(studentId)
+    });
+    if (
+      fetchMarks.length === 0 ||
+      fetchMarks === undefined ||
+      fetchMarks === null ||
+      fetchMarks === ""
+    ) {
+        return res.status(200)
+            .json([{ msg: "Marks not found!!!", res: "error", }]);
+    } else {
+        let totalMakrks = 0;
+        for(let mark of fetchMarks) {
+          totalMakrks += (mark.practical + mark.written);
+        }
+        return res.status(200)
+            .json([{ msg: "Student Profile updated successflly", data: {...studentData._doc , totalMakrks}, res: "success" }]);
+    }
+  } catch(err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+}
+
+module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
+  addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks }

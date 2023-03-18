@@ -13,17 +13,23 @@ const marksSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Student'
     },
+    academic: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Academic'
+    },
     isAbsent: {
         type: Boolean,
         required: false
     },
     practical: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     written: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
 });
   

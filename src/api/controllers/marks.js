@@ -1,16 +1,18 @@
 const marks = require('../models/marks');
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
+const academicsService = require('../services/academic');
 
 const create = async (req, res) => {
     try {
-        const { examId, subject, studentId, isAbsent, practical, written } = req.body;
-        if(isEmpty(studentId) || isEmpty(subject) || isEmpty(examId)) {
+        const { examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section } = req.body;
+        if(isEmpty(studentId) || isEmpty(subject) || isEmpty(examId) || isEmpty(academicYear) || isEmpty(studentClass) || isEmpty(section)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating Marks.",
                 success: false,
             });
         }
+        const academicId = await academicsService.fetchAcademicsId({ academicYear, studentClass, section });
         const newMarks = await marks.create({
             examId,
             subject,
@@ -18,6 +20,7 @@ const create = async (req, res) => {
             isAbsent : isEmpty(isAbsent) ? undefined : isAbsent,
             practical : (practical === null || practical === '' || practical === undefined) ? 0 : practical,
             written : (written === null || written === '' || written === undefined)  ? 0 : written,
+            academic: academicId
         });
         return res.status(200).json({
             marks: newMarks,
@@ -99,7 +102,7 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const { marksId, examId, subject, studentId, isAbsent, practical, written } = req.body;
+        const { marksId, examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section } = req.body;
         const updateObject = {}
         if(!isEmpty(examId)) { updateObject["examId"] = examId; }
         if(!isEmpty(subject)) { updateObject["subject"] = subject; }
@@ -107,6 +110,10 @@ const update = async (req, res) => {
         if(!isEmpty(isAbsent)) { updateObject["isAbsent"] = isAbsent; }
         if(practical !== null && practical !== '' && practical !== undefined) { updateObject["practical"] = Number(practical); }
         if(written !== null && written !== '' && written !== undefined) { updateObject["written"] = Number(written); }
+        if(!isEmpty(academicYear) && !isEmpty(studentClass) && !isEmpty(section)) {
+          const academicId = await academicsService.fetchAcademicsId({ academicYear, studentClass, section });
+          updateObject["academic"] = academicId;
+        }
         let updateMarks = await marks.findOneAndUpdate(
             { _id: marksId },
             {

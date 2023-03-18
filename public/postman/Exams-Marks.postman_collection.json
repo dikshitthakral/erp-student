@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "dfa750ea-565b-4e48-b81a-415be62aaf03",
+		"name": "Exams/Marks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Exam",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Second Semester Exams\",\n    \"description\": \"Second Semester Exams\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/exam",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"exam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Exams",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/exam/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"exam",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Marks",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"examId\": \"63ff542755373a4f08012125\",\n    \"subject\": \"63fa7591b5149db7c47cd216\",\n    \"studentId\": \"63e9353e2b93962bfb2d6c8f\",\n    \"isAbsent\": false,\n    \"practical\": 38,\n    \"written\": 52,\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"8th\",\n    \"section\": \"A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Marks",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"63fa75a9b5149db7c47cd218\",\n    \"practical\": 39,\n    \"written\": 42,\n    \"marksId\": \"63ffbb8c79182b411f356703\",\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"8th\",\n    \"section\": \"A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

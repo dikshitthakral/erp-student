@@ -21,6 +21,7 @@ const { feeTypeController, feeGroupController, fineSetupController } = require('
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
+const guardianController = require('../controllers/guardian');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -192,5 +193,13 @@ router.post('/award', awardController.create);
 router.get('/award/all', awardController.getAll);
 router.delete('/award/:id', awardController.remove);
 router.put('/award', awardController.update);
+// Reports
+router.post('/students/filter', studentsController.fetchStudentsByFilter);
+router.get('/students/active/:status', studentsController.fetchStudentsByStatus);
+router.put('/students/status', studentsController.updateStatus);
+router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
+router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
+router.post('/students/promote', studentsController.promoteStudent);
+router.get('/students/:studentId/marks', studentsController.fetchStudentMarks);
 
 module.exports = router;
