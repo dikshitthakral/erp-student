@@ -56,6 +56,40 @@ const getAll = async (req, res) => {
       }
 }
 
+const getById = async (req, res) => {
+  try {
+      const id = req.params['id'];
+      if (!id) {
+        return res.status(200).json({
+          message: "FeeType Id not found",
+          success: false,
+        });
+      } 
+      let feeTypeResult = await feeType.findOne({ _id: id});
+      if (
+        feeTypeResult !== undefined &&
+        feeTypeResult.length !== 0 &&
+        feeTypeResult !== null
+      ) {
+        return res.status(200).send({
+          feeType: feeTypeResult,
+          messge: "Get FeeType by Id successfully",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "FeeType by id does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Something went wrong",
+        success: false,
+      });
+    }
+}
+
 const remove = async (req, res) => {
     try {
         const id = req.params['id'];
@@ -132,4 +166,4 @@ const update = async (req, res) => {
       }
 }
 
-module.exports = { create, getAll, remove, update};
+module.exports = { create, getAll, remove, update, getById};

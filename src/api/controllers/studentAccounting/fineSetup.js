@@ -55,6 +55,40 @@ const getAll = async (req, res) => {
       }
 }
 
+const getById = async (req, res) => {
+  try {
+      const id = req.params['id'];
+      if (!id) {
+        return res.status(200).json({
+          message: "Fine Setup Id not found",
+          success: false,
+        });
+      } 
+      let fineSetupResult = await fineSetup.findOne({ _id: id}).populate('feeType');
+      if (
+        fineSetupResult !== undefined &&
+        fineSetupResult.length !== 0 &&
+        fineSetupResult !== null
+      ) {
+        return res.status(200).send({
+          fineSetup: fineSetupResult,
+          messge: "Get Fine by Id successfully",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Fine by id does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Something went wrong",
+        success: false,
+      });
+    }
+}
+
 const remove = async (req, res) => {
     try {
         const id = req.params['id'];
@@ -130,4 +164,4 @@ const update = async (req, res) => {
       }
 }
 
-module.exports = { create, getAll, remove, update };
+module.exports = { create, getAll, remove, update, getById };

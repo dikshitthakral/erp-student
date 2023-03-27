@@ -151,6 +151,7 @@ router.put('/marks', marksController.update);
 //Student Accounting
 router.post('/feeType', feeTypeController.create);
 router.get('/feeType/all', feeTypeController.getAll);
+router.get('/feeType/:id', feeTypeController.getById);
 router.delete('/feeType/:id', feeTypeController.remove);
 router.put('/feeType', feeTypeController.update);
 
@@ -163,6 +164,7 @@ router.put('/feeGroup/feeType/remove', feeGroupController.removeFeeType);
 
 router.post('/fineSetup', fineSetupController.create);
 router.get('/fineSetup/all', fineSetupController.getAll);
+router.get('/fineSetup/:id', fineSetupController.getById);
 router.delete('/fineSetup/:id', fineSetupController.remove);
 router.put('/fineSetup', fineSetupController.update);
 router.post('/student/allocate', studentsController.addFeesStructure);
