@@ -4,17 +4,21 @@ const { isEmpty } = require('lodash');
 
 const create = async (req, res) => {
     try {
-        const { name, description } = req.body;
-        if(isEmpty(name)) {
+        const { name, term, examtype, marksDistribution, remarks } = req.body;
+        if(isEmpty(name) || isEmpty(term) || isEmpty(examtype) || isEmpty(marksDistribution)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating exam.",
                 success: false,
             });
         }
-        const newExam = await exam.create({
+        let examObj = {
             name,
-            description
-        });
+            term,
+            examtype,
+            marksDistribution
+        }
+        examObj['remarks'] = isEmpty(remarks) ? undefined : remarks;
+        const newExam = await exam.create(examObj);
         return res.status(200).json({
             exam: newExam,
             message: "Added New Exam Successfully",
@@ -28,7 +32,7 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allExams = await exam.find();
+        let allExams = await exam.find().populate('marksDistribution').populate('term');
         if (
             allExams !== undefined &&
             allExams.length !== 0 &&
@@ -95,10 +99,14 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const { examId, name, description } = req.body;
+        const { examId, name, term, examtype, marksDistribution, remarks } = req.body;
         const updateObject = {}
         if(!isEmpty(name)) { updateObject["name"] = name; }
-        if(!isEmpty(description)) { updateObject["description"] = description; }
+        if(!isEmpty(term)) { updateObject["term"] = term; }
+        if(!isEmpty(examtype)) { updateObject["examtype"] = examtype; }
+        if(!isEmpty(marksDistribution)) { updateObject["marksDistribution"] = marksDistribution; }
+        if(!isEmpty(remarks)) { updateObject["remarks"] = remarks; }
+        
         let updateExam = await exam.findOneAndUpdate(
             { _id: examId },
             {

@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Second Semester Exams\",\n    \"description\": \"Second Semester Exams\"\n}",
+					"raw": "{\n    \"name\": \"First Semester Exams\",\n    \"term\":\"64234407f3996858dd4d1d60\", \n    \"examtype\":\"Marks\", \n    \"marksDistribution\":\"64246640aa72c31aeaa24f9a\", \n    \"remarks\":\"First Term exam\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -36,6 +36,96 @@
 			"response": []
 		},
 		{
+			"name": "Update Exam",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"examId\": \"64246aa0d1ae56bf0d5a967c\",\n    \"name\": \"Second Semester Exams\",\n    \"term\":\"64234407f3996858dd4d1d60\", \n    \"examtype\":\"Marks\", \n    \"marksDistribution\":[\"64246640aa72c31aeaa24f9a\",\"6424662aaa72c31aeaa24f98\"], \n    \"remarks\":\"First Term exam\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/exam",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"exam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Exam Term",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Board \",\n    \"branch\": \"Kidnley School\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/examTerm",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"examTerm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Marks Distribution",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Written\",\n    \"branch\": \"Kidnley School\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marksDistribution",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marksDistribution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Exams",
 			"request": {
 				"method": "GET",
@@ -51,6 +141,50 @@
 						"api",
 						"v1",
 						"exam",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Exam terms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/examTerm/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"examTerm",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Marks Distribution",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marksDistribution/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marksDistribution",
 						"all"
 					]
 				}
@@ -94,7 +228,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"subject\": \"63fa75a9b5149db7c47cd218\",\n    \"practical\": 39,\n    \"written\": 42,\n    \"marksId\": \"63ffbb8c79182b411f356703\",\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"8th\",\n    \"section\": \"A\"\n}",
+					"raw": "{\n    \"subject\": \"63fa7591b5149db7c47cd216\",\n    \"practical\": 28,\n    \"written\": 52,\n    \"marksId\": \"63ffbe8fcbe49a12e9737e0c\",\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"8th\",\n    \"section\": \"A\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,6 +246,110 @@
 						"api",
 						"v1",
 						"marks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateExam Term",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"Board Term Exam\",\n        \"branch\": \"Kidnley School\",\n        \"examTermId\": \"64234407f3996858dd4d1d60\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/examTerm",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"examTerm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Makrs Distribution",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"name\": \"Practical\",\n        \"branch\": \"KVS School\",\n        \"marksDistributionId\": \"6424662aaa72c31aeaa24f98\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marksDistribution",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marksDistribution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Exam Term",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/examTerm/64234407f3996858dd4d1d60",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"examTerm",
+						"64234407f3996858dd4d1d60"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Marks Distribution",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marksDistribution/6424662aaa72c31aeaa24f98",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marksDistribution",
+						"6424662aaa72c31aeaa24f98"
 					]
 				}
 			},

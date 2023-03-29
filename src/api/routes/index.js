@@ -13,6 +13,8 @@ const scheduleController = require('../controllers/schedule');
 const homeworkController = require('../controllers/homework');
 const gradeController = require('../controllers/grade');
 const examController = require('../controllers/exam');
+const examTermController = require('../controllers/examTerm');
+const marksDistributionController = require('../controllers/marksDistribution');
 const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
@@ -143,6 +145,16 @@ router.post('/exam', examController.create);
 router.get('/exam/all', examController.getAll);
 router.delete('/exam/:id', examController.remove);
 router.put('/exam', examController.update);
+//Exam Term routes
+router.post('/examTerm', examTermController.create);
+router.get('/examTerm/all', examTermController.getAll);
+router.delete('/examTerm/:id', examTermController.remove);
+router.put('/examTerm', examTermController.update);
+//Marks Distribution routes
+router.post('/marksDistribution', marksDistributionController.create);
+router.get('/marksDistribution/all', marksDistributionController.getAll);
+router.delete('/marksDistribution/:id', marksDistributionController.remove);
+router.put('/marksDistribution', marksDistributionController.update);
 // Marks Routes
 router.post('/marks', marksController.create);
 router.get('/marks/all', marksController.getAll);
