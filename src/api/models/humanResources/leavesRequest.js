@@ -14,7 +14,7 @@ const leavesRequestSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    attachement: {
+    attachment: {
         type: String,
         required: false
     },
