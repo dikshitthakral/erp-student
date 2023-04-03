@@ -36,6 +36,36 @@
 			"response": []
 		},
 		{
+			"name": "Create Grades",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Test\",\n    \"gradePoint\":\"BJS\", \n    \"minPercentage\":12, \n    \"maxPercentage\":50, \n    \"remarks\":\"First Term grade\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/grade",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"grade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update Exam",
 			"request": {
 				"method": "PUT",
@@ -148,6 +178,52 @@
 			"response": []
 		},
 		{
+			"name": "Get All Grades",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1//grade/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"",
+						"grade",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Grades By Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1//grade/6427fdd7815be9e333d6726e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"",
+						"grade",
+						"6427fdd7815be9e333d6726e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Exam terms",
 			"request": {
 				"method": "GET",
@@ -246,6 +322,36 @@
 						"api",
 						"v1",
 						"marks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update  Grades",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gradeId\": \"642a81ed2d812d0c61028595\",\n    \"name\": \"Test\",\n    \"gradePoint\":\"BJS\", \n    \"minPercentage\":12, \n    \"maxPercentage\":50, \n    \"remarks\":\"First Term grade\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/grade",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"grade"
 					]
 				}
 			},

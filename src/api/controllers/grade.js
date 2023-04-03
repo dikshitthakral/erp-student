@@ -1,11 +1,11 @@
 const grade = require('../models/grade');
 const mongoose = require('mongoose');
-const { isEmpty } = require('lodash');
+const { isEmpty, isNumber } = require('lodash');
 
 const create = async (req, res) => {
     try {
         const { name, gradePoint, minPercentage, maxPercentage, remarks } = req.body;
-        if(isEmpty(name) || isEmpty(gradePoint) || isEmpty(minPercentage) || isEmpty(maxPercentage)) {
+        if(isEmpty(name) || isEmpty(gradePoint) || !isNumber(minPercentage) || !isNumber(maxPercentage)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating grades.",
                 success: false,
@@ -14,8 +14,8 @@ const create = async (req, res) => {
         const newGrade = await grade.create({
             name,
             gradePoint,
-            minPercentage,
-            maxPercentage,
+            minPercentage : Number(minPercentage),
+            maxPercentage: Number(maxPercentage),
             remarks:  isEmpty(remarks) ? undefined : remarks
         });
         return res.status(200).json({
