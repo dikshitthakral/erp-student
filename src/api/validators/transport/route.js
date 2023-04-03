@@ -4,7 +4,7 @@ const validation = joi.object({
     routeName: joi.string().trim(true).required(), 
     startPlace: joi.string().trim(true).required(),
     stopPlace:joi.string().trim(true).required(),
-    remarks: joi.string().trim(true).required()
+    remarks: joi.string().trim(true)
 });
 
 const routeValidator = async (req, res, next) => {

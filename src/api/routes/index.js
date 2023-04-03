@@ -35,6 +35,8 @@ router.delete('/student/:id',studentsController.remove);
 router.delete('/student/:academicYear/:section/:studentClass',studentsController.removeMultiple);
 router.post('/student/generateCsv', studentsController.generateCsv);
 router.put('/student/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.updateStudent);
+router.post('/guardian/login', studentsController.guardianLogin);
+
 // Category Routes
 router.post('/category',categoryController.save);
 router.get('/category/all',categoryController.getAll);
@@ -62,7 +64,11 @@ router.post('/vehicle', vehicleValidator, vehicleController.save);
 router.get('/vehicle/all', vehicleController.getAll);
 router.put('/vehicle/:id', vehicleValidator, vehicleController.update);
 router.delete('/vehicle/:id', vehicleController.remove);
-router.post('/vehicle/expense',upload.fields([{ name: 'expenseDocs1', maxCount: 1 }, { name: 'expenseDocs2', maxCount: 1 }, { name: 'expenseDocs3', maxCount: 1 }]),  vehicleController.addExpenseReport)
+router.post('/vehicle/expense',upload.fields([{ name: 'expenseDocs1', maxCount: 1 }, { name: 'expenseDocs2', maxCount: 1 }, { name: 'expenseDocs3', maxCount: 1 }]),  vehicleController.addExpenseReport);
+router.put('/vehicle/expense/:expenseId',upload.fields([{ name: 'expenseDocs1', maxCount: 1 }, { name: 'expenseDocs2', maxCount: 1 }, { name: 'expenseDocs3', maxCount: 1 }]),  vehicleController.updateExpenseReport);
+router.delete('/vehicle/:id/expense/:expenseId', vehicleController.deleteExpenseFromVehicle);
+router.get('/vehicle/:id', vehicleController.getExpenseByVehicle);
+
 //Department Routes
 router.post('/department',departmentController.create);
 router.get('/department/all',departmentController.getAll);

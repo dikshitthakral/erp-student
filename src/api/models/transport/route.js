@@ -16,7 +16,7 @@ const routeSchema = new mongoose.Schema({
     },
     remarks: {
         type: String,
-        required: true
+        required: false
     }
   });
   
