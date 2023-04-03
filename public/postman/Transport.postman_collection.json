@@ -186,6 +186,27 @@
 					"response": []
 				},
 				{
+					"name": "Get Expense By Vehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle/642a9532e4065a6e011a5468",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"642a9532e4065a6e011a5468"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Vehicle",
 					"request": {
 						"method": "PUT",
@@ -246,6 +267,36 @@
 					"response": []
 				},
 				{
+					"name": "Delete Expense from Vehicle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/vehicle/63fdabf45ca38a20eba55323",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"63fdabf45ca38a20eba55323"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "New Request",
 					"request": {
 						"method": "GET",
@@ -263,7 +314,7 @@
 							"formdata": [
 								{
 									"key": "vehicleId",
-									"value": "640f830212dffc056eb21df7",
+									"value": "642a9532e4065a6e011a5468",
 									"type": "default"
 								},
 								{
@@ -273,17 +324,17 @@
 								},
 								{
 									"key": "expenseValue",
-									"value": "5000",
+									"value": "4000",
 									"type": "default"
 								},
 								{
 									"key": "expenseTime",
-									"value": "03-2023",
+									"value": "02-2023",
 									"type": "default"
 								},
 								{
 									"key": "description",
-									"value": "Service as clutch was not working",
+									"value": "Service working",
 									"type": "default"
 								}
 							]
@@ -300,6 +351,72 @@
 								"v1",
 								"vehicle",
 								"expense"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": "640f830212dffc056eb21df7",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Expense",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "vehicleId",
+									"value": "642a9532e4065a6e011a5468",
+									"type": "default"
+								},
+								{
+									"key": "expenseName",
+									"value": "Feb Service",
+									"type": "default"
+								},
+								{
+									"key": "expenseValue",
+									"value": "3500",
+									"type": "default"
+								},
+								{
+									"key": "expenseTime",
+									"value": "02-2023",
+									"type": "default"
+								},
+								{
+									"key": "description",
+									"value": "Service as clutch was not working",
+									"type": "default"
+								},
+								{
+									"key": "expenseId",
+									"value": "642b25d3b8b4e4f0bda814f8",
+									"type": "default",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/vehicle/expense/642b25d3b8b4e4f0bda814f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"vehicle",
+								"expense",
+								"642b25d3b8b4e4f0bda814f8"
 							],
 							"query": [
 								{
