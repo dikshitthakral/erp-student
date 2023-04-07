@@ -15,7 +15,7 @@ const academicSchema = new mongoose.Schema({
         required: true
     },
     classNumeric: {
-        type: String,
+        type: Number,
         required: false
     },
     name: {

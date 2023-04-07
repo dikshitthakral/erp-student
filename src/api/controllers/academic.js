@@ -58,7 +58,7 @@ const create = async (req, res) => {
             studentClass,
             section,
             name:  isEmpty(name) ? undefined : name,
-            classNumeric:  isEmpty(classNumeric) ? undefined : classNumeric
+            classNumeric:  isNaN(classNumeric) ? undefined : Number(classNumeric)
         });
         return res.status(200).json({
             academic: newAcademic,
@@ -110,7 +110,7 @@ const update = async (req, res) => {
         updateObject["academicYear"] = !isEmpty(academicYear) ? academicYear : academicsResult.academicYear;
         updateObject["studentClass"] = !isEmpty(studentClass) ? studentClass : academicsResult.studentClass;
         updateObject["section"] = !isEmpty(section) ? section : academicsResult.section;
-        if(!isEmpty(classNumeric)) { updateObject["classNumeric"] = classNumeric }
+        if(!isNaN(classNumeric)) { updateObject["classNumeric"] = Number(classNumeric) }
         if(!isEmpty(name)) { updateObject["name"] = name }
         let updateAcademic = await academics.findOneAndUpdate(
             { _id: id },

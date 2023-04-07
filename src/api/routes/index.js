@@ -24,6 +24,8 @@ const { salaryController, salaryReceiptController, leavesCategoryController, lea
 const router = express.Router();
 const upload = require("../../common");
 const guardianController = require('../controllers/guardian');
+const sectionController = require('../controllers/section');
+const classController = require('../controllers/class');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -221,5 +223,15 @@ router.post('/students/guardian/filter', guardianController.getStudentsWithSameG
 router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
 router.post('/students/promote', studentsController.promoteStudent);
 router.get('/students/:studentId/marks', studentsController.fetchStudentMarks);
+// Section
+router.post('/section', sectionController.create);
+router.get('/section/all', sectionController.getAll);
+router.delete('/section/:id', sectionController.remove);
+router.put('/section', sectionController.update);
+// Class
+router.post('/class', classController.create);
+router.get('/class/all', classController.getAll);
+router.delete('/class/:id', classController.remove);
+router.put('/class', classController.update);
 
 module.exports = router;
