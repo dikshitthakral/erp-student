@@ -170,4 +170,32 @@ const update = async (req, res) => {
       }
 }
 
-module.exports = { create, getAll, remove, update};
+const getHomeworkByAcademic = async (req, res) => {
+  try {
+      const { date, academic } = req.body;
+      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : date}}).populate('subject').populate('academic');
+      if (
+          allHomework !== undefined &&
+          allHomework.length !== 0 &&
+          allHomework !== null
+      ) {
+        return res.status(200).send({
+          homework: allHomework,
+          messge: "All Homework",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Homework does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+module.exports = { create, getAll, remove, update, getHomeworkByAcademic};

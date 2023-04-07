@@ -14,6 +14,7 @@ const jsonexport = require('jsonexport');
 const { feeTypeModel } = require('../models/studentAccounting');
 const fineSetup = require('../models/studentAccounting/fineSetup');
 const marks = require('../models/marks');
+const guardian = require('../models/guardian');
 
 const uploadImage = async (req, res) => {
     try {
@@ -770,5 +771,38 @@ const fetchStudentMarks = async (req, res) => {
   }
 }
 
+const guardianLogin = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const guardianData = await guardian.findOne({ userName, password });
+    if(isEmpty(guardianData)) {
+      return res.status(400).send({
+        messge: "Guardian not found with given login details",
+        success: false,
+      });
+    }
+    const fetchStudent = await students.findOne({
+      guardian: mongoose.Types.ObjectId(guardianData._id),
+    }).populate('guardian').populate('academic');
+    if (
+      fetchStudent.length === 0 ||
+      fetchStudent === undefined ||
+      fetchStudent === null ||
+      fetchStudent === ""
+    ) {
+        return res.status(200)
+            .json([{ msg: "Student not found!!!", res: "error", }]);
+    } else {
+        return res.status(200)
+            .json([{ msg: "Student Profile", data: fetchStudent, res: "success" }]);
+    }
+  } catch(err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+}
+
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
-  addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks }
+  addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin }
