@@ -2,8 +2,9 @@ const joi = require('joi');
 
 const validation = joi.object({
     name: joi.string().required(),
-    applicableStudent: joi.string(),
-    applicableEmployee: joi.string().when('applicableStudent', {is: joi.exist(), then: joi.optional(), otherwise: joi.required()}),
+    // applicableStudent: joi.string(),
+    // applicableEmployee: joi.string().when('applicableStudent', {is: joi.exist(), then: joi.optional(), otherwise: joi.required()}),
+    appliableUser: joi.string().required(),
     pageLayout: joi.string().required(),
     userPhotoStyle: joi.string().required(),
     userPhotoSize: joi.string().required(),
@@ -13,9 +14,6 @@ const validation = joi.object({
         left: joi.string().required(),
         right: joi.string().required(),
     }),
-    // signatureImage: joi.string().optional(),
-    // logoImage: joi.string().optional(),
-    // backgroundImage: joi.string().optional(),
     content: joi.string().optional()
 });
 

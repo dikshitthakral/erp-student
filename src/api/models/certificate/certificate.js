@@ -5,8 +5,9 @@ const certificateSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    applicableStudent: { type: mongoose.Schema.Types.ObjectId, ref: 'Student'},
-    applicableEmployee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee'},
+    // applicableStudent: { type: mongoose.Schema.Types.ObjectId, ref: 'Student'},
+    // applicableEmployee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee'},
+    applicableUser: { type: String, required: true },
     pageLayout: {
         type: String,
         required: true

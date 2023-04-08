@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "76dc2c44-72d7-4306-a736-ec0d4105a9ad",
+		"_postman_id": "cf05e038-8549-455d-a786-37392efa7550",
 		"name": "Certificate",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,8 +11,74 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"applicableStudent\": \"63e9353e2b93962bfb2d6c8f\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Certificate Name",
+							"type": "text"
+						},
+						{
+							"key": "appliableUser",
+							"value": "Student",
+							"type": "text"
+						},
+						{
+							"key": "pageLayout",
+							"value": "A4",
+							"type": "text"
+						},
+						{
+							"key": "userPhotoStyle",
+							"value": "Square",
+							"type": "text"
+						},
+						{
+							"key": "userPhotoSize",
+							"value": "625px",
+							"type": "text"
+						},
+						{
+							"key": "layoutSpacing[top]",
+							"value": "5 px",
+							"type": "text"
+						},
+						{
+							"key": "layoutSpacing[bottom]",
+							"value": "5 px",
+							"type": "text"
+						},
+						{
+							"key": "layoutSpacing[right]",
+							"value": "5 px",
+							"type": "text"
+						},
+						{
+							"key": "layoutSpacing[left]",
+							"value": "5 px",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "Certificate Content\"",
+							"type": "text"
+						},
+						{
+							"key": "signatureImage",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/pexels-valeria-boltneva-580613.jpg"
+						},
+						{
+							"key": "logoImage",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/pexels-emmy-e-2381069.jpg"
+						},
+						{
+							"key": "backgroundImage",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/pexels-christina-morillo-1181533.jpg"
+						}
+					],
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"applicableEmployee\": \"63f7b012650e7646dc406590\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"backgroundImage\": \"\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
+					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"appliableUser\": \"Employee\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"backgroundImage\": \"\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -66,21 +132,9 @@
 		},
 		{
 			"name": "Get Certificate",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "localhost:8080/api/v1/certificate/all",
 					"host": [

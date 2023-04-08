@@ -110,6 +110,28 @@ const remove = async (req, res) => {
     }
 };
 
+const getByApplicableUser = async (req, res) => {
+    try {
+        const applicableUser = req.param['applicableUser'];
+        let certificates = await certificate.find({applicableUser});
+        if (certificates) {
+           return res.status(200).send({
+                certificates,
+                messge: "All Certificate",
+                success: true,
+            });
+        } 
+          
+        return res.status(200).send({
+            messge: "Certificate does not exist",
+            success: false,
+        });
+    }   catch(err) {
+        return res.status(500).json({ message: err.message, success: false });
+    }
+};
+
+
 const getStudentCertificate = async (req, res) => {
     try {  
         const studentClass = req.query['class'];
@@ -211,4 +233,4 @@ const getEmployeeCertificate = async (req, res) => {
     }
 };
 
-module.exports = { save, update, getAll, remove, getStudentCertificate, getEmployeeCertificate };
+module.exports = { save, update, getAll, remove, getByApplicableUser, getStudentCertificate, getEmployeeCertificate };

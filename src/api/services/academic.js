@@ -5,8 +5,8 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const getIdIfAcademicExists = async (academicObj) => {
     const academicsRes = await academics.findOne({ 
         academicYear: academicObj.academicYear, 
-        studentClass: academicObj.studentClass, 
-        section: academicObj.section
+        studentClass: ObjectId(academicObj.studentClass), 
+        section: ObjectId(academicObj.section)
     });
     if(isEmpty(academicsRes)) {
         return null;

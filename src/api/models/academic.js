@@ -7,12 +7,10 @@ const academicSchema = new mongoose.Schema({
         required: true
     },
     studentClass: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId, ref: 'Class'
     },
     section: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId, ref: 'Section'
     },
     classNumeric: {
         type: Number,

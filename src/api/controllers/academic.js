@@ -47,7 +47,7 @@ const remove = async (req, res) => {
 const create = async (req, res) => {
     try {
         const { academicYear, studentClass, section, classNumeric, name } = req.body;
-        if(isEmpty(academicYear) || isEmpty(academicYear) || isEmpty(academicYear)) {
+        if(isEmpty(academicYear) || isEmpty(studentClass) || isEmpty(section)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating academic.",
                 success: false,

@@ -97,6 +97,7 @@ router.delete('/visitorlog/:id', visitorLogController.remove);
 router.post('/certificate', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 } ,{ name: 'backgroundImage', maxCount: 1 }]), certificateValidator, certificateController.save);
 router.put('/certificate/:id', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 }, { name: 'backgroundImage', maxCount: 1 }]), certificateController.update);
 router.get('/certificate/all', certificateController.getAll);
+router.get('/certificate/:applicableUser', certificateController.getByApplicableUser);
 router.delete('/certificate/:id', certificateController.remove);
 router.get('/certificate/student', certificateController.getStudentCertificate);
 router.get('/certificate/employee', certificateController.getEmployeeCertificate);
