@@ -70,7 +70,7 @@ const update = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {  
-        let certificates = await certificate.find({}).select('name applicableStudent applicableEmployee pageLayout backgroundImage createdAt');
+        let certificates = await certificate.find({});
         if (certificates) {
            return res.status(200).send({
                 certificates,
