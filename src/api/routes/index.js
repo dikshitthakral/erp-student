@@ -18,7 +18,7 @@ const marksDistributionController = require('../controllers/marksDistribution');
 const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
-const certificateValidator = require('../validators/certificate/certificate');
+const { certificateValidator } = require('../validators/certificate/certificate');
 const { feeTypeController, feeGroupController, fineSetupController } = require('../controllers/studentAccounting');
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
 const router = express.Router();
@@ -94,7 +94,7 @@ router.get('/visitorlog/all', visitorLogController.getAll);
 router.delete('/visitorlog/:id', visitorLogController.remove);
 
 //Certificate
-router.post('/certificate', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 }, { name: 'backgroundImage', maxCount: 1 }]), certificateValidator, certificateController.save);
+router.post('/certificate', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 } ,{ name: 'backgroundImage', maxCount: 1 }]), certificateValidator, certificateController.save);
 router.put('/certificate/:id', upload.fields([{ name: 'signatureImage', maxCount: 1 }, { name: 'logoImage', maxCount: 1 }, { name: 'backgroundImage', maxCount: 1 }]), certificateController.update);
 router.get('/certificate/all', certificateController.getAll);
 router.delete('/certificate/:id', certificateController.remove);

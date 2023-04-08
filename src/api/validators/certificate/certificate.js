@@ -13,9 +13,9 @@ const validation = joi.object({
         left: joi.string().required(),
         right: joi.string().required(),
     }),
-    signatureImage: joi.string().optional(),
-    logoImage: joi.string().optional(),
-    backgroundImage: joi.string().optional(),
+    // signatureImage: joi.string().optional(),
+    // logoImage: joi.string().optional(),
+    // backgroundImage: joi.string().optional(),
     content: joi.string().optional()
 });
 
@@ -29,4 +29,16 @@ const certificateValidator = async (req, res, next) => {
 	}
 };
 
-module.exports = certificateValidator;
+const certificateModelValidator = async (model) => {
+	const { error } = validation.validate(model);
+	if (error) {
+		return `Error in Certificate Data : ${error.message}`;
+	} else {
+		return null;
+	}
+};
+
+module.exports = {
+    certificateValidator,
+    certificateModelValidator
+}

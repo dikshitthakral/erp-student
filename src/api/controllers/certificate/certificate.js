@@ -1,9 +1,35 @@
 const mongoose = require('mongoose');
 const certificate = require('../../models/certificate/certificate');
+const storage = require('../../services/storage');
+const util = require("util");
+const fs = require("fs");
+const { isEmpty } = require('lodash');
+
+const documents = ['signatureImage', 'logoImage', 'backgroundImage'];
+
+const uploadDocuments = async (files) =>{
+    const uploadedLocations = {};
+    const unlinkFile = util.promisify(fs.unlink);
+    for(let document of documents) {
+        const file = files[document] ? files[document][0] : undefined;
+        if(isEmpty(file)) { continue; }
+        const location = await storage.uploadFile(file);
+        // Deleting from local if uploaded in S3 bucket
+        await unlinkFile(file.path);
+        uploadedLocations[document] = location;
+    }
+    return uploadedLocations;
+}
 
 const save = async (req, res) => {
     try {  
-        let response = await certificate.create(req.body);
+        const body = req.body;
+        const files = req?.files;
+        let uploadedLocations = {};
+        if(!isEmpty(files)) {
+            uploadedLocations = await uploadDocuments(files);
+        }
+        let response = await certificate.create({...body, ...uploadedLocations});
         return res.status(200).json({
             callLog: response,
             message: "Added New Certificate Successfully",
@@ -17,9 +43,13 @@ const save = async (req, res) => {
 const update = async (req, res) => {
     try {
         const id = req.params['id'];
+        let uploadedLocations = {};
+        if(!isEmpty(files)) {
+            uploadedLocations = await uploadDocuments(files);
+        }
         let response = await certificate.findOneAndUpdate(
             { _id : mongoose.Types.ObjectId(id) },
-            req.body
+            {...req.body, ...uploadedLocations}
         );
 
         if (response) {
