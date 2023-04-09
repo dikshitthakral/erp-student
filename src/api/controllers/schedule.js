@@ -4,10 +4,21 @@ const { isEmpty } = require('lodash');
 const academicsService = require('../services/academic');
 const ObjectId = require('mongoose').Types.ObjectId;
 
+const mapActivities = (activities) => {
+    let newActivities = [];
+    for(let activity of activities) {
+        if(isEmpty(activity.time) || isEmpty(activity.subject) || isEmpty(activity.teacher)) {
+            continue;
+        }
+        newActivities.push(activity);
+    }
+    return newActivities;
+}
+
 const add = async (req, res) => {
     try {
-        const { days, type, academicYear, studentClass, section, teacher, name} = req.body;
-        const scehduleObj = {days, type, name};
+        const { day, type, academicYear, studentClass, section, activities } = req.body;
+        const scehduleObj = {day : day.toUpperCase(), type};
 
         if(!isEmpty(academicYear) && !isEmpty(studentClass) && !isEmpty(section)) {
             const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
@@ -17,9 +28,7 @@ const add = async (req, res) => {
             }
             scehduleObj['academic'] = academicId
         }
-        if(!isEmpty(teacher)) {
-            scehduleObj['teacher'] = teacher
-        }
+        scehduleObj['activities'] = mapActivities(activities);
         const newSchedule = await schedule.create(scehduleObj);
         return res.status(200).json({
             schedule: newSchedule,
@@ -43,15 +52,12 @@ const getSchedule = async (req, res) => {
         }
         const scheduleResult = await schedule.findOne({ _id: mongoose.Types.ObjectId(id)})
         .populate({
-            path: 'days',
+            path: 'activities',
             populate: [{
-                path: 'activity',
-                populate: [{
-                    "path": 'subject'
-                },{
-                    "path": 'teacher',
-                    "model": 'Employee'
-                }]
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
             }]
           }).exec();
         if (isEmpty(scheduleResult)) {
@@ -77,17 +83,14 @@ const getScheduleByAcademics = async (req, res) => {
             return res.status(400)
                 .json([{ msg: "Academic not found.", res: "error", }]);
         }
-        const scheduleResponse = await schedule.findOne({ academic: academicId})
+        const scheduleResponse = await schedule.find({ academic: academicId})
         .populate({
-            path: 'days',
+            path: 'activities',
             populate: [{
-                path: 'activity',
-                populate: [{
-                    "path": 'subject'
-                },{
-                    "path": 'teacher',
-                    "model": 'Employee'
-                }]
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
             }]
           }).exec();
         if (isEmpty(schedule)) {
@@ -114,27 +117,23 @@ const getScheduleDayByAcademics = async (req, res) => {
             return res.status(400)
                 .json([{ msg: "Academic not found.", res: "error", }]);
         }
-        const scheduleResponse = await schedule.findOne({ academic: academicId})
+        const scheduleResponse = await schedule.findOne({ academic: academicId, day: day.toUpperCase()})
         .populate({
-            path: 'days',
+            path: 'activities',
             populate: [{
-                path: 'activity',
-                populate: [{
-                    "path": 'subject'
-                },{
-                    "path": 'teacher',
-                    "model": 'Employee'
-                }]
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
             }]
           }).exec();
-        const filteredResponse = scheduleResponse.days.filter(value => value.day.toUpperCase() === day.toUpperCase())
-        if (isEmpty(schedule)) {
+        if (isEmpty(scheduleResponse)) {
             return res.status(400)
                 .json([{ msg: "No schedule found for given academics", res: "error", }]);
         }
         return res.status(200).json({
-            schedule: filteredResponse,
-            message: "Fetched Schedule by Academics",
+            schedule: scheduleResponse,
+            message: "Fetched Schedule by Academics and Day",
             success: true,
         });
     } catch(err) {
@@ -146,17 +145,23 @@ const getScheduleDayByAcademics = async (req, res) => {
 const getScheduleByTeacher = async (req, res) => {
     try {
         const { teacher} = req.body;
-        const scheduleResponse = await schedule.findOne({ teacher: mongoose.Types.ObjectId(teacher)})
+        const scheduleResponse = await schedule.find({ "activities.teacher": mongoose.Types.ObjectId(teacher)},{
+            day: 1,
+            type: 1,
+            academic: 1,
+            activities: {
+                $elemMatch: {
+                    teacher: mongoose.Types.ObjectId(teacher),
+                },
+            }
+        })
         .populate({
-            path: 'days',
+            path: 'activities',
             populate: [{
-                path: 'activity',
-                populate: [{
-                    "path": 'subject'
-                },{
-                    "path": 'teacher',
-                    "model": 'Employee'
-                }]
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
             }]
           }).exec();
         if (isEmpty(schedule)) {
@@ -174,4 +179,46 @@ const getScheduleByTeacher = async (req, res) => {
     }
 }
 
-module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher }
+const getScheduleByAcademicAndTeacher = async (req, res) => {
+    try {
+        const { teacher, academicYear, studentClass, section } = req.body;
+        const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+        if (!ObjectId.isValid(academicId)) {
+            return res.status(400)
+                .json([{ msg: "Academic not found.", res: "error", }]);
+        }
+        const scheduleResponse = await schedule.find({ academic: academicId, "activities.teacher": mongoose.Types.ObjectId(teacher)},{
+            day: 1,
+            type: 1,
+            academic: 1,
+            activities: {
+                $elemMatch: {
+                    teacher: mongoose.Types.ObjectId(teacher),
+                },
+            }
+        })
+        .populate({
+            path: 'activities',
+            populate: [{
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
+            }]
+          }).exec();
+        if (isEmpty(schedule)) {
+            return res.status(400)
+                .json([{ msg: "No schedule found for given academics", res: "error", }]);
+        }
+        return res.status(200).json({
+            schedule: scheduleResponse,
+            message: "Fetched Schedule by Academics",
+            success: true,
+        });
+    } catch(err) {
+        return res.status(400)
+            .json([{ msg: err.message, res: "error" }]);
+    }
+}
+
+module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher, getScheduleByAcademicAndTeacher }

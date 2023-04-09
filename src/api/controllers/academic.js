@@ -73,7 +73,7 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allAcademics = await academics.find().populate('subjects');
+        let allAcademics = await academics.find().populate('subjects').populate('teachers');
         if (
             allAcademics !== undefined &&
             allAcademics.length !== 0 &&
@@ -96,6 +96,34 @@ const getAll = async (req, res) => {
           success: false,
         });
       }
+}
+
+const getById = async (req, res) => {
+  try {
+      const id = req.params['id'];
+      let academicsById = await academics.findOne({ _id: id}).populate('subjects').populate('teachers');
+      if (
+          academicsById !== undefined &&
+          academicsById.length !== 0 &&
+          academicsById !== null
+      ) {
+        return res.status(200).send({
+          academics: academicsById,
+          messge: "Academics By Id",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Academics does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
 }
 
 const update = async (req, res) => {
@@ -205,4 +233,70 @@ const removeSubject = async (req, res) => {
       }
 }
 
-module.exports = { remove, create, getAll, update, addSubject, removeSubject }
+const addTeacher = async (req, res) => {
+  try {
+      const { academicYear, studentClass, section, teacher } = req.body;
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+      if (!ObjectId.isValid(academicId)) {
+          return res.status(400)
+              .json([{ msg: "Academic not found.", res: "error", }]);
+      }
+      let updateAcademic = await academics.findOneAndUpdate(
+          { _id: academicId },
+          { $push: { teachers: teacher } }
+      );
+      if (
+          updateAcademic.length === 0 ||
+          updateAcademic === undefined ||
+          updateAcademic === null ||
+          updateAcademic === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Update Teacher in Academic.", res: "error", }]);
+      } else {
+          const academicsData = await academics.findOne({ _id: academicId }).populate('teachers');
+          return res.status(200)
+              .json([{ msg: "Teacher in Academics updated successflly", data: academicsData, res: "success" }]);
+      }
+  } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+const removeTeacher = async (req, res) => {
+  try {
+      const { academicYear, studentClass, section, teacher } = req.body;
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+      if (!ObjectId.isValid(academicId)) {
+          return res.status(400)
+              .json([{ msg: "Academic not found.", res: "error", }]);
+      }
+      let updateAcademic = await academics.findOneAndUpdate(
+          { _id: academicId },
+          { $pull: { teachers: teacher } }
+      );
+      if (
+          updateAcademic.length === 0 ||
+          updateAcademic === undefined ||
+          updateAcademic === null ||
+          updateAcademic === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Update Teacher in Academic.", res: "error", }]);
+      } else {
+          const academicsData = await academics.findOne({ _id: id }).populate('teachers');
+          return res.status(200)
+              .json([{ msg: "Teacher in Academics updated successflly", data: academicsData, res: "success" }]);
+      }
+  } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+module.exports = { remove, create, getAll, update, addSubject, removeSubject, addTeacher, removeTeacher, getById }

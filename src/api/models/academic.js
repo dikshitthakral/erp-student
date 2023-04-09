@@ -20,7 +20,8 @@ const academicSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    subjects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Subject', default: []}]
+    subjects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Subject', default: []}],
+    teachers: [{type: mongoose.Schema.Types.ObjectId, ref: 'Employee', default: []}]
   });
   
   const academics = new mongoose.model("Academic", academicSchema);

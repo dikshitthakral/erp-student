@@ -1,0 +1,777 @@
+{
+	"info": {
+		"_postman_id": "82abe5e5-514e-49d9-9942-b2487d8f9b06",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/department",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Commerce\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/department",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"department"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Designation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Senior Teacher\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/designation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"designation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "joiningDate",
+							"value": "2022-02-09",
+							"type": "text"
+						},
+						{
+							"key": "qualification",
+							"value": "BCOM",
+							"type": "text"
+						},
+						{
+							"key": "experienceDetails",
+							"value": "2 Years as clear with XYZ School",
+							"type": "text"
+						},
+						{
+							"key": "totalExperience",
+							"value": "5 Year",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Vikas Gajraj",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "bloodGroup",
+							"value": "B+",
+							"type": "text"
+						},
+						{
+							"key": "religion",
+							"value": "Christan",
+							"type": "text"
+						},
+						{
+							"key": "dob",
+							"value": "1989-04-12",
+							"type": "text"
+						},
+						{
+							"key": "number",
+							"value": "9123456124",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "vikasgajraj@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mathura",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "UP",
+							"type": "text"
+						},
+						{
+							"key": "presentAddress",
+							"value": "Chaurasia Street 56 Lane Near Mandir",
+							"type": "text"
+						},
+						{
+							"key": "permanentAddress",
+							"value": "Chaurasia Street 56 Lane Near Mandir",
+							"type": "text"
+						},
+						{
+							"key": "userName",
+							"value": "vgajraj",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "employee12345",
+							"type": "text"
+						},
+						{
+							"key": "facebook",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "twitter",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "linkedin",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "skipBankDetails",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "bankName",
+							"value": "HDFC",
+							"type": "text"
+						},
+						{
+							"key": "holderName",
+							"value": "Vikas",
+							"type": "text"
+						},
+						{
+							"key": "bankBranch",
+							"value": "Mathura Town",
+							"type": "text"
+						},
+						{
+							"key": "bankAddress",
+							"value": "Town City Mathura",
+							"type": "text"
+						},
+						{
+							"key": "ifscCode",
+							"value": "HDFC0000045",
+							"type": "text"
+						},
+						{
+							"key": "accountNumber",
+							"value": "12340000045",
+							"type": "text"
+						},
+						{
+							"key": "designation",
+							"value": "63f7ac65f55a171e0f7828d5",
+							"type": "text"
+						},
+						{
+							"key": "department",
+							"value": "63f7ac0df55a171e0f7828d2",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/pexels-christina-morillo-1181533.jpg"
+						},
+						{
+							"key": "employeeId",
+							"value": "63f7b012650e7646dc406590",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "joiningDate",
+							"value": "2022-02-09",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "qualification",
+							"value": "BCOM",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "experienceDetails",
+							"value": "2 Years as clear with XYZ School",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "totalExperience",
+							"value": "5 Year",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "Vikas Gajraj",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "bloodGroup",
+							"value": "B+",
+							"type": "text"
+						},
+						{
+							"key": "religion",
+							"value": "Christan",
+							"type": "text"
+						},
+						{
+							"key": "dob",
+							"value": "1989-04-12",
+							"type": "text"
+						},
+						{
+							"key": "number",
+							"value": "9123456124",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "vikasgajraj@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mathura",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "UP",
+							"type": "text"
+						},
+						{
+							"key": "presentAddress",
+							"value": "Chaurasia Street 56 Lane Near Mandir",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "permanentAddress",
+							"value": "Chaurasia Street 56 Lane Near Mandir",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "userName",
+							"value": "vgajraj",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "employee12345",
+							"type": "text"
+						},
+						{
+							"key": "facebook",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "twitter",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "linkedin",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "skipBankDetails",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "bankName",
+							"value": "HDFC",
+							"type": "text"
+						},
+						{
+							"key": "holderName",
+							"value": "Vikas",
+							"type": "text"
+						},
+						{
+							"key": "bankBranch",
+							"value": "Mathura Town",
+							"type": "text"
+						},
+						{
+							"key": "bankAddress",
+							"value": "Town City Mathura",
+							"type": "text"
+						},
+						{
+							"key": "ifscCode",
+							"value": "HDFC0000045",
+							"type": "text"
+						},
+						{
+							"key": "accountNumber",
+							"value": "12340000045",
+							"type": "text"
+						},
+						{
+							"key": "designation",
+							"value": "63f7ac65f55a171e0f7828d5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "department",
+							"value": "63f7ac0df55a171e0f7828d2",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/pexels-christina-morillo-1181533.jpg",
+							"disabled": true
+						},
+						{
+							"key": "employeeId",
+							"value": "63f7b012650e7646dc406590",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/employee/uploadcsv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/employee_file.csv"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/uploadcsv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"uploadcsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/subject",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"subjectName\": \"Maths\", \"subjectCode\": \"Mat23\", \"subjectAuthor\": \"Kernaal\", \"subjectType\": \"Maths\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/subject",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"subject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/schedule/teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teacher\": \"63f7b012650e7646dc406590\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule/teacher",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule",
+						"teacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/schedule/academics/Tuesday",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule/academics/Tuesday",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule",
+						"academics",
+						"Tuesday"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/schedule/63fb029bdafd60f41b1bd8cb",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule/63fb029bdafd60f41b1bd8cb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule",
+						"63fb029bdafd60f41b1bd8cb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add schedule",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"activities\": [{\n                \"time\": \"07:30 PM - 09:00 PM\",\n                \"teacher\": \"63f89a1ca63d99e5e2b96392\",\n                \"subject\": \"63fa75a9b5149db7c47cd218\"\n            },{\n                \"time\": \"12:30 AM - 02:00 PM\",\n                \"teacher\": \"64196d55ade5b6be69a6b9c2\",\n                \"subject\": \"63faf93890d0c2cc58383edc\"\n            },{\n                \"time\": \"10:30 AM - 12:00 PM\",\n                \"teacher\": \"63f7b012650e7646dc406590\",\n                \"subject\": \"63fa7591b5149db7c47cd216\"\n            }],\n    \"day\": \"Wednesday\",\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\",\n    \"type\": \"Class\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Subject in academics",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\", \n    \"studentClass\": \"8th\", \"section\":\"A\",\n    \"subject\": \"63fa75a9b5149db7c47cd218\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/academic/subject/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"academic",
+						"subject",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Academics",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/academic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"academic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schedule By Acadmeics",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule/academics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule",
+						"academics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schedule By Acadmeics & Teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\",\n    \"teacher\": \"63f7b012650e7646dc406590\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule/academics/teacher/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule",
+						"academics",
+						"teacher",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get AcademicsById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/academic/id/643293ca062de83c75e8c67d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"academic",
+						"id",
+						"643293ca062de83c75e8c67d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

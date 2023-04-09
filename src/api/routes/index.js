@@ -120,10 +120,13 @@ router.put('/employee/salaryGrade', employeeController.updateSalaryGradeForEmplo
 // Academic Routes
 router.post('/academic',academicController.create);
 router.get('/academic/all',academicController.getAll);
+router.get('/academic/id/:id',academicController.getById);
 router.delete('/academic/:id',academicController.remove);
 router.put('/academic',academicController.update);
 router.put('/academic/subject/add', academicController.addSubject);
 router.put('/academic/subject/remove', academicController.removeSubject);
+router.put('/academic/teacher/add', academicController.addTeacher);
+router.put('/academic/teacher/remove', academicController.removeTeacher);
 // Subject Routes
 router.post('/subject',subjectController.create);
 router.get('/subject/all',subjectController.getAll);
@@ -136,7 +139,7 @@ router.get('/schedule/:id',scheduleController.getSchedule);
 router.post('/schedule/academics',scheduleController.getScheduleByAcademics);
 router.post('/schedule/academics/:day',scheduleController.getScheduleDayByAcademics);
 router.post('/schedule/teacher',scheduleController.getScheduleByTeacher);
-
+router.post('/schedule/academics/teacher/all', scheduleController.getScheduleByAcademicAndTeacher)
 // Homework Routes
 router.post('/homework', upload.single('file'), homeworkController.create);
 router.get('/homework/all', homeworkController.getAll);
