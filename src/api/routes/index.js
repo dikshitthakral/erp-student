@@ -135,6 +135,7 @@ router.put('/subject',subjectController.update);
 
 // Schedule Routes
 router.post('/schedule',scheduleController.add);
+router.put('/schedule',scheduleController.update);
 router.get('/schedule/:id',scheduleController.getSchedule);
 router.post('/schedule/academics',scheduleController.getScheduleByAcademics);
 router.post('/schedule/academics/:day',scheduleController.getScheduleDayByAcademics);

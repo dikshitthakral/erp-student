@@ -41,6 +41,27 @@ const add = async (req, res) => {
     }
 }
 
+const update = async (req, res) => {
+    try {
+        const { scheduleId, day, type, activities } = req.body;
+        const updateObj = {};
+        updateObj['type'] = isEmpty(type) ? undefined : type;
+        updateObj['activities'] = isEmpty(activities) ? undefined : mapActivities(activities);
+        const updatedSchedule = await schedule.findOneAndUpdate({ _id: scheduleId, day: day.toUpperCase() },
+            {
+                $set: updateObj
+            });
+        return res.status(200).json({
+            schedule: updatedSchedule,
+            message: "Updated Schedule Successfully",
+            success: true,
+        });
+    }catch (err) {
+        return res.status(400)
+            .json([{ msg: err.message, res: "error" }]);
+    }
+}
+
 const getSchedule = async (req, res) => {
     try {
         const id = req.params['id'];
@@ -221,4 +242,4 @@ const getScheduleByAcademicAndTeacher = async (req, res) => {
     }
 }
 
-module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher, getScheduleByAcademicAndTeacher }
+module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher, getScheduleByAcademicAndTeacher, update }

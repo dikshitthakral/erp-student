@@ -625,6 +625,36 @@
 			"response": []
 		},
 		{
+			"name": "Update schedule",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"activities\": [{\n                \"time\": \"08:30 PM - 10:00 PM\",\n                \"teacher\": \"63f89a1ca63d99e5e2b96392\",\n                \"subject\": \"63fa75a9b5149db7c47cd218\"\n            },{\n                \"time\": \"12:30 AM - 02:00 PM\",\n                \"teacher\": \"64196d55ade5b6be69a6b9c2\",\n                \"subject\": \"63faf93890d0c2cc58383edc\"\n            },{\n                \"time\": \"10:30 AM - 12:00 PM\",\n                \"teacher\": \"63f7b012650e7646dc406590\",\n                \"subject\": \"63fa7591b5149db7c47cd216\"\n            }],\n    \"day\": \"Wednesday\",\n    \"scheduleId\": \"643294ef062de83c75e8c690\",\n    \"type\": \"Class\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/schedule",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"schedule"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add Subject in academics",
 			"request": {
 				"method": "PUT",
