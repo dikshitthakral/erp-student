@@ -141,4 +141,45 @@ const update = async (req, res) => {
       }
 }
 
-module.exports = { create, getAll, remove, update};
+const getMarksByAcademicAndStudentId = async (req, res) => {
+  try {
+      const { studentId, academic } = req.body;
+      let allMarksByStudentAndAcademic = await marks.find({student : studentId, academic}).populate('examId').populate('subject');
+      if (
+        allMarksByStudentAndAcademic !== undefined &&
+        allMarksByStudentAndAcademic.length !== 0 &&
+        allMarksByStudentAndAcademic !== null
+      ) {
+        let academicMarks = new Map();
+        for(let mark of allMarksByStudentAndAcademic) {
+            if(academicMarks.has(mark.examId.name)) {
+              let examMarks = academicMarks.get(mark.examId.name);
+              examMarks.push(mark._doc)
+              academicMarks.set(mark.examId.name, examMarks);
+            }
+            else {
+              let examMarks = [];
+              examMarks.push(mark._doc);
+              academicMarks.set(mark.examId.name, examMarks);
+            }
+        }
+        return res.status(200).send({
+          marks: Object.fromEntries(academicMarks),
+          messge: "All Marks",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Marks does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Something went wrong",
+        success: false,
+      });
+    }
+}
+
+module.exports = { create, getAll, remove, update, getMarksByAcademicAndStudentId };

@@ -28,7 +28,7 @@ const homeworkSchema = new mongoose.Schema({
     attachment: {
         type: String,
         required: false
-                                                            }
+    },
   });
   
   const homework = new mongoose.model("Homework", homeworkSchema);

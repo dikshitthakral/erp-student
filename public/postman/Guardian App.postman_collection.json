@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "9d4e28af-506b-4873-b26c-b9f65a1799f1",
+		"name": "Guardian App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login Guardian",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"ParkashArora\",\n    \"password\": \"test1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/guardian/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"guardian",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"date\": \"2023-02-20\",\n    \"academic\": \"63e93147c7bbb8a66e7d455c\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework/academic/day",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework",
+						"academic",
+						"day"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Makrs By Student And academic",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\": \"63e9353e2b93962bfb2d6c8f\",\n    \"academic\": \"643293ca062de83c75e8c67d\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/marks/student",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"marks",
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Notice Board",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Annual Funtion",
+							"type": "default"
+						},
+						{
+							"key": "description",
+							"value": "asnsnsaasnjdsajknasdkjndasjksad",
+							"type": "default"
+						},
+						{
+							"key": "noticeDate",
+							"value": "2023-10-15",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/noticeBoard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"noticeBoard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Notice Board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/noticeBoard/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"noticeBoard",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Homework submissions by homework Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework-submission/:homeworkId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework-submission",
+						":homeworkId"
+					],
+					"variable": [
+						{
+							"key": "homeworkId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Notice Board",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/noticeBoard/64331a636e6bd75104b18405",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"noticeBoard",
+						"64331a636e6bd75104b18405"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Homework submissions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "homework",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "dateOfSubmission",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "academic",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "student",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework-submission",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework-submission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Attendance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"isPresent\": false, \n    \"dateOfAttendance\": \"2023-04-18\", \n    \"student\":\"63e9353e2b93962bfb2d6c8f\", \n    \"academic\": \"643293ca062de83c75e8c67d\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/attendance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"attendance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Attendance Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"endDate\": \"2023-04-30\", \n    \"startDate\": \"2023-04-01\", \n    \"student\":\"63e9353e2b93962bfb2d6c8f\", \n    \"academic\": \"643293ca062de83c75e8c67d\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/attendance/student/dates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"attendance",
+						"student",
+						"dates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Raise a ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"supportType\": \"Administrative\", \n    \"description\": \"asdhkakjdssdkadskjjdsjdsdsjdsjkndsjk\", \n    \"student\": \"63e9353e2b93962bfb2d6c8f\",  \n    \"sendTo\": \"63f7b012650e7646dc406590\"  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/raiseTicket",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"raiseTicket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Raised Tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/raiseTicket/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"raiseTicket",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update status Of raised ticket",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"raiseATicketId\": \"64342cb85ab0332ca85f8ffd\", \"status\": \"Completed\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/raiseTicket/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"raiseTicket",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

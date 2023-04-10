@@ -26,6 +26,10 @@ const upload = require("../../common");
 const guardianController = require('../controllers/guardian');
 const sectionController = require('../controllers/section');
 const classController = require('../controllers/class');
+const noticeBoardController = require('../controllers/noticeBoard');
+const homeworkSubmissionController = require('../controllers/homework-submission');
+const attendanceController = require('../controllers/attendance');
+const raiseATicketController = require('../controllers/raiseATicket');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -173,6 +177,7 @@ router.post('/marks', marksController.create);
 router.get('/marks/all', marksController.getAll);
 router.delete('/marks/:id', marksController.remove);
 router.put('/marks', marksController.update);
+router.post('/marks/student', marksController.getMarksByAcademicAndStudentId);
 //Student Accounting
 router.post('/feeType', feeTypeController.create);
 router.get('/feeType/all', feeTypeController.getAll);
@@ -238,5 +243,23 @@ router.post('/class', classController.create);
 router.get('/class/all', classController.getAll);
 router.delete('/class/:id', classController.remove);
 router.put('/class', classController.update);
+// NoticeBoard
+router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
+router.get('/noticeBoard/all', noticeBoardController.getAll);
+router.delete('/noticeBoard/:id', noticeBoardController.remove);
+// Homework Submissions
+router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
+router.get('/homework-submission/:homeworkId', homeworkSubmissionController.getAllSubmissionByHomeworkId);
 
+// Attendance
+router.post('/attendance', attendanceController.create);
+router.post('/attendance/student/dates', attendanceController.getAttendanceByDate);
+router.delete('/attendance/:id', attendanceController.remove);
+router.put('/attendance', attendanceController.update);
+
+// Raise A Ticket
+router.post('/raiseTicket', raiseATicketController.create);
+router.get('/raiseTicket/all', raiseATicketController.getAll);
+router.delete('/raiseTicket/:id', raiseATicketController.remove);
+router.put('/raiseTicket/status', raiseATicketController.updateStatus);
 module.exports = router;
