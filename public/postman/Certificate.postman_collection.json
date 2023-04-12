@@ -19,7 +19,7 @@
 							"type": "text"
 						},
 						{
-							"key": "appliableUser",
+							"key": "applicableUser",
 							"value": "Student",
 							"type": "text"
 						},
@@ -107,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"appliableUser\": \"Employee\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"backgroundImage\": \"\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
+					"raw": "{\n    \"name\": \"Certificate Name\",\n    \"applicableUser\": \"Employee\",\n    \"pageLayout\": \"A4\",\n    \"userPhotoStyle\": \"Square\",\n    \"userPhotoSize\" : \"625px\",\n    \"backgroundImage\": \"\",\n    \"layoutSpacing\": {\n        \"top\": \"5 px\",\n        \"bottom\": \"5 px\",\n        \"right\": \"5 px\",\n        \"left\": \"5 px\"\n    },\n    \"content\" : \"Certificate Content\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
