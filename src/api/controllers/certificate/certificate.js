@@ -112,7 +112,7 @@ const remove = async (req, res) => {
 
 const getByApplicableUser = async (req, res) => {
     try {
-        const applicableUser = req.param['applicableUser'];
+        const applicableUser = req.params['applicableUser'];
         let certificates = await certificate.find({applicableUser});
         if (certificates) {
            return res.status(200).send({
@@ -136,6 +136,7 @@ const getStudentCertificate = async (req, res) => {
     try {  
         const studentClass = req.query['class'];
         const section = req.query['section'];
+        const year = req.query['academicYear']
         const template = req.query['template'];
 
         const matchQuery = [];
