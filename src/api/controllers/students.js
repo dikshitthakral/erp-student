@@ -15,6 +15,7 @@ const { feeTypeModel } = require('../models/studentAccounting');
 const fineSetup = require('../models/studentAccounting/fineSetup');
 const marks = require('../models/marks');
 const guardian = require('../models/guardian');
+const { vehicleRouteModel } = require('../models/transport');
 
 const uploadImage = async (req, res) => {
     try {
@@ -804,5 +805,93 @@ const guardianLogin = async (req, res) => {
   }
 }
 
+const addVehicleRoute = async (req, res) => {
+  try {
+      const { studentId, vehicleRouteId } = req.body;
+      const vehicleRouteResponse = await vehicleRouteModel.findOne({_id: mongoose.Types.ObjectId(vehicleRouteId)});
+      if (isEmpty(vehicleRouteResponse)) {
+          return res.status(400)
+              .json([{ msg: "Vehicle Route not found.", res: "error", }]);
+      }
+      const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(studentId)});
+      if (isEmpty(studentRecord)) {
+        return res.status(400)
+            .json([{ msg: "Student not found.", res: "error", }]);
+      }
+      let updateStudent = await students.findOneAndUpdate(
+          { _id: mongoose.Types.ObjectId(studentId) },
+          { $set: { vehicleRoute: vehicleRouteId } }
+      );
+      if (
+        updateStudent.length === 0 ||
+        updateStudent === undefined ||
+        updateStudent === null ||
+        updateStudent === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Update Fees in student", res: "error", }]);
+      } else {
+          const studentsData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate({
+            path: 'vehicleRoute',
+            populate: [
+              {path: 'route', model: 'Route'},
+              {path: 'vehicle', model: 'Vehicle'},
+              {path: 'stoppage', model: 'Stoppage'},
+            ]
+          }).exec();
+          return res.status(200)
+              .json([{ msg: "Vehicle Route in Student updated successflly", data: studentsData, res: "success" }]);
+      }
+  } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+const searchStudentRoutesByAcademics = async (req, res) => {
+  try {
+      const { academicYear, section, studentClass } = req.body;
+      const academicsId = await academicsService.getIdIfAcademicExists({ academicYear, section, studentClass });
+      if(!mongoose.Types.ObjectId.isValid(academicsId)) {
+          return res.status(400).send({
+              messge: "No records found with above filter critera",
+              success: false,
+          });
+      }
+      const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic')..populate({
+        path: 'vehicleRoute',
+        populate: [
+          {path: 'route', model: 'Route'},
+          {path: 'vehicle', model: 'Vehicle'},
+          {path: 'stoppage', model: 'Stoppage'},
+        ]
+      }).exec();
+      if (
+          filteredStudents !== undefined &&
+          filteredStudents.length !== 0 &&
+          filteredStudents !== null
+      ) {
+        return res.status(200).send({
+          students: filteredStudents,
+          messge: "All Filtered Students",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "No Students found with above filtered criteria.",
+          success: false,
+        });
+      }
+  } catch(err) {
+      return res.status(400).send({
+          messge: "Somethig went wrong",
+          success: false,
+      });
+  }
+}
+
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
-  addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin }
+  addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin,
+  addVehicleRoute, searchStudentRoutesByAcademics}
