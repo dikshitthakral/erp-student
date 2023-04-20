@@ -139,7 +139,7 @@ const createBulkAdmission = async (req, res) => {
 
 const getAllStudents = async (req, res) => {
     try {
-        let allStudents = await students.find().populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
+        let allStudents = await students.find().populate('academic').populate('guardian').populate('category').populate('vehicleRoute').exec();
         if (
             allStudents !== undefined &&
             allStudents.length !== 0 &&
@@ -174,7 +174,7 @@ const searchByAcademics = async (req, res) => {
                 success: false,
             });
         }
-        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
+        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category').populate('vehicleRoute').exec();
         if (
             filteredStudents !== undefined &&
             filteredStudents.length !== 0 &&
@@ -722,7 +722,7 @@ const promoteStudent = async (req, res) => {
         return res.status(200)
             .json([{ msg: "Student not found!!!", res: "error", }]);
     } else {
-        const studentData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate('academic').populate('guardian').populate('category').populate('transportRoute').exec();
+        const studentData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate('academic').populate('guardian').populate('category').populate('vehicleRoute').exec();
         return res.status(200)
             .json([{ msg: "Student Profile updated successflly", data: studentData, res: "success" }]);
     }
@@ -860,7 +860,7 @@ const searchStudentRoutesByAcademics = async (req, res) => {
               success: false,
           });
       }
-      const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic')..populate({
+      const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate({
         path: 'vehicleRoute',
         populate: [
           {path: 'route', model: 'Route'},

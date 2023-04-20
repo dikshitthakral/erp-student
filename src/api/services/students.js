@@ -43,7 +43,7 @@ const fetchUpdatedAcademicsId = async (academicObj, studentRecord) => {
 
 const add = async (studentObj, body) => {
     const { lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress,
-        previousSchoolName, previousQualification, previousRemarks, transportRoute, vehicleNo} = body;
+        previousSchoolName, previousQualification, previousRemarks, vehicleNo, vehicleRoute} = body;
 
     if(!isEmpty(lastName)) { studentObj["lastName"] = lastName};
     if(!isEmpty(gender)) { studentObj["gender"] = gender};
@@ -58,7 +58,7 @@ const add = async (studentObj, body) => {
     if(!isEmpty(previousSchoolName)) { studentObj["previousSchoolName"] = previousSchoolName};
     if(!isEmpty(previousQualification)) { studentObj["previousQualification"] = previousQualification};
     if(!isEmpty(previousRemarks)) { studentObj["previousRemarks"] = previousRemarks};
-    if(!isEmpty(transportRoute)) { studentObj["transportRoute"] = transportRoute};
+    if(!isEmpty(vehicleRoute)) { studentObj["vehicleRoute"] = vehicleRoute};
     if(!isEmpty(vehicleNo)) { studentObj["vehicleNo"] = vehicleNo};
     
     return students.create(studentObj);

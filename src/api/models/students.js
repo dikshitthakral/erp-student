@@ -122,10 +122,6 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    transportRoute: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'VehicleRoute'
-    },
     vehicleNo: {
         type: String,
         required: false
