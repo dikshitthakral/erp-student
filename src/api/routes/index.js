@@ -127,9 +127,9 @@ router.get('/academic/all',academicController.getAll);
 router.get('/academic/id/:id',academicController.getById);
 router.delete('/academic/:id',academicController.remove);
 router.put('/academic',academicController.update);
-router.put('/academic/subject/add', academicController.addSubject);
+router.put('/academic/subjects/add', academicController.addSubject);
 router.put('/academic/subject/remove', academicController.removeSubject);
-router.put('/academic/teacher/add', academicController.addTeacher);
+router.put('/academic/teachers/add', academicController.addTeacher);
 router.put('/academic/teacher/remove', academicController.removeTeacher);
 // Subject Routes
 router.post('/subject',subjectController.create);

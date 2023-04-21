@@ -169,7 +169,7 @@ const update = async (req, res) => {
 
 const addSubject = async (req, res) => {
     try {
-        const { academicYear, studentClass, section, subject } = req.body;
+        const { academicYear, studentClass, section, subjects } = req.body;
         const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
         if (!ObjectId.isValid(academicId)) {
             return res.status(400)
@@ -177,7 +177,7 @@ const addSubject = async (req, res) => {
         }
         let updateAcademic = await academics.findOneAndUpdate(
             { _id: academicId },
-            { $push: { subjects: subject } }
+            { $push: { subjects: subjects } }
         );
         if (
             updateAcademic.length === 0 ||
@@ -190,7 +190,7 @@ const addSubject = async (req, res) => {
         } else {
             const academicsData = await academics.findOne({ _id: academicId }).populate('subjects');
             return res.status(200)
-                .json([{ msg: "Subject in Academics updated successflly", data: academicsData, res: "success" }]);
+                .json([{ msg: "Subjects in Academics updated successflly", data: academicsData, res: "success" }]);
         }
     } catch (error) {
         return res.status(400).send({
@@ -235,7 +235,7 @@ const removeSubject = async (req, res) => {
 
 const addTeacher = async (req, res) => {
   try {
-      const { academicYear, studentClass, section, teacher } = req.body;
+      const { academicYear, studentClass, section, teachers } = req.body;
       const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
       if (!ObjectId.isValid(academicId)) {
           return res.status(400)
@@ -243,7 +243,7 @@ const addTeacher = async (req, res) => {
       }
       let updateAcademic = await academics.findOneAndUpdate(
           { _id: academicId },
-          { $push: { teachers: teacher } }
+          { $push: { teachers: teachers } }
       );
       if (
           updateAcademic.length === 0 ||
@@ -256,7 +256,7 @@ const addTeacher = async (req, res) => {
       } else {
           const academicsData = await academics.findOne({ _id: academicId }).populate('teachers');
           return res.status(200)
-              .json([{ msg: "Teacher in Academics updated successflly", data: academicsData, res: "success" }]);
+              .json([{ msg: "Teachers in Academics updated successflly", data: academicsData, res: "success" }]);
       }
   } catch (error) {
       return res.status(400).send({
