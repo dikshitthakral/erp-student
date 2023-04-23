@@ -208,7 +208,7 @@ router.get('/salary/receipt/:id', salaryController.getById);
 router.delete('/salary/:id', salaryController.remove);
 router.put('/salary', salaryController.update);
 router.post('/salaryReceipt', salaryReceiptController.add);
-router.get('/salaryReceipt/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptByMonth);
+router.get('/salaryReceipt/:salaryPaidMonth/:year', salaryReceiptController.getSalaryReceiptsByMonthAndYear);
 // Leaves
 router.post('/leavesCategory', leavesCategoryController.create);
 router.get('/leavesCategory/all', leavesCategoryController.getAll);

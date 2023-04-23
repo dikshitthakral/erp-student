@@ -5,6 +5,10 @@ const salaryReceiptSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    year: {
+        type: String,
+        required: false
+    },
     status: {
         type: String,
         required: true,
