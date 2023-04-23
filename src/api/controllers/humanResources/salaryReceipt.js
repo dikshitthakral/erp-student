@@ -36,11 +36,13 @@ const add = async (req, res) => {
 const getSalaryReceiptsByMonthAndYear = async (req, res) => {
     try {
         const { salaryPaidMonth, year} = req.params;
-        let allEmployees = await Employee.find();
+        let allEmployees = await Employee.find().populate('designation').exec();
         let response = [];
         for(let employee of allEmployees) {
             let empoyeeResult = {
-                ...employee._doc
+                ...employee._doc,
+                designationName: employee.designation.name,
+                designationId: employee.designation._id
             }
             const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, year, employee: employee._id });
             if(isEmpty(salaryReceiptDoc)) {
