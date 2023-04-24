@@ -892,6 +892,46 @@ const searchStudentRoutesByAcademics = async (req, res) => {
   }
 }
 
+const removeVehicleRoute = async (req, res) => {
+  try {
+      const { studentId } = req.body;
+      const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(studentId)});
+      if (isEmpty(studentRecord)) {
+        return res.status(400)
+            .json([{ msg: "Student not found.", res: "error", }]);
+      }
+      let updateStudent = await students.findOneAndUpdate(
+          { _id: mongoose.Types.ObjectId(studentId) },
+          { $set: { vehicleRoute: null } }
+      );
+      if (
+        updateStudent.length === 0 ||
+        updateStudent === undefined ||
+        updateStudent === null ||
+        updateStudent === ""
+      ) {
+          return res.status(200)
+              .json([{ msg: "Update Transport in student", res: "error", }]);
+      } else {
+          const studentsData = await students.findOne({ _id: mongoose.Types.ObjectId(studentId) }).populate({
+            path: 'vehicleRoute',
+            populate: [
+              {path: 'route', model: 'Route'},
+              {path: 'vehicle', model: 'Vehicle'},
+              {path: 'stoppage', model: 'Stoppage'},
+            ]
+          }).exec();
+          return res.status(200)
+              .json([{ msg: "Vehicle Route in Student updated successflly", data: studentsData, res: "success" }]);
+      }
+  } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
   addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin,
-  addVehicleRoute, searchStudentRoutesByAcademics}
+  addVehicleRoute, searchStudentRoutesByAcademics, removeVehicleRoute}
