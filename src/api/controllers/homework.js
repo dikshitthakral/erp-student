@@ -198,4 +198,34 @@ const getHomeworkByAcademic = async (req, res) => {
     }
 }
 
-module.exports = { create, getAll, remove, update, getHomeworkByAcademic};
+const getHomeworkByAcademicAndDateRange = async (req, res) => {
+  try {
+      const { academicYear, studentClass, section, startDate, endDate} = req.body;
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+      let allHomework = await homework.find({ academic: academicId, 
+        dateOfHomework : { $gte: new Date(startDate), $lte: new Date(endDate) }
+      }).populate('subject').populate('academic');
+      if (
+          allHomework !== undefined &&
+          allHomework.length !== 0 &&
+          allHomework !== null
+      ) {
+        return res.status(200).send({
+          homework: allHomework,
+          messge: "All Homework",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Homework does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+module.exports = { create, getAll, remove, update, getHomeworkByAcademic, getHomeworkByAcademicAndDateRange};

@@ -151,6 +151,7 @@ router.get('/homework/all', homeworkController.getAll);
 router.delete('/homework/:id', homeworkController.remove);
 router.put('/homework', upload.single('file'), homeworkController.update);
 router.post('/homework/academic/day', homeworkController.getHomeworkByAcademic);
+router.post('/homework/academic/range/search', homeworkController.getHomeworkByAcademicAndDateRange);
 // Grade routes
 router.post('/grade', gradeController.create);
 router.get('/grade/all', gradeController.getAll);
