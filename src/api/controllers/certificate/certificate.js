@@ -44,6 +44,7 @@ const update = async (req, res) => {
     try {
         const id = req.params['id'];
         let uploadedLocations = {};
+        const files = req?.files;
         if(!isEmpty(files)) {
             uploadedLocations = await uploadDocuments(files);
         }
