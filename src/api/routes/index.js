@@ -267,5 +267,5 @@ router.put('/raiseTicket/status', raiseATicketController.updateStatus);
 // Student Vechile Routes
 router.post('/student/vehicleRoutes/search', studentsController.searchStudentRoutesByAcademics);
 router.post('/student/vehicleRoutes', studentsController.addVehicleRoute);
-router.delete('/student/vehicleRoutes/remove', studentsController.removeVehicleRoute)
+router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.removeVehicleRoute)
 module.exports = router;

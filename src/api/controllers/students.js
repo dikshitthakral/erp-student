@@ -894,7 +894,7 @@ const searchStudentRoutesByAcademics = async (req, res) => {
 
 const removeVehicleRoute = async (req, res) => {
   try {
-      const { studentId } = req.body;
+      const studentId = req.params['studentId'];
       const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(studentId)});
       if (isEmpty(studentRecord)) {
         return res.status(400)
