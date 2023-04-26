@@ -68,7 +68,6 @@ const getById = async (req, res) => {
       let feeTypeResult = await feeType.findOne({ _id: id});
       if (
         feeTypeResult !== undefined &&
-        feeTypeResult.length !== 0 &&
         feeTypeResult !== null
       ) {
         return res.status(200).send({
