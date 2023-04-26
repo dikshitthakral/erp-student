@@ -2,7 +2,7 @@ const homeworkSubmission = require('../models/homework-submission');
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const { uploadAttachment } = require('../utils');
-
+const academicsService = require('../services/academic');
 
 const create = async (req, res) => {
     try {
@@ -63,4 +63,36 @@ const getAllSubmissionByHomeworkId = async (req, res) => {
         });
       }
 }
-module.exports = { create, getAllSubmissionByHomeworkId };
+
+const getHomeworkSubmissionByFilter = async (req, res) => {
+  try {
+      const { academicYear, studentClass, section, startDate, endDate, subject} = req.body;
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+      let allHomeworkSubmission = await homeworkSubmission.find({ academic: academicId, 
+        dateOfSubmission : { $gte: new Date(startDate), $lte: new Date(endDate) }
+      }).populate('homework').populate('student');
+      if (
+        allHomeworkSubmission !== undefined &&
+        allHomeworkSubmission.length !== 0 &&
+        allHomeworkSubmission !== null
+      ) {
+        const updatedHomework = allHomeworkSubmission.map(homework =>  homework._doc.subject === subject)
+        return res.status(200).send({
+          homeworkSubmission: updatedHomework,
+          messge: "All Homework",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Homework does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+module.exports = { create, getAllSubmissionByHomeworkId, getHomeworkSubmissionByFilter };

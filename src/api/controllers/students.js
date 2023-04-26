@@ -174,7 +174,11 @@ const searchByAcademics = async (req, res) => {
                 success: false,
             });
         }
-        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category').populate('vehicleRoute').exec();
+        const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(academicsId) }).populate('academic').populate('guardian').populate('category')
+        .populate({
+          path: 'fees',
+          populate: [{ path: 'feeType', model: 'FeeType'}]
+        }).populate('vehicleRoute').exec();
         if (
             filteredStudents !== undefined &&
             filteredStudents.length !== 0 &&

@@ -203,11 +203,12 @@ const getHomeworkByAcademic = async (req, res) => {
 const getHomeworkByAcademicAndDateRange = async (req, res) => {
   try {
       const { academicYear, studentClass, section, startDate, endDate, subject} = req.body;
-      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section, subject});
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
       const classResponse = await classService.getById(studentClass);
       const sectionResponse = await sectionService.getById(section);
       let allHomework = await homework.find({ academic: academicId, 
-        dateOfHomework : { $gte: new Date(startDate), $lte: new Date(endDate) }
+        dateOfHomework : { $gte: new Date(startDate), $lte: new Date(endDate) },
+        subject
       }).populate('subject').populate('academic');
       if (
           allHomework !== undefined &&

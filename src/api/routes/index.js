@@ -251,6 +251,7 @@ router.delete('/noticeBoard/:id', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
 router.get('/homework-submission/:homeworkId', homeworkSubmissionController.getAllSubmissionByHomeworkId);
+router.post('/homework-submission/filter', homeworkSubmissionController.getHomeworkSubmissionByFilter)
 
 // Attendance
 router.post('/attendance', attendanceController.create);
