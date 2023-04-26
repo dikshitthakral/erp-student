@@ -2,6 +2,8 @@ const homework = require('../models/homework');
 const mongoose = require('mongoose');
 const { uploadAttachment } = require('../utils');
 const academicsService = require('../services/academic');
+const classService = require('../services/class');
+const sectionService = require('../services/section');
 const { isEmpty } = require('lodash');
 
 const create = async (req, res) => {
@@ -200,8 +202,10 @@ const getHomeworkByAcademic = async (req, res) => {
 
 const getHomeworkByAcademicAndDateRange = async (req, res) => {
   try {
-      const { academicYear, studentClass, section, startDate, endDate} = req.body;
-      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+      const { academicYear, studentClass, section, startDate, endDate, subject} = req.body;
+      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section, subject});
+      const classResponse = await classService.getById(studentClass);
+      const sectionResponse = await sectionService.getById(section);
       let allHomework = await homework.find({ academic: academicId, 
         dateOfHomework : { $gte: new Date(startDate), $lte: new Date(endDate) }
       }).populate('subject').populate('academic');
@@ -210,8 +214,13 @@ const getHomeworkByAcademicAndDateRange = async (req, res) => {
           allHomework.length !== 0 &&
           allHomework !== null
       ) {
+        const updatedHomework = allHomework.map(homework => ({
+          ...homework._doc,
+          class: classResponse && classResponse.className,
+          section: sectionResponse && sectionResponse.name
+        }))
         return res.status(200).send({
-          homework: allHomework,
+          homework: updatedHomework,
           messge: "All Homework",
           success: true,
         });
