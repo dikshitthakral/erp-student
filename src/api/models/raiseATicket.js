@@ -14,8 +14,8 @@ const raiseATicketSchema = new mongoose.Schema({
         ref: 'Student'
     },
     sendTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee'
+        type: String,
+        required: true
     },
     status: {
         type: String,
