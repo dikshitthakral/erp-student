@@ -149,6 +149,7 @@ router.post('/schedule/academics/teacher/all', scheduleController.getScheduleByA
 // Homework Routes
 router.post('/homework', upload.single('file'), homeworkController.create);
 router.get('/homework/all', homeworkController.getAll);
+router.get('/homework/:id', homeworkController.getHomeworkById);
 router.delete('/homework/:id', homeworkController.remove);
 router.put('/homework', upload.single('file'), homeworkController.update);
 router.post('/homework/academic/day', homeworkController.getHomeworkByAcademic);
