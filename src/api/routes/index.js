@@ -35,6 +35,7 @@ const raiseATicketController = require('../controllers/raiseATicket');
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
 router.post('/student/admission', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.createAdmission);
 router.post('/student/uploadcsv', upload.single('file'), studentsController.createBulkAdmission);
+router.get('/student/fetch/:id',studentsController.getById);
 router.get('/student/all',studentsController.getAllStudents);
 router.post('/student/search', studentsController.searchByAcademics);
 router.delete('/student/:id',studentsController.remove);

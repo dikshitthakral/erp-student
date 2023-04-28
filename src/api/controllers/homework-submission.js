@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const { uploadAttachment } = require('../utils');
 const academicsService = require('../services/academic');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const create = async (req, res) => {
     try {
-        const { homework, dateOfSubmission, academic, student } = req.body;
+        const { homework, dateOfSubmission, academicYear, studentClass, section, student } = req.body;
         const file = req.file;
         let attachment = '';
-        if(isEmpty(homework) || isEmpty(academic) || isEmpty(student) || isEmpty(file)) {
+        const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
+        if(isEmpty(homework) || !ObjectId.isValid(academicId) || isEmpty(student)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating Submissing Homework.",
                 success: false,
@@ -20,7 +22,7 @@ const create = async (req, res) => {
         }
         const newHomeWorkSubmission = await homeworkSubmission.create({
             homework,
-            academic,
+            academic: academicId,
             student,
             dateOfSubmission: isEmpty(dateOfSubmission) ? new Date() : dateOfSubmission,
             attachment: isEmpty(attachment) ? undefined : attachment

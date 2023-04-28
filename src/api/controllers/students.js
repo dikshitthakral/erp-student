@@ -16,6 +16,8 @@ const fineSetup = require('../models/studentAccounting/fineSetup');
 const marks = require('../models/marks');
 const guardian = require('../models/guardian');
 const { vehicleRouteModel } = require('../models/transport');
+const classService = require('../services/class');
+const sectionService = require('../services/section');
 
 const uploadImage = async (req, res) => {
     try {
@@ -164,10 +166,44 @@ const getAllStudents = async (req, res) => {
       }
 }
 
+const getById = async (req, res) => {
+  try {
+      const id = req.params['id'];
+      let studentResponse = await students.findOne({_id: id}).populate('academic').populate('guardian').populate('category').populate('vehicleRoute')
+      .populate({
+        path: 'fees',
+        populate: [{ path: 'feeType', model: 'FeeType'}]
+      }).exec();
+      if (
+        studentResponse !== undefined &&
+        studentResponse !== null
+      ) {
+        return res.status(200).send({
+          student: studentResponse,
+          messge: "Fetch Student by id",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Student does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+
 const searchByAcademics = async (req, res) => {
     try {
         const { academicYear, section, studentClass } = req.body;
         const academicsId = await academicsService.getIdIfAcademicExists({ academicYear, section, studentClass });
+        const classResponse = await classService.getById(studentClass);
+        const sectionResponse = await sectionService.getById(section);
         if(!mongoose.Types.ObjectId.isValid(academicsId)) {
             return res.status(400).send({
                 messge: "No records found with above filter critera",
@@ -184,8 +220,13 @@ const searchByAcademics = async (req, res) => {
             filteredStudents.length !== 0 &&
             filteredStudents !== null
         ) {
+          const updatedStudents = filteredStudents.map(student => ({
+            ...student._doc,
+            class: classResponse && classResponse.className,
+            section: sectionResponse && sectionResponse.name
+          }))
           return res.status(200).send({
-            students: filteredStudents,
+            students: updatedStudents,
             messge: "All Filtered Students",
             success: true,
           });
@@ -938,4 +979,4 @@ const removeVehicleRoute = async (req, res) => {
 
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
   addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin,
-  addVehicleRoute, searchStudentRoutesByAcademics, removeVehicleRoute}
+  addVehicleRoute, searchStudentRoutesByAcademics, removeVehicleRoute, getById}
