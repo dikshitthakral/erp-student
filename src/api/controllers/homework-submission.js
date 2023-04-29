@@ -4,6 +4,8 @@ const { isEmpty } = require('lodash');
 const { uploadAttachment } = require('../utils');
 const academicsService = require('../services/academic');
 const ObjectId = require('mongoose').Types.ObjectId;
+const classService = require('../services/class');
+const sectionService = require('../services/section');
 
 const create = async (req, res) => {
     try {
@@ -72,15 +74,29 @@ const getHomeworkSubmissionByFilter = async (req, res) => {
       const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
       let allHomeworkSubmission = await homeworkSubmission.find({ academic: academicId, 
         dateOfSubmission : { $gte: new Date(startDate), $lte: new Date(endDate) }
-      }).populate('homework').populate('student');
+      }).populate('student').populate({
+        path: 'homework',
+        populate: [{ path: 'subject', model: 'Subject'}]
+      });
+      const classResponse = await classService.getById(studentClass);
+      const sectionResponse = await sectionService.getById(section);
       if (
         allHomeworkSubmission !== undefined &&
         allHomeworkSubmission.length !== 0 &&
         allHomeworkSubmission !== null
       ) {
-        const updatedHomework = allHomeworkSubmission.map(homework =>  homework._doc.subject === subject)
+        let updatedSubmission = [];
+        for(let submission of allHomeworkSubmission) {
+          if(submission._doc.homework.subject._id.toString() === subject) {
+            updatedSubmission.push({
+              ...submission._doc,
+              class: classResponse && classResponse.className,
+              section: sectionResponse && sectionResponse.name
+            });
+          }
+        }
         return res.status(200).send({
-          homeworkSubmission: updatedHomework,
+          homeworkSubmission: updatedSubmission,
           messge: "All Homework",
           success: true,
         });
