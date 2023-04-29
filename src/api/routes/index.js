@@ -30,6 +30,8 @@ const noticeBoardController = require('../controllers/noticeBoard');
 const homeworkSubmissionController = require('../controllers/homework-submission');
 const attendanceController = require('../controllers/attendance');
 const raiseATicketController = require('../controllers/raiseATicket');
+const bannerController = require('../controllers/banner');
+const notificationController = require('../controllers/notification');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -220,7 +222,7 @@ router.put('/leavesCategory', leavesCategoryController.update);
 // LeavesRequest
 router.post('/leavesRequest', upload.single('file'), leavesRequestController.create);
 router.get('/leavesRequest/all', leavesRequestController.getAll);
-router.delete('/leavesRequest/:id', leavesRequestController.remove);
+router.delete('/leavesRequest/delete', leavesRequestController.remove);
 router.put('/leavesRequest/status', leavesRequestController.updateStatus);
 router.get('/employee/leavesRequest/:designationId', employeeController.getAllLeavesRequestByDesignation);
 // Award
@@ -249,7 +251,7 @@ router.put('/class', classController.update);
 // NoticeBoard
 router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
 router.get('/noticeBoard/all', noticeBoardController.getAll);
-router.delete('/noticeBoard/:id', noticeBoardController.remove);
+router.delete('/noticeBoard/delete', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
 router.get('/homework-submission/:homeworkId', homeworkSubmissionController.getAllSubmissionByHomeworkId);
@@ -264,11 +266,22 @@ router.put('/attendance', attendanceController.update);
 // Raise A Ticket
 router.post('/raiseTicket', raiseATicketController.create);
 router.get('/raiseTicket/all', raiseATicketController.getAll);
-router.delete('/raiseTicket/:id', raiseATicketController.remove);
+router.delete('/raiseTicket/delete', raiseATicketController.remove);
 router.put('/raiseTicket/status', raiseATicketController.updateStatus);
 
 // Student Vechile Routes
 router.post('/student/vehicleRoutes/search', studentsController.searchStudentRoutesByAcademics);
 router.post('/student/vehicleRoutes', studentsController.addVehicleRoute);
-router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.removeVehicleRoute)
+router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.removeVehicleRoute);
+
+// Banner Routes
+router.post('/banner', upload.single('file'), bannerController.createBanner);
+router.get('/banner/all', bannerController.getAllBanner);
+router.delete('/banner/delete', bannerController.deleteBannerById);
+
+//Notification Routes
+router.post('/createNotification', notificationController.createNotification);
+router.get('/notification/all', notificationController.getAllNotification);
+router.delete('/notification/delete', notificationController.deleteNotificationById);
+
 module.exports = router;

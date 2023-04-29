@@ -10,6 +10,7 @@ const leavesRequestSchema = new mongoose.Schema({
         required: true
     },
     leaveType: { type: mongoose.Schema.Types.ObjectId, ref: 'LeavesCategory'},
+    classTeacher: { type: String, required: true },
     reason: {
         type: String,
         required: false
@@ -28,7 +29,8 @@ const leavesRequestSchema = new mongoose.Schema({
     days: {
         type: Number,
         default: 0
-    }
+    },
+    createdAt: { type: Date, default: Date.now },
 });
 
 const leavesRequest = new mongoose.model("LeavesRequest", leavesRequestSchema);

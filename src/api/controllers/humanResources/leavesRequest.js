@@ -11,43 +11,45 @@ const totalDays = (date_1, date_2) => {
 }
 
 const create = async (req, res) => {
-    try {
-        const { toDate, fromDate, leaveType, reason, status, employee } = req.body;
-        if(isEmpty(toDate) || isEmpty(fromDate) || isEmpty(leaveType) || isEmpty(employee)) {
-            return res.status(400).send({
-                messge: "Mandatory fields missing while creating Leaves Request.",
-                success: false,
-            });
-        }
-        const file = req.file;
-        let attachment = '';
-        if(!isEmpty(file)) {
-            attachment = await uploadAttachment(file);
-        }
-        const newLeavesRequest = await leavesRequest.create({
-            leaveType,
-            toDate,
-            fromDate,
-            status: isEmpty(status) ? 'PENDING' : status,
-            reason: isEmpty(reason) ? undefined : reason,
-            employee: employee,
-            days: totalDays(new Date(toDate), new Date(fromDate)),
-            attachment: isEmpty(attachment) ? undefined : attachment
-        });
-        return res.status(200).json({
-            leavesRequest: newLeavesRequest,
-            message: "Added New Leaves Request Successfully",
-            success: true,
-        });
-    }catch (err) {
-        return res.status(400)
-            .json([{ msg: err.message, res: "error" }]);
-    }
+  try {
+      const { toDate, fromDate, leaveType,classTeacher, reason, status, employee } = req.body;
+      if(isEmpty(toDate) || isEmpty(fromDate) || isEmpty(leaveType) || isEmpty(classTeacher) || isEmpty(employee)) {
+          return res.status(400).send({
+              messge: "Mandatory fields missing while creating Leaves Request.",
+              success: false,
+          });
+      }
+      const file = req.file;
+      let attachment = '';
+      if(file) {
+          attachment = await uploadAttachment(file);
+      }
+      const newLeavesRequest = await leavesRequest.create({
+          leaveType,
+          toDate,
+          fromDate,
+          status: isEmpty(status) ? 'PENDING' : status,
+          reason: isEmpty(reason) ? undefined : reason,
+          classTeacher: classTeacher,
+          employee: employee,
+          days: totalDays(new Date(toDate), new Date(fromDate)),
+          attachment: isEmpty(attachment) ? undefined : attachment
+      });
+      return res.status(200).json({
+          leavesRequest: newLeavesRequest,
+          message: "Added New Leaves Request Successfully",
+          success: true,
+      });
+  }catch (err) {
+      return res.status(400)
+          .json([{ msg: err.message, res: "error" }]);
+  }
 }
 
 const getAll = async (req, res) => {
     try {
-        let allLeavesRequest = await leavesRequest.find().populate('leaveType').populate('employee').exec();
+        let allLeavesRequest = await leavesRequest.find();
+        // .populate('leaveType').populate('employee').exec();
         if (
             allLeavesRequest !== undefined &&
             allLeavesRequest.length !== 0 &&
@@ -73,43 +75,43 @@ const getAll = async (req, res) => {
 }
 
 const remove = async (req, res) => {
-    try {
-        const id = req.params['id'];
-        if (!id) {
-          return res.status(200).json({
-            message: "Leaves Request Id not found",
-            success: false,
-          });
-        } else if (id !== undefined && id !== null && id !== "") {
-          const deleteLeavesRequest = await leavesRequest.deleteOne({ _id: id });
-          if (
-            deleteLeavesRequest["deletedCount"] === 0 ||
-            deleteLeavesRequest === null ||
-            deleteLeavesRequest === undefined
-          ) {
-            return res.status(404).json({
-              id,
-              message: "leaves Request Not found ",
-              success: true,
-            });
-          } else if (
-            deleteLeavesRequest["deletedCount"] === 1 &&
-            deleteLeavesRequest !== null &&
-            deleteLeavesRequest !== undefined
-          ) {
-            return res.status(200).json({
-              id,
-              message: "Leaves Request Deleted Successfully !!! ",
-              success: true,
-            });
-          }
-        }
-      } catch (error) {
-        return res.status(500).json({
-          message: "Something went wrong",
+  try {
+      const { id } = req.body;
+      if (!id) {
+        return res.status(200).json({
+          message: "Leaves Request Id not found",
           success: false,
         });
+      } else if (id !== undefined && id !== null && id !== "") {
+        const deleteLeavesRequest = await leavesRequest.deleteOne({ _id: id });
+        if (
+          deleteLeavesRequest["deletedCount"] === 0 ||
+          deleteLeavesRequest === null ||
+          deleteLeavesRequest === undefined
+        ) {
+          return res.status(404).json({
+            id,
+            message: "leaves Request Not found ",
+            success: true,
+          });
+        } else if (
+          deleteLeavesRequest["deletedCount"] === 1 &&
+          deleteLeavesRequest !== null &&
+          deleteLeavesRequest !== undefined
+        ) {
+          return res.status(200).json({
+            id,
+            message: "Leaves Request Deleted Successfully !!! ",
+            success: true,
+          });
+        }
       }
+    } catch (error) {
+      return res.status(500).json({
+        message: "Something went wrong",
+        success: false,
+      });
+    }
 }
 
 const updateStatus = async (req, res) => {

@@ -44,7 +44,7 @@ const getAll = async (req, res) => {
         ) {
           return res.status(200).send({
             noticeBoard: allNoticeBoard,
-            messge: "All Nptice Board",
+            messge: "All Notice Board",
             success: true,
           });
         } else {
@@ -63,7 +63,7 @@ const getAll = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        const id = req.params['id'];
+        const { id } = req.body;
         if (!id) {
           return res.status(200).json({
             message: "Notice Board Id not found",

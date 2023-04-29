@@ -17,7 +17,8 @@ const noticeBoardSchema = new mongoose.Schema({
     imageAttachment: {
         type: String,
         required: false
-    }
+    },
+    createdAt: { type: Date, default: Date.now },
   });
   
   const noticeBoard = new mongoose.model("NoticeBoard", noticeBoardSchema);
