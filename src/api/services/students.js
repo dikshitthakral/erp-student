@@ -84,4 +84,13 @@ const uploadDocuments = async (files) => {
     return uploadedLocations;
 }
 
-module.exports = { fetchAcademicsId, add, uploadDocuments, fetchUpdatedAcademicsId };
+const fetchStudentById = async (id) => {
+    try {
+        return await students.findOne({_id: id});
+    } catch(err) {
+        console.log(`Error : ${{err}}`);
+        return null;
+    }
+}
+
+module.exports = { fetchAcademicsId, add, uploadDocuments, fetchUpdatedAcademicsId, fetchStudentById };

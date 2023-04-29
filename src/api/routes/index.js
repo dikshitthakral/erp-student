@@ -146,6 +146,7 @@ router.put('/schedule',scheduleController.update);
 router.get('/schedule/:id',scheduleController.getSchedule);
 router.post('/schedule/academics',scheduleController.getScheduleByAcademics);
 router.post('/schedule/academics/:day',scheduleController.getScheduleDayByAcademics);
+router.post('/schedule/student/:studentId/:day',scheduleController.getScheduleDayByStudent);
 router.post('/schedule/teacher',scheduleController.getScheduleByTeacher);
 router.post('/schedule/academics/teacher/all', scheduleController.getScheduleByAcademicAndTeacher)
 // Homework Routes

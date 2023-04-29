@@ -2,6 +2,7 @@ const schedule = require('../models/schedule');
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const academicsService = require('../services/academic');
+const studentService = require('../services/students');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const mapActivities = (activities) => {
@@ -163,6 +164,44 @@ const getScheduleDayByAcademics = async (req, res) => {
     }
 }
 
+const getScheduleDayByStudent = async (req, res) => {
+    try {
+        const day = req.params['day'];
+        const studentId = req.params['studentId'];
+        const studentResponse = await studentService.fetchStudentById(studentId);
+        if(isEmpty(studentResponse)) {
+            return res.status(400)
+                .json([{ msg: "No schedule found for given student id", res: "error", }]);
+        }
+        if (!ObjectId.isValid(studentResponse.academic)) {
+            return res.status(400)
+                .json([{ msg: "Academic not found.", res: "error", }]);
+        }
+        const scheduleResponse = await schedule.findOne({ academic: studentResponse.academic, day: day.toUpperCase()})
+        .populate({
+            path: 'activities',
+            populate: [{
+                "path": 'subject'
+            },{
+                "path": 'teacher',
+                "model": 'Employee'
+            }]
+          }).exec();
+        if (isEmpty(scheduleResponse)) {
+            return res.status(400)
+                .json([{ msg: "No schedule found for given academics", res: "error", }]);
+        }
+        return res.status(200).json({
+            schedule: scheduleResponse,
+            message: "Fetched Schedule by Academics and Day",
+            success: true,
+        });
+    } catch(err) {
+        return res.status(400)
+            .json([{ msg: err.message, res: "error" }]);
+    }
+}
+
 const getScheduleByTeacher = async (req, res) => {
     try {
         const { teacher} = req.body;
@@ -242,4 +281,5 @@ const getScheduleByAcademicAndTeacher = async (req, res) => {
     }
 }
 
-module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher, getScheduleByAcademicAndTeacher, update }
+module.exports = { add, getSchedule, getScheduleDayByAcademics, getScheduleByAcademics, getScheduleByTeacher, getScheduleByAcademicAndTeacher, update,
+    getScheduleDayByStudent }
