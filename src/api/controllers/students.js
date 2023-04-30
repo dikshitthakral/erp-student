@@ -374,7 +374,10 @@ const generateCsv = async (req, res) => {
 
 const updateStudent = async (req, res) => {
     try {
-        const { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian } = req.body;
+        const { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian,
+          lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress, 
+          previousSchoolName, previousQualification, previousRemarks, vehicleRoute} = req.body;
+
         const id = req.params['id'];
         if (!id) {
           return res.status(200).json({
@@ -405,6 +408,20 @@ const updateStudent = async (req, res) => {
         profile.dob = !isEmpty(dob) ? dob : studentRecord.dob;
         profile.number = !isEmpty(number) ? number : studentRecord.number;
         profile.email = !isEmpty(email) ? email : studentRecord.email;
+        profile.lastName = !isEmpty(lastName) ? lastName : studentRecord.lastName;
+        profile.gender = !isEmpty(gender) ? gender : studentRecord.gender;
+        profile.bloodGroup = !isEmpty(bloodGroup) ? bloodGroup : studentRecord.bloodGroup;
+        profile.motherTongue = !isEmpty(motherTongue) ? motherTongue : studentRecord.motherTongue;
+        profile.religion = !isEmpty(religion) ? religion : studentRecord.religion;
+        profile.caste = !isEmpty(caste) ? caste : studentRecord.caste;
+        profile.city = !isEmpty(city) ? city : studentRecord.city;
+        profile.state = !isEmpty(state) ? state : studentRecord.state;
+        profile.presentAddress = !isEmpty(presentAddress) ? presentAddress : studentRecord.presentAddress;
+        profile.permanentAddress = !isEmpty(permanentAddress) ? permanentAddress : studentRecord.permanentAddress;
+        profile.previousSchoolName = !isEmpty(previousSchoolName) ? previousSchoolName : studentRecord.previousSchoolName;
+        profile.previousQualification = !isEmpty(previousQualification) ? previousQualification : studentRecord.previousQualification;
+        profile.previousRemarks = !isEmpty(previousRemarks) ? previousRemarks : studentRecord.previousRemarks;
+        profile.vehicleRoute = !isEmpty(vehicleRoute) ? vehicleRoute : studentRecord.vehicleRoute;
         profile.image = !isEmpty(uploadedLocations["image"]) ? uploadedLocations["image"] : studentRecord.image;
         profile.idCardDocument = !isEmpty(uploadedLocations["idCardDocument"]) ? uploadedLocations["idCardDocument"] : studentRecord.idCardDocument;
         let updateStudent = await students.findOneAndUpdate(
