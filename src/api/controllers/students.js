@@ -169,7 +169,11 @@ const getAllStudents = async (req, res) => {
 const getById = async (req, res) => {
   try {
       const id = req.params['id'];
-      let studentResponse = await students.findOne({_id: id}).populate('academic').populate('guardian').populate('category').populate('vehicleRoute')
+      let studentResponse = await students.findOne({_id: id}).populate('academic').populate('guardian').populate('category')
+      .populate({
+        path: 'vehicleRoute',
+        populate: [{path: 'vehicle', model: 'Vehicle'}, {path: 'route', model: 'Route'}]
+      })
       .populate({
         path: 'fees',
         populate: [{ path: 'feeType', model: 'FeeType'}]
