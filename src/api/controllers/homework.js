@@ -141,9 +141,9 @@ const update = async (req, res) => {
             }
         }
         updateObject["subject"] = !isEmpty(subject) ? subject : homeworkResult.subject;
-        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? dateOfHomework : homeworkResult.dateOfHomework;
-        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? dateOfSubmission : homeworkResult.dateOfSubmission;
-        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? scheduleDate : homeworkResult.scheduleDate;
+        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? new Date(dateOfHomework).toISOString() : homeworkResult.dateOfHomework;
+        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? new Date(dateOfSubmission).toISOString() : homeworkResult.dateOfSubmission;
+        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? new Date(scheduleDate).toISOString() : homeworkResult.scheduleDate;
         updateObject["description"] = !isEmpty(description) ? description : homeworkResult.description;
         let updateHomework = await homework.findOneAndUpdate(
             { _id: homeworkId },
