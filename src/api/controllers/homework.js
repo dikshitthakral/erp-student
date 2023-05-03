@@ -27,6 +27,7 @@ const create = async (req, res) => {
                 success: false,
             });
         }
+        console.log({dateOfHomework});
         const newHomework = await homework.create({
             academic: academicsId,
             subject,
@@ -141,9 +142,9 @@ const update = async (req, res) => {
             }
         }
         updateObject["subject"] = !isEmpty(subject) ? subject : homeworkResult.subject;
-        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? new Date(dateOfHomework).toISOString() : homeworkResult.dateOfHomework;
-        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? new Date(dateOfSubmission).toISOString() : homeworkResult.dateOfSubmission;
-        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? new Date(scheduleDate).toISOString() : homeworkResult.scheduleDate;
+        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? new Date(new Date(dateOfHomework).setHours(0, 0, 0, 0)) : homeworkResult.dateOfHomework;
+        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? new Date(new Date(dateOfSubmission).setHours(0, 0, 0, 0)) : homeworkResult.dateOfSubmission;
+        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? new Date(new Date(scheduleDate).setHours(0, 0, 0, 0)) : homeworkResult.scheduleDate;
         updateObject["description"] = !isEmpty(description) ? description : homeworkResult.description;
         let updateHomework = await homework.findOneAndUpdate(
             { _id: homeworkId },
@@ -175,9 +176,8 @@ const update = async (req, res) => {
 const getHomeworkByAcademic = async (req, res) => {
   try {
       const { date, academic } = req.body;
-      // const formattedDate = new Date(date).toISOString();
-      console.log({date});
-      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : date}}).populate('subject').populate('academic');
+      const formattedDate = new Date(date).toISOString();
+      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : formattedDate}}).populate('subject').populate('academic');
       if (
           allHomework !== undefined &&
           allHomework.length !== 0 &&
