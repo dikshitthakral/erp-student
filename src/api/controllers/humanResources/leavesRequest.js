@@ -12,8 +12,8 @@ const totalDays = (date_1, date_2) => {
 
 const create = async (req, res) => {
   try {
-      const { toDate, fromDate, leaveType,classTeacher, reason, status, employee } = req.body;
-      if(isEmpty(toDate) || isEmpty(fromDate) || isEmpty(leaveType) || isEmpty(classTeacher) || isEmpty(employee)) {
+      const { toDate, fromDate, leaveType, reason, status, employee, classTeacher, student } = req.body;
+      if(isEmpty(toDate) || isEmpty(fromDate) || isEmpty(leaveType)) {
           return res.status(400).send({
               messge: "Mandatory fields missing while creating Leaves Request.",
               success: false,
@@ -30,10 +30,11 @@ const create = async (req, res) => {
           fromDate,
           status: isEmpty(status) ? 'PENDING' : status,
           reason: isEmpty(reason) ? undefined : reason,
-          classTeacher: classTeacher,
-          employee: employee,
+          classTeacher: isEmpty(classTeacher) ? null : classTeacher,
+          employee: isEmpty(employee) ? null : employee,
           days: totalDays(new Date(toDate), new Date(fromDate)),
-          attachment: isEmpty(attachment) ? undefined : attachment
+          attachment: isEmpty(attachment) ? undefined : attachment,
+          student: isEmpty(student) ? null : student,
       });
       return res.status(200).json({
           leavesRequest: newLeavesRequest,
@@ -48,8 +49,8 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allLeavesRequest = await leavesRequest.find();
-        // .populate('leaveType').populate('employee').exec();
+        let allLeavesRequest = await leavesRequest.find().populate('leaveType').populate('employee')
+        .populate('classTeacher').populate('student').exec();
         if (
             allLeavesRequest !== undefined &&
             allLeavesRequest.length !== 0 &&
