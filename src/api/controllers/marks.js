@@ -1,11 +1,13 @@
 const marks = require('../models/marks');
+const grades = require('../models/grade');
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const academicsService = require('../services/academic');
 
 const create = async (req, res) => {
     try {
-        const { examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section } = req.body;
+        const { examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section,
+          totalPractical, totalWritten } = req.body;
         if(isEmpty(studentId) || isEmpty(subject) || isEmpty(examId) || isEmpty(academicYear) || isEmpty(studentClass) || isEmpty(section)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating Marks.",
@@ -20,7 +22,10 @@ const create = async (req, res) => {
             isAbsent : isEmpty(isAbsent) ? undefined : isAbsent,
             practical : (practical === null || practical === '' || practical === undefined) ? 0 : practical,
             written : (written === null || written === '' || written === undefined)  ? 0 : written,
-            academic: academicId
+            academic: academicId,
+            totalPractical: isNaN(totalPractical) ? 30 : totalPractical,
+            totalWritten: isNaN(totalWritten) ? 70 : totalWritten,
+            totalMarksScored: practical + written
         });
         return res.status(200).json({
             marks: newMarks,
@@ -102,7 +107,8 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const { marksId, examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section } = req.body;
+        const { marksId, examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section,
+          totalPractical, totalWritten } = req.body;
         const updateObject = {}
         if(!isEmpty(examId)) { updateObject["examId"] = examId; }
         if(!isEmpty(subject)) { updateObject["subject"] = subject; }
@@ -110,6 +116,9 @@ const update = async (req, res) => {
         if(!isEmpty(isAbsent)) { updateObject["isAbsent"] = isAbsent; }
         if(practical !== null && practical !== '' && practical !== undefined) { updateObject["practical"] = Number(practical); }
         if(written !== null && written !== '' && written !== undefined) { updateObject["written"] = Number(written); }
+        if(totalPractical !== null && totalPractical !== '' && totalPractical !== undefined) { updateObject["totalPractical"] = Number(totalPractical); }
+        if(totalWritten !== null && totalWritten !== '' && totalWritten !== undefined) { updateObject["totalWritten"] = Number(totalWritten); }
+        if(!isNaN(practical) && !isNaN(written)) { updateObject["totalMarksScored"] = Number(practical) + Number(written); }
         if(!isEmpty(academicYear) && !isEmpty(studentClass) && !isEmpty(section)) {
           const academicId = await academicsService.fetchAcademicsId({ academicYear, studentClass, section });
           updateObject["academic"] = academicId;
@@ -144,6 +153,7 @@ const update = async (req, res) => {
 const getMarksByAcademicAndStudentId = async (req, res) => {
   try {
       const { studentId, academic } = req.body;
+
       let allMarksByStudentAndAcademic = await marks.find({student : studentId, academic}).populate('examId').populate('subject');
       if (
         allMarksByStudentAndAcademic !== undefined &&
@@ -151,15 +161,30 @@ const getMarksByAcademicAndStudentId = async (req, res) => {
         allMarksByStudentAndAcademic !== null
       ) {
         let academicMarks = new Map();
+        const allGrades = await grades.find({});
         for(let mark of allMarksByStudentAndAcademic) {
+            let percentage = ((mark._doc.practical + mark._doc.written) * 100)/ (mark._doc.totalPractical + mark._doc.totalWritten);
+            const resultGrade = allGrades.find(grade => {
+              let docGrade = grade._doc;
+              if(percentage >= docGrade.minPercentage && percentage <= docGrade.maxPercentage) {
+                return true;
+              }
+            })
+            let updatedMarks = {
+              ...mark._doc,
+              totalMarksScored: mark._doc.practical + mark._doc.written,
+              percentage : percentage,
+              grade: resultGrade._doc.name,
+              point: resultGrade._doc.gradePoint
+            }
             if(academicMarks.has(mark.examId.name)) {
               let examMarks = academicMarks.get(mark.examId.name);
-              examMarks.push(mark._doc)
+              examMarks.push(updatedMarks)
               academicMarks.set(mark.examId.name, examMarks);
             }
             else {
               let examMarks = [];
-              examMarks.push(mark._doc);
+              examMarks.push(updatedMarks);
               academicMarks.set(mark.examId.name, examMarks);
             }
         }

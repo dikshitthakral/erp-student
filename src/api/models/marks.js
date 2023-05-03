@@ -26,11 +26,21 @@ const marksSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
-    written: {
+    totalPractical: {
+        type: Number,
+        required: false,
+        default: 30
+    },
+    totalWritten: {
+        type: Number,
+        required: false,
+        default: 70
+    },
+    totalMarksScored: {
         type: Number,
         required: false,
         default: 0
-    },
+    }
 });
   
 const marks = new mongoose.model("Marks", marksSchema);
