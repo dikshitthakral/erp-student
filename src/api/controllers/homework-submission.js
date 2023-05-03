@@ -26,7 +26,7 @@ const create = async (req, res) => {
             homework,
             academic: academicId,
             student,
-            dateOfSubmission: isEmpty(dateOfSubmission) ? new Date() : dateOfSubmission,
+            dateOfSubmission: isEmpty(dateOfSubmission) ? new Date() : new Date(dateOfSubmission).toISOString(),
             attachment: isEmpty(attachment) ? undefined : attachment
         });
         return res.status(200).json({
