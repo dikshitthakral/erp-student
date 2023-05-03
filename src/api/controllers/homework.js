@@ -30,9 +30,9 @@ const create = async (req, res) => {
         const newHomework = await homework.create({
             academic: academicsId,
             subject,
-            dateOfHomework,
-            dateOfSubmission,
-            scheduleDate,
+            dateOfHomework: new Date(dateOfHomework).toISOString(),
+            dateOfSubmission: new Date(dateOfSubmission).toISOString(),
+            scheduleDate: new Date(scheduleDate).toISOString(),
             description,
             attachment:  isEmpty(attachment) ? undefined : attachment
         });
@@ -175,7 +175,8 @@ const update = async (req, res) => {
 const getHomeworkByAcademic = async (req, res) => {
   try {
       const { date, academic } = req.body;
-      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : date}}).populate('subject').populate('academic');
+      const formattedDate = new Date(date).toISOString();
+      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : formattedDate}}).populate('subject').populate('academic');
       if (
           allHomework !== undefined &&
           allHomework.length !== 0 &&
