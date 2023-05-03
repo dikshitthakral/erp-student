@@ -27,16 +27,16 @@ const create = async (req, res) => {
                 success: false,
             });
         }
-        console.log({dateOfHomework});
-        const newHomework = await homework.create({
-            academic: academicsId,
-            subject,
-            dateOfHomework: new Date(dateOfHomework).toISOString(),
-            dateOfSubmission: new Date(dateOfSubmission).toISOString(),
-            scheduleDate: new Date(scheduleDate).toISOString(),
-            description,
-            attachment:  isEmpty(attachment) ? undefined : attachment
-        });
+        const object = {
+          academic: academicsId,
+          subject,
+          dateOfHomework: dateOfHomework.includes('T') ? dateOfHomework.split('T')[0] : dateOfHomework,
+          dateOfSubmission: dateOfSubmission.includes('T') ? dateOfSubmission.split('T')[0] : dateOfSubmission,
+          scheduleDate: scheduleDate.includes('T') ? scheduleDate.split('T')[0] : scheduleDate,
+          description,
+          attachment:  isEmpty(attachment) ? undefined : attachment
+      }
+        const newHomework = await homework.create(object);
         return res.status(200).json({
             homework: newHomework,
             message: "Added New Homework Successfully",
@@ -142,9 +142,9 @@ const update = async (req, res) => {
             }
         }
         updateObject["subject"] = !isEmpty(subject) ? subject : homeworkResult.subject;
-        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? new Date(new Date(dateOfHomework).setHours(0, 0, 0, 0)) : homeworkResult.dateOfHomework;
-        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? new Date(new Date(dateOfSubmission).setHours(0, 0, 0, 0)) : homeworkResult.dateOfSubmission;
-        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? new Date(new Date(scheduleDate).setHours(0, 0, 0, 0)) : homeworkResult.scheduleDate;
+        updateObject["dateOfHomework"] = !isEmpty(dateOfHomework) ? (dateOfHomework.includes('T') ? dateOfHomework.split('T')[0] : dateOfHomework) : homeworkResult.dateOfHomework;
+        updateObject["dateOfSubmission"] = !isEmpty(dateOfSubmission) ? (dateOfSubmission.includes('T') ? dateOfSubmission.split('T')[0] : dateOfSubmission) : homeworkResult.dateOfSubmission;
+        updateObject["scheduleDate"] = !isEmpty(scheduleDate) ? (scheduleDate.includes('T') ? scheduleDate.split('T')[0] : scheduleDate) : homeworkResult.scheduleDate;
         updateObject["description"] = !isEmpty(description) ? description : homeworkResult.description;
         let updateHomework = await homework.findOneAndUpdate(
             { _id: homeworkId },
