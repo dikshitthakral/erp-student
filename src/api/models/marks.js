@@ -19,7 +19,8 @@ const marksSchema = new mongoose.Schema({
     },
     isAbsent: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     practical: {
         type: Number,
