@@ -5,7 +5,14 @@ const mongoose = require('mongoose');
 const createGuardian = async (guardianObj, uploadedLocations) => {
     try {
         const { userName, password, firstName, relation, fatherName, motherName, alreadyExists, occupation, income, education, number, email, city, state, permanentAddress } = guardianObj;
-        if(isEmpty(userName) || isEmpty(password) || isEmpty(firstName) || isEmpty(relation) || isEmpty(fatherName) || isEmpty(motherName) || isEmpty(number) || isEmpty(email)) {
+        if(isEmpty(userName)) {
+            throw new Error('UserName missing while creating guardian.');
+        }
+        const existingGuardian = await guardian.findOne({ userName });
+        if(!isEmpty(existingGuardian)) {
+            return existingGuardian;   
+        }
+        if(isEmpty(firstName) || isEmpty(relation) || isEmpty(fatherName) || isEmpty(motherName) || isEmpty(number) || isEmpty(email)) {
             throw new Error('Mandatory fields missing whiel creating guardian.');
         }
         const guardianReq = {
@@ -75,7 +82,8 @@ const updateGuardian = async (guardianObj, uploadedLocations, studentRecord) => 
         guardianReq.idProofDocument = !isEmpty(uploadedLocations.idProofDocument) ? uploadedLocations.idProofDocument : studentRecord.guardian.idProofDocument;
         const updatedGuardian = await guardian.findOneAndUpdate(
             { _id: studentRecord.guardian._id },
-            guardianReq
+            guardianReq,
+            { new: true}
         );
         return updatedGuardian
     }catch(error) {

@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const guardianSchema = new mongoose.Schema({
     userName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,

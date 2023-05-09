@@ -29,7 +29,8 @@ new mongoose.model("Fees", feesSchema);
 const studentSchema = new mongoose.Schema({
     registerNo: {
         type: Number,
-        required: true
+        required: false,
+        default: 100000
     },
     rollNo: {
         type: Number,

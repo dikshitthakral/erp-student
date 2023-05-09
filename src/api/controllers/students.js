@@ -40,13 +40,13 @@ const uploadImage = async (req, res) => {
 
 const createAdmission = async (req, res) => {
     try {
-        const { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian } = req.body;
+        const { academicYear, section, category, studentClass,rollNo, admissionDate, firstName, type, dob, number, email, guardian } = req.body;
         const files = req?.files;
         let uploadedLocations = {};
         if(!isEmpty(files)) {
             uploadedLocations = await studentService.uploadDocuments(files);
         }
-        if(isEmpty(academicYear) || isEmpty(section) || isEmpty(category) || isEmpty(studentClass) || isEmpty(guardian) || isEmpty(registerNo) || isEmpty(rollNo) || isEmpty(admissionDate) || 
+        if(isEmpty(academicYear) || isEmpty(section) || isEmpty(category) || isEmpty(studentClass) || isEmpty(guardian) || isEmpty(rollNo) || isEmpty(admissionDate) || 
         isEmpty(firstName) || isEmpty(type) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
             return res.status(400).send({
                 message: "Empty Fields found.",
@@ -54,7 +54,6 @@ const createAdmission = async (req, res) => {
             });
         }
         const studentObj = {
-            registerNo,
             rollNo,
             admissionDate,
             firstName,
@@ -75,14 +74,18 @@ const createAdmission = async (req, res) => {
         if(!isEmpty(uploadedLocations["image"])) { studentObj["image"] = uploadedLocations["image"]}
         if(!isEmpty(uploadedLocations["idCardDocument"])) { studentObj["idCardDocument"] = uploadedLocations["idCardDocument"]}
         const studentRes = await studentService.add(studentObj, req.body);
+        const updateRegisterNoInStudent = await students.findOneAndUpdate(
+          { _id: studentRes._id },
+          { $inc: { registerNo: 1 }},
+          { new: true});
         return res.status(200).json({
-            student: studentRes,
+            student: updateRegisterNoInStudent,
             message: "Added New Student Successfully",
             success: true,
         });
     } catch(err) {
         return res.status(500).send({
-            messge: "Somethig went wrong",
+            messge: "Something went wrong",
             success: false,
         });
     }
@@ -102,14 +105,13 @@ const createBulkAdmission = async (req, res) => {
         const academicId = await studentService.fetchAcademicsId({ academicYear, studentClass, section });
         const admissionArray = await csvtojsonV2().fromFile(file.path);
         for(let admissionObj of admissionArray) {
-            const { category,registerNo, rollNo, admissionDate, firstName, type, dob, number, email, guardian } = admissionObj;
-            if(isEmpty(category) || isEmpty(guardian) || isEmpty(registerNo) || isEmpty(rollNo) || isEmpty(admissionDate) || 
+            const { category, rollNo, admissionDate, firstName, type, dob, number, email, guardian } = admissionObj;
+            if(isEmpty(category) || isEmpty(guardian) || isEmpty(rollNo) || isEmpty(admissionDate) || 
                 isEmpty(firstName) || isEmpty(type) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
                 console.log("Empty fields found , admission failed.");
                 continue;
             }
             const studentObj = {
-                registerNo,
                 rollNo,
                 admissionDate,
                 firstName,
@@ -123,7 +125,11 @@ const createBulkAdmission = async (req, res) => {
             // guardian section
             const guardianRes = await guardianService.createGuardian(guardian);
             studentObj["guardian"] = guardianRes._id;
-            await studentService.add(studentObj, admissionObj);
+            const studentRes = await studentService.add(studentObj, admissionObj);
+            await students.findOneAndUpdate(
+              { _id: studentRes._id },
+              { $inc: { registerNo: 1 }},
+              { new: true});
         }
         await unlink(file.path);
         console.log(`successfully deleted file from path : ${file.path}`);
@@ -382,7 +388,7 @@ const generateCsv = async (req, res) => {
 
 const updateStudent = async (req, res) => {
     try {
-        const { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian,
+        let { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian,
           lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress, 
           previousSchoolName, previousQualification, previousRemarks, vehicleRoute} = req.body;
 
@@ -406,7 +412,7 @@ const updateStudent = async (req, res) => {
         // category section
         profile["category"] = !isEmpty(category) ? category  : studentRecord.category;
         // guardian section
-        const updatedGuardian = await guardianService.updateGuardian(guardian, uploadedLocations, studentRecord);
+        const updatedGuardian = await guardianService.updateGuardian(guardian ?? {}, uploadedLocations, studentRecord);
         profile["guardian"] = updatedGuardian._id;
         profile.registerNo = !isEmpty(registerNo) ? registerNo : studentRecord.registerNo;
         profile.rollNo = !isEmpty(rollNo) ? rollNo : studentRecord.rollNo;

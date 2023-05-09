@@ -236,7 +236,8 @@ router.post('/students/filter', studentsController.fetchStudentsByFilter);
 router.get('/students/active/:status', studentsController.fetchStudentsByStatus);
 router.put('/students/status', studentsController.updateStatus);
 router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
-router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
+router.get('/guardian/all', guardianController.getAll);
+router.get('/guardian/userName/:userName', guardianController.getGuardianByUserName);
 router.post('/students/promote', studentsController.promoteStudent);
 router.get('/students/:studentId/marks', studentsController.fetchStudentMarks);
 // Section
