@@ -78,15 +78,15 @@ const updateGuardian = async (guardianObj, uploadedLocations, studentRecord) => 
         guardianReq.city = !isEmpty(city) ? city : studentRecord.guardian.city;
         guardianReq.state = !isEmpty(state) ? state : studentRecord.guardian.state;
         guardianReq.permanentAddress = !isEmpty(permanentAddress) ? permanentAddress : studentRecord.guardian.permanentAddress;
-        guardianReq.image = !isEmpty(uploadedLocations.image) ? uploadedLocations.image : studentRecord.guardian.image;
-        guardianReq.idProofDocument = !isEmpty(uploadedLocations.idProofDocument) ? uploadedLocations.idProofDocument : studentRecord.guardian.idProofDocument;
+        guardianReq.image = !isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) && !isEmpty(uploadedLocations["guardian"]["image"]) ? uploadedLocations["guardian"]["image"] : studentRecord.guardian.image;
+        guardianReq.idProofDocument = !isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) &&!isEmpty(uploadedLocations["guardian"]["idProofDocument"]) ? uploadedLocations["guardian"]["idProofDocument"] : studentRecord.guardian.idProofDocument;
         const updatedGuardian = await guardian.findOneAndUpdate(
             { _id: studentRecord.guardian._id },
             guardianReq,
             { new: true}
         );
         return updatedGuardian
-    }catch(error) {
+    } catch(error) {
         throw new Error('Error while updating guardian.');
     }
 }
