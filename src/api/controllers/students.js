@@ -107,7 +107,7 @@ const createBulkAdmission = async (req, res) => {
         for(let admissionObj of admissionArray) {
             const { category, rollNo, admissionDate, firstName, type, dob, number, email, guardian } = admissionObj;
             if(isEmpty(category) || isEmpty(guardian) || isEmpty(rollNo) || isEmpty(admissionDate) || 
-                isEmpty(firstName) || isEmpty(type) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
+                isEmpty(firstName) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
                 console.log("Empty fields found , admission failed.");
                 continue;
             }
@@ -115,7 +115,6 @@ const createBulkAdmission = async (req, res) => {
                 rollNo,
                 admissionDate,
                 firstName,
-                type,
                 dob,
                 number,
                 email,
@@ -126,9 +125,10 @@ const createBulkAdmission = async (req, res) => {
             const guardianRes = await guardianService.createGuardian(guardian);
             studentObj["guardian"] = guardianRes._id;
             const studentRes = await studentService.add(studentObj, admissionObj);
+            const count = await students.find({}).count();
             await students.findOneAndUpdate(
               { _id: studentRes._id },
-              { $inc: { registerNo: 1 }},
+              { $inc: { registerNo: count }},
               { new: true});
         }
         await unlink(file.path);
