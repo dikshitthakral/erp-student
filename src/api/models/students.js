@@ -34,7 +34,7 @@ const studentSchema = new mongoose.Schema({
     },
     rollNo: {
         type: Number,
-        required: true
+        required: false
     },
     admissionDate: {
         type: Date,
@@ -79,7 +79,7 @@ const studentSchema = new mongoose.Schema({
     number: {
         type: String,
         unique: false,
-        required: true
+        required: false
     },
     email: {
         type: String,
@@ -136,7 +136,7 @@ const studentSchema = new mongoose.Schema({
         default: []
     },
     active: { type: Boolean, default: true }
-  });
+});
   
   const students = new mongoose.model("Student", studentSchema);
   

@@ -8,7 +8,7 @@ const guardianSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     firstName: {
         type: String,
@@ -16,15 +16,15 @@ const guardianSchema = new mongoose.Schema({
     },
     relation: {
         type: String,
-        required: true
+        required: false
     },
     fatherName: {
         type: String,
-        required: true
+        required: false
     },
     motherName: {
         type: String,
-        required: true
+        required: false
     },
     alreadyExists: {
         type: Boolean,

@@ -105,22 +105,19 @@ const createBulkAdmission = async (req, res) => {
         const academicId = await studentService.fetchAcademicsId({ academicYear, studentClass, section });
         const admissionArray = await csvtojsonV2().fromFile(file.path);
         for(let admissionObj of admissionArray) {
-            const { category, rollNo, admissionDate, firstName, type, dob, number, email, guardian } = admissionObj;
-            if(isEmpty(category) || isEmpty(guardian) || isEmpty(rollNo) || isEmpty(admissionDate) || 
-                isEmpty(firstName) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
+            const { admissionDate, firstName, dob, number, email, guardian } = admissionObj;
+            if(isEmpty(guardian) || isEmpty(admissionDate) || isEmpty(firstName) || isEmpty(dob) || isEmpty(email)) {
                 console.log("Empty fields found , admission failed.");
                 continue;
             }
             const studentObj = {
-                rollNo,
                 admissionDate,
                 firstName,
                 dob,
-                number,
                 email,
                 academic: academicId,
-                category
             };
+            if(!isEmpty(number)) { studentObj["number"] = number};
             // guardian section
             const guardianRes = await guardianService.createGuardian(guardian);
             studentObj["guardian"] = guardianRes._id;

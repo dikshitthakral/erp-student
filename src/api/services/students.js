@@ -43,8 +43,10 @@ const fetchUpdatedAcademicsId = async (academicObj, studentRecord) => {
 
 const add = async (studentObj, body) => {
     const { lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress,
-        previousSchoolName, previousQualification, previousRemarks, vehicleNo, vehicleRoute, type} = body;
+        previousSchoolName, previousQualification, previousRemarks, vehicleNo, vehicleRoute, type, category, rollNo} = body;
 
+    if(!isEmpty(category)) { studentObj["category"] = category};
+    if(!isEmpty(rollNo)) { studentObj["rollNo"] = rollNo};
     if(!isEmpty(lastName)) { studentObj["lastName"] = lastName};
     if(!isEmpty(gender)) { studentObj["gender"] = gender};
     if(!isEmpty(bloodGroup)) { studentObj["bloodGroup"] = bloodGroup};

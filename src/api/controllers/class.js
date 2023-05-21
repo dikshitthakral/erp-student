@@ -14,7 +14,7 @@ const create = async (req, res) => {
         const newClassModel = await classModel.create({
             className,
             sections,
-            classNumeric: isEmpty(classNumeric) ? undefined : classNumeric
+            classNumeric: isNaN(classNumeric) ? undefined : Number(classNumeric)
         });
         return res.status(200).json({
             class: newClassModel,

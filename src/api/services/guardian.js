@@ -12,19 +12,19 @@ const createGuardian = async (guardianObj, uploadedLocations) => {
         if(!isEmpty(existingGuardian)) {
             return existingGuardian;   
         }
-        if(isEmpty(firstName) || isEmpty(relation) || isEmpty(fatherName) || isEmpty(motherName) || isEmpty(number) || isEmpty(email)) {
+        if(isEmpty(firstName) || isEmpty(number) || isEmpty(email)) {
             throw new Error('Mandatory fields missing whiel creating guardian.');
         }
         const guardianReq = {
             userName,
             password,
             firstName,
-            relation,
-            fatherName,
-            motherName,
             number,
             email
         };
+        if(!isEmpty(relation)) { guardianReq["relation"] = relation};
+        if(!isEmpty(fatherName)) { guardianReq["fatherName"] = fatherName};
+        if(!isEmpty(motherName)) { guardianReq["motherName"] = motherName};
         if(!isEmpty(alreadyExists)) { guardianReq["alreadyExists"] = Boolean(alreadyExists)};
         if(!isEmpty(occupation)) { guardianReq["occupation"] = occupation};
         if(!isEmpty(income)) { guardianReq["income"] = income};
