@@ -118,15 +118,19 @@ const createBulkAdmission = async (req, res) => {
                 academic: academicId,
             };
             if(!isEmpty(number)) { studentObj["number"] = number};
-            // guardian section
-            const guardianRes = await guardianService.createGuardian(guardian);
-            studentObj["guardian"] = guardianRes._id;
-            const studentRes = await studentService.add(studentObj, admissionObj);
-            const count = await students.find({}).count();
-            await students.findOneAndUpdate(
-              { _id: studentRes._id },
-              { $inc: { registerNo: count }},
-              { new: true});
+            try {
+              // guardian section
+              const guardianRes = await guardianService.createGuardian(guardian);
+              studentObj["guardian"] = guardianRes._id;
+              const studentRes = await studentService.add(studentObj, admissionObj);
+              const count = await students.find({}).count();
+              await students.findOneAndUpdate(
+                { _id: studentRes._id },
+                { $inc: { registerNo: count }},
+                { new: true});
+            } catch(err) {
+                continue;
+            }
         }
         await unlink(file.path);
         console.log(`successfully deleted file from path : ${file.path}`);
