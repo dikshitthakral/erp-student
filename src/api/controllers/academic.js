@@ -126,6 +126,34 @@ const getById = async (req, res) => {
     }
 }
 
+const getByAcademicDetails = async (req, res) => {
+  try {
+      const { academicYear, studentClass, section } = req.body;
+      let academicsByDetails = await academics.findOne({ academicYear, studentClass, section }).populate('subjects').populate('teachers');
+      if (
+        academicsByDetails !== undefined &&
+        academicsByDetails.length !== 0 &&
+        academicsByDetails !== null
+      ) {
+        return res.status(200).send({
+          academics: academicsByDetails,
+          messge: "Academics By details",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Academics does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
 const update = async (req, res) => {
     try {
         const { academicId, academicYear, studentClass, section, classNumeric, name } = req.body;
@@ -299,4 +327,4 @@ const removeTeacher = async (req, res) => {
     }
 }
 
-module.exports = { remove, create, getAll, update, addSubject, removeSubject, addTeacher, removeTeacher, getById }
+module.exports = { remove, create, getAll, update, addSubject, removeSubject, addTeacher, removeTeacher, getById, getByAcademicDetails }

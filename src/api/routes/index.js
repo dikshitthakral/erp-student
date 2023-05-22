@@ -134,6 +134,8 @@ router.put('/academic/subjects/add', academicController.addSubject);
 router.put('/academic/subject/remove', academicController.removeSubject);
 router.put('/academic/teachers/add', academicController.addTeacher);
 router.put('/academic/teacher/remove', academicController.removeTeacher);
+router.post('/academic/details', academicController.getByAcademicDetails);
+
 // Subject Routes
 router.post('/subject',subjectController.create);
 router.get('/subject/all',subjectController.getAll);
@@ -264,7 +266,6 @@ router.post('/attendance', attendanceController.create);
 router.post('/attendance/student/dates', attendanceController.getAttendanceByDate);
 router.delete('/attendance/:id', attendanceController.remove);
 router.put('/attendance', attendanceController.update);
-
 // Raise A Ticket
 router.post('/raiseTicket', raiseATicketController.create);
 router.get('/raiseTicket/all', raiseATicketController.getAll);
