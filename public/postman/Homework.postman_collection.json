@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "bd8a3b61-cf0d-468c-b9ce-43cba59e73d8",
+		"name": "Homework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/homework",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "academicYear",
+							"value": "2022-2023",
+							"type": "text"
+						},
+						{
+							"key": "studentClass",
+							"value": "64305c236dfc1e667a371bd3",
+							"type": "text"
+						},
+						{
+							"key": "section",
+							"value": "64305bad6dfc1e667a371bce",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "64354dda5165343b13a00645",
+							"type": "text"
+						},
+						{
+							"key": "dateOfHomework",
+							"value": "2023-05-03T18:30:00.000Z",
+							"type": "text"
+						},
+						{
+							"key": "dateOfSubmission",
+							"value": "2023-05-04T18:30:00.000Z",
+							"type": "text"
+						},
+						{
+							"key": "scheduleDate",
+							"value": "2023-05-02T18:30:00.000Z",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "dsijsdjksdsbhsbhjhhbdsdhjsdjd",
+							"type": "default"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/screen 03 'multiple import'.pdf",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://ec2-52-63-120-208.ap-southeast-2.compute.amazonaws.com:8080/api/v1/homework",
+					"protocol": "http",
+					"host": [
+						"ec2-52-63-120-208",
+						"ap-southeast-2",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Homework",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "academicYear",
+							"value": "2022-2023",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "studentClass",
+							"value": "8th",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "section",
+							"value": "A",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "subject",
+							"value": "63fa7591b5149db7c47cd216",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "dateOfHomework",
+							"value": "2023-02-20",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "dateOfSubmission",
+							"value": "2023-02-28",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "scheduleDate",
+							"value": "2023-02-25",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "A B C D E F G H",
+							"type": "default"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/screen 03 'multiple import'.pdf",
+							"disabled": true
+						},
+						{
+							"key": "homeworkId",
+							"value": "63fbb12198fcaaa49dfd95d2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/homework/all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Acadmeic and Date Range",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2022-2023\",\n    \"studentClass\": \"64305c236dfc1e667a371bd3\",\n    \"section\": \"64305bad6dfc1e667a371bce\",\n    \"startDate\": \"2023/02/01\",\n    \"endDate\": \"2023/04/20\",\n    \"subject\": \"63fa7591b5149db7c47cd216\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework/academic/range/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework",
+						"academic",
+						"range",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Homework by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework/644b9f077b8742d6dec718e4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework",
+						"644b9f077b8742d6dec718e4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Homework by day",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academic\": \"643293ca062de83c75e8c67d\",\n    \"date\": \"2023/05/03\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/homework/academic/day",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"homework",
+						"academic",
+						"day"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
