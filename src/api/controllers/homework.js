@@ -50,7 +50,10 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allHomework = await homework.find().populate('subject').populate('academic');
+        let allHomework = await homework.find().populate('subject').populate({
+          path: 'academic',
+          populate: [{path: 'studentClass', model: 'Class'}, {path: 'section', model: 'Section'}]
+        });
         if (
             allHomework !== undefined &&
             allHomework.length !== 0 &&
@@ -177,7 +180,10 @@ const getHomeworkByAcademic = async (req, res) => {
   try {
       const { date, academic } = req.body;
       const formattedDate = new Date(date).toISOString();
-      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : formattedDate}}).populate('subject').populate('academic');
+      let allHomework = await homework.find({ academic: academic, dateOfHomework : { $eq : formattedDate}}).populate('subject').populate({
+        path: 'academic',
+        populate: [{path: 'studentClass', model: 'Class'}, {path: 'section', model: 'Section'}]
+      });
       if (
           allHomework !== undefined &&
           allHomework.length !== 0 &&
@@ -244,7 +250,10 @@ const getHomeworkByAcademicAndDateRange = async (req, res) => {
 const getHomeworkById = async (req, res) => {
   try {
     const id = req.params['id'];
-    let homeworkRes = await homework.findOne({ _id: id}).populate('subject').populate('academic');
+    let homeworkRes = await homework.findOne({ _id: id}).populate('subject').populate({
+      path: 'academic',
+      populate: [{path: 'studentClass', model: 'Class'}, {path: 'section', model: 'Section'}]
+    });
     if (
       homeworkRes !== undefined &&
       homeworkRes !== null
