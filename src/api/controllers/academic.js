@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const academicsService = require('../services/academic');
 const ObjectId = require('mongoose').Types.ObjectId;
+const classService = require('../services/class');
+const sectionService = require('../services/section');
 
 const remove = async (req, res) => {
     try {
@@ -129,6 +131,8 @@ const getById = async (req, res) => {
 const getByAcademicDetails = async (req, res) => {
   try {
       const { academicYear, studentClass, section } = req.body;
+      const classResponse = await classService.getById(studentClass);
+      const sectionResponse = await sectionService.getById(section);
       let academicsByDetails = await academics.findOne({ academicYear, studentClass, section }).populate('subjects').populate('teachers');
       if (
         academicsByDetails !== undefined &&
@@ -136,7 +140,9 @@ const getByAcademicDetails = async (req, res) => {
         academicsByDetails !== null
       ) {
         return res.status(200).send({
-          academics: academicsByDetails,
+          academics: { ...academicsByDetail._doc,
+                    class: classResponse && classResponse.className,
+                    section: sectionResponse && sectionResponse.name },
           messge: "Academics By details",
           success: true,
         });
@@ -198,17 +204,26 @@ const update = async (req, res) => {
 const addSubject = async (req, res) => {
     try {
         const { academicYear, studentClass, section, subjects } = req.body;
-        const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
-        if (!ObjectId.isValid(academicId)) {
+        const academicsExist = await academics.findOne({ 
+          academicYear: academicYear, 
+          studentClass: ObjectId(studentClass), 
+          section: ObjectId(section)
+        });
+        if (academicsExist && !ObjectId.isValid(academicsExist._id)) {
             return res.status(400)
                 .json([{ msg: "Academic not found.", res: "error", }]);
         }
+        let uploadedSubjects = [];
+        for(let newSubject of subjects) {
+            if(!academicsExist.subjects.find((element) => element.toString() === newSubject.toString())) {
+              uploadedSubjects.push(newSubject)
+            }
+        }
         let updateAcademic = await academics.findOneAndUpdate(
-            { _id: academicId },
-            { $push: { subjects: subjects } }
+            { _id: academicsExist._id },
+            { $push: { subjects: uploadedSubjects } }
         );
         if (
-            updateAcademic.length === 0 ||
             updateAcademic === undefined ||
             updateAcademic === null ||
             updateAcademic === ""
@@ -216,7 +231,7 @@ const addSubject = async (req, res) => {
             return res.status(200)
                 .json([{ msg: "Update Subject in Academic.", res: "error", }]);
         } else {
-            const academicsData = await academics.findOne({ _id: academicId }).populate('subjects');
+            const academicsData = await academics.findOne({ _id: academicsExist._id }).populate('subjects');
             return res.status(200)
                 .json([{ msg: "Subjects in Academics updated successflly", data: academicsData, res: "success" }]);
         }
@@ -264,17 +279,26 @@ const removeSubject = async (req, res) => {
 const addTeacher = async (req, res) => {
   try {
       const { academicYear, studentClass, section, teachers } = req.body;
-      const academicId = await academicsService.getIdIfAcademicExists({academicYear, studentClass, section});
-      if (!ObjectId.isValid(academicId)) {
+      const academicsExist = await academics.findOne({ 
+        academicYear: academicYear, 
+        studentClass: ObjectId(studentClass), 
+        section: ObjectId(section)
+      });
+      if (academicsExist && !ObjectId.isValid(academicsExist._id)) {
           return res.status(400)
               .json([{ msg: "Academic not found.", res: "error", }]);
       }
+      let uploadedTeachers = [];
+      for(let newTeacher of teachers) {
+          if(!academicsExist.teachers.find((element) => element.toString() === newTeacher.toString())) {
+            uploadedTeachers.push(newTeacher)
+          }
+      }
       let updateAcademic = await academics.findOneAndUpdate(
-          { _id: academicId },
-          { $push: { teachers: teachers } }
+          { _id: academicsExist._id },
+          { $push: { teachers: uploadedTeachers } }
       );
       if (
-          updateAcademic.length === 0 ||
           updateAcademic === undefined ||
           updateAcademic === null ||
           updateAcademic === ""
@@ -282,7 +306,7 @@ const addTeacher = async (req, res) => {
           return res.status(200)
               .json([{ msg: "Update Teacher in Academic.", res: "error", }]);
       } else {
-          const academicsData = await academics.findOne({ _id: academicId }).populate('teachers');
+          const academicsData = await academics.findOne({ _id: academicsExist._id }).populate('teachers');
           return res.status(200)
               .json([{ msg: "Teachers in Academics updated successflly", data: academicsData, res: "success" }]);
       }
