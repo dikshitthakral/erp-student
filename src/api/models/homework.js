@@ -15,11 +15,11 @@ const homeworkSchema = new mongoose.Schema({
     },
     dateOfSubmission: {
         type: Date,
-        required: true
+        required: false
     },
     scheduleDate: {
         type: Date,
-        required: true
+        required: false
     },
     description: {
         type: String,

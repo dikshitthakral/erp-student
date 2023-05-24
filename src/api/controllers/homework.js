@@ -9,7 +9,7 @@ const { isEmpty } = require('lodash');
 const create = async (req, res) => {
     try {
         const { academicYear, studentClass, section, subject, dateOfHomework, dateOfSubmission, scheduleDate, description} = req.body;
-        if(isEmpty(academicYear) || isEmpty(studentClass) || isEmpty(section) || isEmpty(subject) || isEmpty(dateOfHomework) || isEmpty(dateOfSubmission) || isEmpty(scheduleDate) || isEmpty(description)) {
+        if(isEmpty(academicYear) || isEmpty(studentClass) || isEmpty(section) || isEmpty(subject) || isEmpty(dateOfHomework) || isEmpty(description)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating academic.",
                 success: false,
@@ -31,8 +31,8 @@ const create = async (req, res) => {
           academic: academicsId,
           subject,
           dateOfHomework: dateOfHomework.includes('T') ? dateOfHomework.split('T')[0] : dateOfHomework,
-          dateOfSubmission: dateOfSubmission.includes('T') ? dateOfSubmission.split('T')[0] : dateOfSubmission,
-          scheduleDate: scheduleDate.includes('T') ? scheduleDate.split('T')[0] : scheduleDate,
+          dateOfSubmission: dateOfSubmission ? (dateOfSubmission.includes('T') ? dateOfSubmission.split('T')[0] : dateOfSubmission) : undefined,
+          scheduleDate: scheduleDate ? (scheduleDate.includes('T') ? scheduleDate.split('T')[0] : scheduleDate) : undefined,
           description,
           attachment:  isEmpty(attachment) ? undefined : attachment
       }
