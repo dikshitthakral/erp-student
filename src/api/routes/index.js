@@ -78,6 +78,12 @@ router.put('/vehicle/expense/:expenseId',upload.fields([{ name: 'expenseDocs1', 
 router.delete('/vehicle/:id/expense/:expenseId', vehicleController.deleteExpenseFromVehicle);
 router.get('/vehicle/:id', vehicleController.getExpenseByVehicle);
 
+//Transport-Fee
+router.post('/transportfee/create', transportFeeController.create);
+router.get('/transportfee/all', transportFeeController.getAll);
+router.put('/transportfee/update/:id', transportFeeController.update);
+router.delete('/transportfee/delete/:id', transportFeeController.remove);
+
 //Department Routes
 router.post('/department',departmentController.create);
 router.get('/department/all',departmentController.getAll);
@@ -208,6 +214,16 @@ router.put('/fineSetup', fineSetupController.update);
 router.post('/student/allocate', studentsController.addFeesStructure);
 router.post('/student/fees/all', studentsController.searchStudentsFeeByAcademics);
 router.put('/student/fees/:studentId', studentsController.updateFeeStatus);
+
+router.post('/createFeeCat', feeCategoryController.createFeeCategory);
+router.get('/feeCategory/all', feeCategoryController.getAllFeeCategory);
+router.delete('/delete/:id', feeCategoryController.deleteFeeCategory);
+router.put('/updateFeeCategory/:id', feeCategoryController.updateFeeCategory);
+router.get('/showacademicyear', feeCategoryController.createAcademicYear);
+
+//academic fee type
+router.post('/createfeetype', academicFeeTypeController.create);
+router.get('/academicFeeType/all', academicFeeTypeController.getAll);
 
 // Human Resources
 router.post('/salary', salaryController.add);
