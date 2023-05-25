@@ -140,7 +140,7 @@ const getByAcademicDetails = async (req, res) => {
         academicsByDetails !== null
       ) {
         return res.status(200).send({
-          academics: { ...academicsByDetail._doc,
+          academics: { ...academicsByDetails._doc,
                     class: classResponse && classResponse.className,
                     section: sectionResponse && sectionResponse.name },
           messge: "Academics By details",
