@@ -1,7 +1,7 @@
 const express = require('express');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
-const { routeController, stoppageController, vehicleController, vehicleRouteController } = require('../controllers/transport');
+const { routeController, stoppageController, vehicleController, vehicleRouteController,transportFeeController } = require('../controllers/transport');
 const { enquiryController, callLogController, visitorLogController } = require('../controllers/reception');
 const { certificateController } = require('../controllers/certificate');
 const departmentController = require('../controllers/department');
@@ -19,7 +19,7 @@ const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const { certificateValidator } = require('../validators/certificate/certificate');
-const { feeTypeController, feeGroupController, fineSetupController } = require('../controllers/studentAccounting');
+const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController } = require('../controllers/studentAccounting');
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
