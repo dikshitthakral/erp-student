@@ -81,6 +81,7 @@ router.get('/vehicle/:id', vehicleController.getExpenseByVehicle);
 //Transport-Fee
 router.post('/transportfee/create', transportFeeController.create);
 router.get('/transportfee/all', transportFeeController.getAll);
+router.post('/transportfee/year', transportFeeController.getAllByYear);
 router.put('/transportfee/update/:id', transportFeeController.update);
 router.delete('/transportfee/delete/:id', transportFeeController.remove);
 
