@@ -6,11 +6,11 @@ const transportFeeSchema = new mongoose.Schema({
         required: true
     },
     distance:{
-        type: Number,
+        type: String,
         required: true
     },
     amount:{
-        type: Number,
+        type: String,
         required: true
     },
     code:{
