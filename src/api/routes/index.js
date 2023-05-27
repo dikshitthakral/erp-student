@@ -1,7 +1,7 @@
 const express = require('express');
 const studentsController = require('../controllers/students');
 const categoryController = require('../controllers/category');
-const { routeController, stoppageController, vehicleController, vehicleRouteController } = require('../controllers/transport');
+const { routeController, stoppageController, vehicleController, vehicleRouteController,transportFeeController } = require('../controllers/transport');
 const { enquiryController, callLogController, visitorLogController } = require('../controllers/reception');
 const { certificateController } = require('../controllers/certificate');
 const departmentController = require('../controllers/department');
@@ -19,7 +19,7 @@ const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const { certificateValidator } = require('../validators/certificate/certificate');
-const { feeTypeController, feeGroupController, fineSetupController } = require('../controllers/studentAccounting');
+const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController } = require('../controllers/studentAccounting');
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
@@ -78,6 +78,13 @@ router.post('/vehicle/expense',upload.fields([{ name: 'expenseDocs1', maxCount: 
 router.put('/vehicle/expense/:expenseId',upload.fields([{ name: 'expenseDocs1', maxCount: 1 }, { name: 'expenseDocs2', maxCount: 1 }, { name: 'expenseDocs3', maxCount: 1 }]),  vehicleController.updateExpenseReport);
 router.delete('/vehicle/:id/expense/:expenseId', vehicleController.deleteExpenseFromVehicle);
 router.get('/vehicle/:id', vehicleController.getExpenseByVehicle);
+
+//Transport-Fee
+router.post('/transportfee/create', transportFeeController.create);
+router.get('/transportfee/all', transportFeeController.getAll);
+router.post('/transportfee/year', transportFeeController.getAllByYear);
+router.put('/transportfee/update/:id', transportFeeController.update);
+router.delete('/transportfee/delete/:id', transportFeeController.remove);
 
 //Department Routes
 router.post('/department',departmentController.create);
@@ -210,6 +217,17 @@ router.put('/fineSetup', fineSetupController.update);
 router.post('/student/allocate', studentsController.addFeesStructure);
 router.post('/student/fees/all', studentsController.searchStudentsFeeByAcademics);
 router.put('/student/fees/:studentId', studentsController.updateFeeStatus);
+
+router.post('/createFeeCat', feeCategoryController.createFeeCategory);
+router.get('/feeCategory/all', feeCategoryController.getAllFeeCategory);
+router.delete('/delete/:id', feeCategoryController.deleteFeeCategory);
+router.put('/updateFeeCategory/:id', feeCategoryController.updateFeeCategory);
+router.get('/showacademicyear', feeCategoryController.createAcademicYear);
+
+//academic fee type
+router.post('/createfeetype', academicFeeTypeController.create);
+router.get('/academicFeeType/all', academicFeeTypeController.getAll);
+router.post('/getfeetype/year', academicFeeTypeController.getYearWise);
 
 // Human Resources
 router.post('/salary', salaryController.add);
