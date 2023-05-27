@@ -392,4 +392,72 @@ const getAllLeavesRequestByDesignation = async (req, res) => {
     });
   }
 };
-module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation };
+
+const getById = async (req, res) => {
+  try {
+      const id = req.params['id'];
+      let employeeById = await Employee.findOne({ _id: id}).populate('designation').populate('department').
+      populate({
+        path: 'salaryGrade',
+        populate: [{ path: 'allowances', model: 'Allowance'}, { path: 'deductions', model: 'Deduction'}]
+      }).exec();
+      if (
+          employeeById !== undefined &&
+          employeeById !== null
+      ) {
+        return res.status(200).send({
+          employee: employeeById,
+          messge: "Fetched Employee By Id",
+          success: true,
+        });
+      } else {
+        return res.status(200).send({
+          messge: "Employee does not exist",
+          success: false,
+        });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        messge: "Somethig went wrong",
+        success: false,
+      });
+    }
+}
+
+const employeeLogin = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const employeeData = await Employee.findOne({ userName, password });
+    if(isEmpty(employeeData)) {
+      return res.status(400).send({
+        messge: "Employee not found with given login details",
+        success: false,
+      });
+    }
+    const fetchEmployee = await Employee.findOne({
+      _id: mongoose.Types.ObjectId(employeeData._id),
+    }).populate('designation').populate('department').
+    populate({
+      path: 'salaryGrade',
+      populate: [{ path: 'allowances', model: 'Allowance'}, { path: 'deductions', model: 'Deduction'}]
+    }).exec();
+    if (
+      fetchEmployee === undefined ||
+      fetchEmployee === null ||
+      fetchEmployee === ""
+    ) {
+        return res.status(200)
+            .json([{ msg: "Employee not found!!!", res: "error", }]);
+    } else {
+        return res.status(200)
+            .json([{ msg: "Employee Profile", data: fetchEmployee, res: "success" }]);
+    }
+  } catch(err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+}
+
+module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation, getById, employeeLogin };

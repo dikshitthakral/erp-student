@@ -32,6 +32,7 @@ const attendanceController = require('../controllers/attendance');
 const raiseATicketController = require('../controllers/raiseATicket');
 const bannerController = require('../controllers/banner');
 const notificationController = require('../controllers/notification');
+const route = require('../models/transport/route');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -123,6 +124,7 @@ router.put('/employee', upload.single('file'), employeeController.update);
 router.post('/employee/uploadcsv', upload.single('file'), employeeController.bulkSave);
 router.get('/employee/designation/:designationId', employeeController.getByDesignation);
 router.put('/employee/salaryGrade', employeeController.updateSalaryGradeForEmployee);
+router.post('/employee/teacher/login', employeeController.employeeLogin);
 
 // Academic Routes
 router.post('/academic',academicController.create);
@@ -228,6 +230,7 @@ router.get('/leavesRequest/all', leavesRequestController.getAll);
 router.delete('/leavesRequest/delete', leavesRequestController.remove);
 router.put('/leavesRequest/status', leavesRequestController.updateStatus);
 router.get('/employee/leavesRequest/:designationId', employeeController.getAllLeavesRequestByDesignation);
+route.get('/employee/:id', employeeController.getById);
 // Award
 router.post('/award', awardController.create);
 router.get('/award/all', awardController.getAll);
