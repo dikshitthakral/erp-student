@@ -225,6 +225,7 @@ router.get('/showacademicyear', feeCategoryController.createAcademicYear);
 //academic fee type
 router.post('/createfeetype', academicFeeTypeController.create);
 router.get('/academicFeeType/all', academicFeeTypeController.getAll);
+router.post('/getfeetype/year', academicFeeTypeController.getYearWise);
 
 // Human Resources
 router.post('/salary', salaryController.add);
