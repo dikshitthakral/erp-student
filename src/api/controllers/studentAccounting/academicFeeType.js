@@ -16,7 +16,8 @@ const create = async (req, res) => {
     const feeCategoryList = await feeCategory.find();
     if (feeCategoryList.length !== amount.length) {
       return res.status(400).send({
-        messge: "Academic amount validation failed if field is empty send null value",
+        messge:
+          "Academic amount validation failed if field is empty send null value",
         success: false,
       });
     }
@@ -28,16 +29,33 @@ const create = async (req, res) => {
         amount: amount[i],
       });
     }
-    const newAcademicFeeType = await academicFeeType.create({
+    const academicFeeTypeData = await academicFeeType.findOne({
       class: classId,
       year,
-      feeCategory: data,
     });
-    return res.status(200).json({
-      academicFeeType: newAcademicFeeType,
-      message: "Added New Academic Fee Type Successfully",
-      success: true,
-    });
+    if (academicFeeTypeData) {
+      const updateAcademicFeeType = await academicFeeType.findOneAndUpdate(
+        { class: classId, year },
+        { feeCategory: data },
+        { new: true }
+      );
+      return res.status(200).json({
+        academicFeeType: updateAcademicFeeType,
+        message: "Updated Academic Fee Type Successfully",
+        success: true,
+      });
+    } else {
+      const newAcademicFeeType = await academicFeeType.create({
+        class: classId,
+        year,
+        feeCategory: data,
+      });
+      return res.status(200).json({
+        academicFeeType: newAcademicFeeType,
+        message: "Added New Academic Fee Type Successfully",
+        success: true,
+      });
+    }
   } catch (err) {
     return res.status(400).json([{ msg: err.message, res: "error" }]);
   }
@@ -61,5 +79,36 @@ const getAll = async (req, res) => {
       .json([{ msg: err.message, res: "error", success: false }]);
   }
 };
+// year wise academic fee type
+const getYearWise = async (req, res) => {
+  try {
+    const { year } = req.body;
+    if (isEmpty(year)) {
+      return res.status(400).send({
+        messge: "Academic year is required",
+        success: false,
+      });
+    }
+    const data = await academicFeeType
+      .find({ year: year })
+      .select("-createdAt -__v");
+    if (isEmpty(data)) {
+      return res.status(400).send({
+        messge: "No Academic Fee Type Found",
+        success: false,
+      });
+    } else {
+      return res.status(200).json({
+        data,
+        message: "Academic Fee Type List",
+        success: true,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
 
-module.exports = { create, getAll };
+module.exports = { create, getAll, getYearWise };
