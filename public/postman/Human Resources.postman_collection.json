@@ -300,22 +300,17 @@
 					"formdata": [
 						{
 							"key": "toDate",
-							"value": "03-17-2023",
+							"value": "05-02-2023",
 							"type": "default"
 						},
 						{
 							"key": "fromDate",
-							"value": "03-15-2023",
+							"value": "05-02-2023",
 							"type": "default"
 						},
 						{
 							"key": "leaveType",
 							"value": "640cdb651902d2a3dc54e17e",
-							"type": "default"
-						},
-						{
-							"key": "employee",
-							"value": "63f89a1ca63d99e5e2b96392",
 							"type": "default"
 						},
 						{
@@ -332,6 +327,16 @@
 							"key": "file",
 							"type": "file",
 							"src": []
+						},
+						{
+							"key": "student",
+							"value": "645218f2288efb89ca4998e5",
+							"type": "text"
+						},
+						{
+							"key": "classTeacher",
+							"value": "643781e25165343b13a009bf",
+							"type": "default"
 						}
 					]
 				},
@@ -495,6 +500,82 @@
 						"v1",
 						"award",
 						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add salaryReceipt for April",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"PAID\",\n    \"salaryPaidMonth\": \"05-2023\",\n    \"employee\": \"647185c1ce50cbc1b4f1fa4c\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salaryReceipt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salaryReceipt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Salary Receipts by Month and Year",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salaryReceipt/04-2023",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salaryReceipt",
+						"04-2023"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Salary Receipts by Month and Employee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/salaryReceipt/employee/646ba21c041b7ec71393c993/04-2023",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"salaryReceipt",
+						"employee",
+						"646ba21c041b7ec71393c993",
+						"04-2023"
 					]
 				}
 			},

@@ -5,9 +5,9 @@ const Employee = require("../../models/employee");
 
 const add = async (req, res) => {
     try {
-        const { status, salaryPaidMonth, employee, year} = req.body;
+        const { status, salaryPaidMonth, employee} = req.body;
 
-        if(isEmpty(status) || isEmpty(employee)) {
+        if(isEmpty(status) || isEmpty(employee) || isEmpty(salaryPaidMonth)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating Salary Receipt Template",
                 success: false,
@@ -18,7 +18,6 @@ const add = async (req, res) => {
             status,
             salaryPaidMonth,
             employee,
-            year
         };
 
         const newSalaryReceipt = await salaryReceipt.create(salaryReceiptObj);
@@ -35,7 +34,7 @@ const add = async (req, res) => {
 
 const getSalaryReceiptsByMonthAndYear = async (req, res) => {
     try {
-        const { salaryPaidMonth, year} = req.params;
+        const { salaryPaidMonth } = req.params;
         let allEmployees = await Employee.find().populate('designation').exec();
         let response = [];
         for(let employee of allEmployees) {
@@ -44,14 +43,13 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
                 designationName: employee.designation.name,
                 designationId: employee.designation._id
             }
-            const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, year, employee: employee._id });
+            const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, employee: employee._id });
             if(isEmpty(salaryReceiptDoc)) {
                 empoyeeResult['salaryStatus'] = 'NOT-PAID';
             } else {
                 empoyeeResult['salaryStatus'] = salaryReceiptDoc.status;
             }
             empoyeeResult['salaryMonth'] = salaryPaidMonth;
-            empoyeeResult['salaryYear'] = year;
             response.push(empoyeeResult);
         }
         if (isEmpty(response)) {
@@ -68,4 +66,36 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
             .json([{ msg: err.message, res: "error" }]);
     }
 }
-module.exports = { add, getSalaryReceiptsByMonthAndYear }
+
+const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
+    try {
+        const { salaryPaidMonth, employee } = req.params;
+        let employeeById = await Employee.findOne({ _id: employee }).populate('designation').exec();
+        let empoyeeResult = {
+            ...employeeById._doc,
+            designationName: employeeById.designation.name,
+            designationId: employeeById.designation._id
+        }
+        const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, employee: employeeById._id });
+        if(isEmpty(salaryReceiptDoc)) {
+            empoyeeResult['salaryStatus'] = 'NOT-PAID';
+        } else {
+            empoyeeResult['salaryStatus'] = salaryReceiptDoc.status;
+        }
+        empoyeeResult['salaryMonth'] = salaryPaidMonth;
+        if (isEmpty(empoyeeResult)) {
+            return res.status(400)
+                .json([{ msg: "salaryReceipts not found for employee", res: "error", }]);
+        }
+        return res.status(200).json({
+            salary_receipts: empoyeeResult,
+            message: "Fetched salary receipt by month and Year for employee",
+            success: true,
+        });
+    } catch(err) {
+        return res.status(400)
+            .json([{ msg: err.message, res: "error" }]);
+    }
+}
+
+module.exports = { add, getSalaryReceiptsByMonthAndYear, getSalaryReceiptsByMonthAndEmployee }

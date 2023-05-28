@@ -3,11 +3,7 @@ const mongoose = require("mongoose");
 const salaryReceiptSchema = new mongoose.Schema({
     salaryPaidMonth: {
         type: String,
-        required: false
-    },
-    year: {
-        type: String,
-        required: false
+        required: true
     },
     status: {
         type: String,
