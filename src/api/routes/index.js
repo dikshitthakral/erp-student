@@ -248,7 +248,7 @@ router.get('/leavesRequest/all', leavesRequestController.getAll);
 router.delete('/leavesRequest/delete', leavesRequestController.remove);
 router.put('/leavesRequest/status', leavesRequestController.updateStatus);
 router.get('/employee/leavesRequest/:designationId', employeeController.getAllLeavesRequestByDesignation);
-route.get('/employee/:id', employeeController.getById);
+router.get('/employee/:id', employeeController.getById);
 // Award
 router.post('/award', awardController.create);
 router.get('/award/all', awardController.getAll);
