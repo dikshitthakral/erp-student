@@ -20,7 +20,7 @@ const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidat
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const { certificateValidator } = require('../validators/certificate/certificate');
 const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController } = require('../controllers/studentAccounting');
-const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController } = require('../controllers/humanResources');
+const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController, advanceSalaryController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
 const guardianController = require('../controllers/guardian');
@@ -238,6 +238,12 @@ router.put('/salary', salaryController.update);
 router.post('/salaryReceipt', salaryReceiptController.add);
 router.get('/salaryReceipt/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptsByMonthAndYear);
 router.get('/salaryReceipt/employee/:employee/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptsByMonthAndEmployee);
+// Advance Salary
+router.post('/advanceSalary', advanceSalaryController.add);
+router.get('/advanceSalary/all', advanceSalaryController.getAll);
+router.get('/advanceSalary/receipt/:id', advanceSalaryController.getById);
+router.delete('/advanceSalary/:id', advanceSalaryController.remove);
+router.put('/advanceSalary', advanceSalaryController.update);
 // Leaves
 router.post('/leavesCategory', leavesCategoryController.create);
 router.get('/leavesCategory/all', leavesCategoryController.getAll);

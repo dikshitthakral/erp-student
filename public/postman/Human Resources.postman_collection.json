@@ -580,6 +580,111 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Add Advance Salary",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"employee\": \"647185c1ce50cbc1b4f1fa4c\",\n    \"deductMonth\": \"06-2023\",\n    \"amount\": 5000,\n    \"reason\": \"dsahasdhadjhkad\",\n    \"status\": \"PENDING\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/advanceSalary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"advanceSalary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Advance Salary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/advanceSalary/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"advanceSalary",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Advance Salary By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/advanceSalary/receipt/6473358307e15f7ffa3dceca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"advanceSalary",
+						"receipt",
+						"6473358307e15f7ffa3dceca"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Advance Salary",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"advanceSalaryId\": \"6473358307e15f7ffa3dceca\",\n    \"status\": \"APPROVED\",\n    \"comment\": \"jadskjdskjsddsjk\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/advanceSalary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"advanceSalary"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

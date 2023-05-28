@@ -36,7 +36,7 @@ const add = async (req, res) => {
 
         const newSalary = await salary.create(salaryObj);
         return res.status(200).json({
-            schedule: newSalary,
+            salary: newSalary,
             message: "Added New Salary Successfully",
             success: true,
         });
@@ -57,7 +57,7 @@ const getAll = async (req, res) => {
             allSalaries !== null
         ) {
           return res.status(200).send({
-            feeGroups: allSalaries,
+            salaries: allSalaries,
             messge: "All Salaries",
             success: true,
           });
