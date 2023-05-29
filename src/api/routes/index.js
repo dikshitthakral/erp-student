@@ -19,7 +19,7 @@ const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const { certificateValidator } = require('../validators/certificate/certificate');
-const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController } = require('../controllers/studentAccounting');
+const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController,feeModeController } = require('../controllers/studentAccounting');
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController, advanceSalaryController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
@@ -229,11 +229,16 @@ router.post('/createfeetype', academicFeeTypeController.create);
 router.get('/academicFeeType/all', academicFeeTypeController.getAll);
 router.post('/getfeetype/year', academicFeeTypeController.getYearWise);
 router.post('/getClassandYearWise', academicFeeTypeController.getClassandYearWise);
-router.post('/createfeePlan', academicFeeTypeController.createFeePlan);
-router.get('/getfeeplan', academicFeeTypeController.getAllFeePlan);
-router.get('/allPlans', academicFeeTypeController.allPlans);
 router.post('/getConcessionAmount', academicFeeTypeController.getConcessionAmount);
-// router.post('/createFeeConcession', academicFeeTypeController.createFeeConcession);
+router.post('/createFeeConcession', academicFeeTypeController.createFeeConcession);
+router.get('/feeDtailByStudent/:id', academicFeeTypeController.feeDtailByStudentID);
+router.get('/getFeeDetailById/:id', academicFeeTypeController.getFeeDetailById);
+
+// Fee Mode Routes
+router.post('/createMonthType', feeModeController.createMonthType);
+router.get('/getAllMode', feeModeController.allMode);
+router.post('/createFeeMonth', feeModeController.createFeeMonth);
+router.get('/allFeeMonth/:id', feeModeController.allFeeMonth);
 
 // Human Resources
 router.post('/salary', salaryController.add);
