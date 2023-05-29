@@ -46,11 +46,13 @@ const create = async (req, res) => {
     try {
         const {
             name,
-           description
+           description,
+           department
           } = req.body;
           const newDesignation = await designation.create({
             name,
-            description:  isEmpty(description) ? undefined : description
+            description:  isEmpty(description) ? undefined : description,
+            department: isEmpty(department) ? undefined : department
           });
           return res.status(200).json({
             designation: newDesignation,
@@ -65,7 +67,7 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allDesignations = await designation.find();
+        let allDesignations = await designation.find().populate('department');
         if (
             allDesignations !== undefined &&
             allDesignations.length !== 0 &&
@@ -95,11 +97,13 @@ const update = async (req, res) => {
         const {
             id,
             name,
-           description
+           description,
+           department
           } = req.body;
           const updateObj = {
             'name' : isEmpty(name) ? undefined : name,
-            'description': isEmpty(description) ? undefined : description
+            'description': isEmpty(description) ? undefined : description,
+            'department' : isEmpty(department) ? undefined : department
           }
         let updateDesignation = await designation.findOneAndUpdate(
             { _id: id },
@@ -116,7 +120,7 @@ const update = async (req, res) => {
             return res.status(200)
                 .json([{ msg: "Designation not found!!!", res: "error", }]);
         } else {
-            const designationData = await designation.findOne({ _id: id })
+            const designationData = await designation.findOne({ _id: id }).populate('department');
             return res.status(200)
                 .json([{ msg: "Designation updated successflly", data: designationData, res: "success" }]);
         }
