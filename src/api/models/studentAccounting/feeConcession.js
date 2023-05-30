@@ -24,6 +24,9 @@ const feeConcessionSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
+  allMode:{
+    type: Array,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
