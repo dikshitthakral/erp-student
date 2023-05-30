@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const feeConcessionSchema = new mongoose.Schema({
+  invoiceNo: {
+    type: String,
+    required: true,
+  },
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
