@@ -233,6 +233,7 @@ router.post('/getConcessionAmount', academicFeeTypeController.getConcessionAmoun
 router.post('/createFeeConcession', academicFeeTypeController.createFeeConcession);
 router.get('/feeDtailByStudent/:id', academicFeeTypeController.feeDtailByStudentID);
 router.get('/getFeeDetailById/:id', academicFeeTypeController.getFeeDetailById);
+router.put('/updateModeStatus', academicFeeTypeController.updateModeStatus);
 
 // Fee Mode Routes
 router.post('/createMonthType', feeModeController.createMonthType);
