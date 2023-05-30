@@ -7,6 +7,7 @@ const { isEmpty } = require('lodash');
 const  studentService = require('../services/students');
 const guardianService = require('../services/guardian');
 const academicsService = require('../services/academic');
+const FeeData = require('../models/studentAccounting/feeConcession');
 const csvtojsonV2=require("csvtojson/v2");
 const students = require('../models/students');
 const mongoose = require('mongoose');
@@ -189,12 +190,13 @@ const getById = async (req, res) => {
         path: 'fees',
         populate: [{ path: 'feeType', model: 'FeeType'}]
       }).exec();
+       const feeData = await FeeData.findOne({student: id});
       if (
         studentResponse !== undefined &&
         studentResponse !== null
       ) {
         return res.status(200).send({
-          student: studentResponse,
+           student: {studentResponse, feeData},
           messge: "Fetch Student by id",
           success: true,
         });
