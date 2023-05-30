@@ -2,6 +2,7 @@ const feeCategory = require("../../models/studentAccounting/feeCategory");
 const academicFeeType = require("../../models/studentAccounting/academicFeeType");
 const feePlan = require("../../models/studentAccounting/feePlan");
 const feeConcession = require("../../models/studentAccounting/feeConcession");
+const feeMonth = require("../../models/studentAccounting/feeMonth");
 const mongoose = require("mongoose");
 const { isEmpty, merge } = require("lodash");
 const students = require("../../models/students");
@@ -254,18 +255,44 @@ const createFeeConcession = async (req, res) => {
       });
     }
     const studentData = await students.findById({ _id: studentId });
+    const AllFeeMode = [];
     if (studentData) {
-      const FeeMode = await feePlan.findById({ _id: feemode });
-      if (FeeMode) {
+      const FeeMonth = await feeMonth.find({ modeId: feemode }).select("-__v -createdAt");
+      if (FeeMonth.length > 0) {
+        FeeMonth.map((item) => {
+          AllFeeMode.push({
+            id: item._id,
+            modeId: item.modeId,
+            month: item.month,
+            date: item.date,
+            status: item.status,
+            amount: totalFinalAmount / FeeMonth.length,
+          });
+        } );
+      }
+      if (FeeMonth) {
         const feeConcessionData = await feeConcession.create({
           studentId: studentId,
           feemode: feemode,
           academicYear: academicYear,
           studentClass: studentClass,
           totalFinalAmount: totalFinalAmount,
-          allFee:allFee
+          allFee:allFee,
+          allMode:AllFeeMode
         });
         if (feeConcessionData) {
+          // find by student and update fees data in feeConcessionData
+          const studentFeeData = await students.findByIdAndUpdate(
+            { _id: studentId },
+            {
+              $push: {
+                fees: {
+                  feemode: feeConcessionData._id,
+                }
+              },
+            }
+          );
+
           return res.status(200).json({
             feeConcessionData,
             message: "Fee Concession Created Successfully",
@@ -277,13 +304,15 @@ const createFeeConcession = async (req, res) => {
             success: false,
           });
         }
-      } else {
+      }
+       else {
         return res.status(400).send({
           messge: "Fee Mode Not Found",
           success: false,
         });
       }
-    } else {
+    }
+     else {
       return res.status(400).send({
         messge: "Student Not Found",
         success: false,
@@ -306,7 +335,7 @@ const feeDtailByStudentID = async (req, res) => {
         success: false,
       });
     }
-    const studentData = await students.findById({ _id: id });
+    const studentData = await students.findById({ _id: id })
     if (studentData) {
         const feeDetails = await feeConcession.find({ studentId: id });
         if (feeDetails) {
@@ -363,6 +392,60 @@ const getFeeDetailById = async (req, res) => {
       .json([{ msg: err.message, res: "error", success: false }]);
   }
 };
+// update mode status
+const updateModeStatus = async (req, res) => {
+  try {
+    const { feeConcessionId,modeID } = req.body;
+    if (isEmpty(feeConcessionId)) {
+      return res.status(400).send({
+        messge: "feeConcessionId is required",
+        success: false,
+      });
+    }
+    if (isEmpty(modeID)) {
+      return res.status(400).send({
+        messge: "modeID is required",
+        success: false,
+      });
+    }
+    const feeConcessionData = await feeConcession.findById({ _id: feeConcessionId });
+    if (feeConcessionData) {
+      const modeData = await feeConcessionData.allMode.find((item) => item.id == modeID);
+      if (modeData) {
+        const updateMode = await feeConcession.updateOne(
+          { _id: feeConcessionId, "allMode._id": modeID },
+          { $set: { "allMode.$.status": "Paid" } }
+        );
+        if (updateMode) {
+          return res.status(200).json({
+            message: "Fee Mode Status Updated Successfully",
+            success: true,
+          });
+        } else {
+          return res.status(400).send({
+            messge: "Fee Mode Status Not Updated",
+            success: false,
+          });
+        }
+      } else {
+        return res.status(400).send({
+          messge: "Fee Mode Not Found",
+          success: false,
+        });
+      }
+    } else {
+      return res.status(400).send({
+        messge: "Fee Concession Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
+
 module.exports = {
   create,
   getAll,
@@ -372,4 +455,5 @@ module.exports = {
   createFeeConcession,
   feeDtailByStudentID,
   getFeeDetailById,
+  updateModeStatus
 };
