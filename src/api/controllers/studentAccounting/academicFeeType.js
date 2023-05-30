@@ -267,11 +267,14 @@ const createFeeConcession = async (req, res) => {
             date: item.date,
             status: item.status,
             amount: totalFinalAmount / FeeMonth.length,
+            paymentMode:""
           });
         } );
       }
+      const invoice = Math.floor(100000 + Math.random() * 900000);
       if (FeeMonth) {
         const feeConcessionData = await feeConcession.create({
+          invoiceNo: invoice,
           studentId: studentId,
           feemode: feemode,
           academicYear: academicYear,
@@ -281,18 +284,6 @@ const createFeeConcession = async (req, res) => {
           allMode:AllFeeMode
         });
         if (feeConcessionData) {
-          // find by student and update fees data in feeConcessionData
-          const studentFeeData = await students.findByIdAndUpdate(
-            { _id: studentId },
-            {
-              $push: {
-                fees: {
-                  feemode: feeConcessionData._id,
-                }
-              },
-            }
-          );
-
           return res.status(200).json({
             feeConcessionData,
             message: "Fee Concession Created Successfully",
@@ -395,7 +386,7 @@ const getFeeDetailById = async (req, res) => {
 // update mode status
 const updateModeStatus = async (req, res) => {
   try {
-    const { feeConcessionId,modeID } = req.body;
+    const { feeConcessionId,modeID,paymentMode } = req.body;
     if (isEmpty(feeConcessionId)) {
       return res.status(400).send({
         messge: "feeConcessionId is required",
@@ -408,13 +399,27 @@ const updateModeStatus = async (req, res) => {
         success: false,
       });
     }
+    if (isEmpty(paymentMode)) {
+      return res.status(400).send({
+        messge: "paymentMode is required",
+        success: false,
+      });
+    }
     const feeConcessionData = await feeConcession.findById({ _id: feeConcessionId });
     if (feeConcessionData) {
-      const modeData = await feeConcessionData.allMode.find((item) => item.id == modeID);
-      if (modeData) {
-        const updateMode = await feeConcession.updateOne(
-          { _id: feeConcessionId, "allMode._id": modeID },
-          { $set: { "allMode.$.status": "Paid" } }
+        for (let i = 0; i < feeConcessionData.allMode.length; i++) {
+          if (feeConcessionData.allMode[i].id == modeID) {
+            feeConcessionData.allMode[i].status = "Paid";
+            feeConcessionData.allMode[i].paymentMode = paymentMode;
+          }
+        }
+        const updateMode = await feeConcession.findByIdAndUpdate(
+          { _id: feeConcessionId },
+          {
+            $set: {
+              allMode: feeConcessionData.allMode,
+            },
+          }
         );
         if (updateMode) {
           return res.status(200).json({
@@ -427,12 +432,6 @@ const updateModeStatus = async (req, res) => {
             success: false,
           });
         }
-      } else {
-        return res.status(400).send({
-          messge: "Fee Mode Not Found",
-          success: false,
-        });
-      }
     } else {
       return res.status(400).send({
         messge: "Fee Concession Not Found",
