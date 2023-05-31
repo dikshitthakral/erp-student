@@ -267,14 +267,13 @@ const createFeeConcession = async (req, res) => {
             date: item.date,
             status: item.status,
             amount: totalFinalAmount / FeeMonth.length,
-            paymentMode:""
+            paymentMode:"",
+            invoice:""
           });
         } );
       }
-      const invoice = Math.floor(100000 + Math.random() * 900000);
       if (FeeMonth) {
         const feeConcessionData = await feeConcession.create({
-          invoiceNo: invoice,
           studentId: studentId,
           feemode: feemode,
           academicYear: academicYear,
@@ -406,11 +405,13 @@ const updateModeStatus = async (req, res) => {
       });
     }
     const feeConcessionData = await feeConcession.findById({ _id: feeConcessionId });
+    const invoice = Math.floor(1000 + Math.random() * 9000);
     if (feeConcessionData) {
         for (let i = 0; i < feeConcessionData.allMode.length; i++) {
           if (feeConcessionData.allMode[i].id == modeID) {
             feeConcessionData.allMode[i].status = "Paid";
             feeConcessionData.allMode[i].paymentMode = paymentMode;
+            feeConcessionData.allMode[i].invoice = invoice;
           }
         }
         const updateMode = await feeConcession.findByIdAndUpdate(
