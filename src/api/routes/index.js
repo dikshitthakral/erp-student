@@ -228,6 +228,7 @@ router.get('/showacademicyear', feeCategoryController.createAcademicYear);
 router.post('/createfeetype', academicFeeTypeController.create);
 router.get('/academicFeeType/all', academicFeeTypeController.getAll);
 router.post('/getfeetype/year', academicFeeTypeController.getYearWise);
+router.post('/feeData/classandyearWise', academicFeeTypeController.classAndYearWise);
 router.post('/getClassandYearWise', academicFeeTypeController.getClassandYearWise);
 router.post('/getConcessionAmount', academicFeeTypeController.getConcessionAmount);
 router.post('/createFeeConcession', academicFeeTypeController.createFeeConcession);
