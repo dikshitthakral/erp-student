@@ -5,7 +5,8 @@ const Employee = require("../../models/employee");
 
 const add = async (req, res) => {
     try {
-        const { status, salaryPaidMonth, employee} = req.body;
+        const { status, salaryPaidMonth, employee, totalAllowance, totalDeductions, overtimeHrs, overtimeAmount,
+            netSalary, payVia, account} = req.body;
 
         if(isEmpty(status) || isEmpty(employee) || isEmpty(salaryPaidMonth)) {
             return res.status(400).send({
@@ -19,7 +20,13 @@ const add = async (req, res) => {
             salaryPaidMonth,
             employee,
         };
-
+        if(!isNaN(totalAllowance)) { salaryReceiptObj['totalAllowance'] = totalAllowance }
+        if(!isNaN(totalDeductions)) { salaryReceiptObj['totalDeductions'] = totalDeductions }
+        if(!isNaN(overtimeHrs)) { salaryReceiptObj['overtimeHrs'] = overtimeHrs }
+        if(!isNaN(overtimeAmount)) { salaryReceiptObj['overtimeAmount'] = overtimeAmount }
+        if(!isNaN(netSalary)) { salaryReceiptObj['netSalary'] = netSalary }
+        if(!isEmpty(payVia)) { salaryReceiptObj['payVia'] = payVia  }
+        if(!isEmpty(account)) { salaryReceiptObj['account'] = account  }
         const newSalaryReceipt = await salaryReceipt.create(salaryReceiptObj);
         return res.status(200).json({
             salaryReceipt: newSalaryReceipt,
@@ -35,13 +42,17 @@ const add = async (req, res) => {
 const getSalaryReceiptsByMonthAndYear = async (req, res) => {
     try {
         const { salaryPaidMonth } = req.params;
-        let allEmployees = await Employee.find().populate('designation').exec();
+        let allEmployees = await Employee.find().populate('designation').populate('department').
+        populate({
+          path: 'salaryGrade',
+          populate: [{ path: 'allowances', model: 'Allowance'}, { path: 'deductions', model: 'Deduction'}]
+        }).exec();
         let response = [];
         for(let employee of allEmployees) {
             let empoyeeResult = {
                 ...employee._doc,
-                designationName: employee.designation.name,
-                designationId: employee.designation._id
+                designationName: employee.designation?.name || undefined,
+                designationId: employee.designation?._id || undefined
             }
             const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, employee: employee._id });
             if(isEmpty(salaryReceiptDoc)) {
@@ -70,7 +81,11 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
 const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
     try {
         const { salaryPaidMonth, employee } = req.params;
-        let employeeById = await Employee.findOne({ _id: employee }).populate('designation').exec();
+        let employeeById = await Employee.findOne({ _id: employee }).populate('designation').populate('department').
+            populate({
+            path: 'salaryGrade',
+            populate: [{ path: 'allowances', model: 'Allowance'}, { path: 'deductions', model: 'Deduction'}]
+            }).exec();
         let empoyeeResult = {
             ...employeeById._doc,
             designationName: employeeById.designation.name,

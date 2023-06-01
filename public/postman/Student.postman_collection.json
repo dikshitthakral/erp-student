@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "0def5843-1d28-4cbe-9864-3cfc309c6839",
+		"name": "Student",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/student/uploadcsv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "studentClass",
+							"value": "6473028b041b7ec71393d433",
+							"type": "text"
+						},
+						{
+							"key": "section",
+							"value": "6468edfa7cb509a576ea86c9",
+							"type": "text"
+						},
+						{
+							"key": "academicYear",
+							"value": "2023-2024",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/file (1).csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/student/uploadcsv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"student",
+						"uploadcsv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/employee/uploadcsv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dikshitthakral/Downloads/employee_file.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/employee/uploadcsv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"uploadcsv"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
