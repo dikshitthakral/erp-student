@@ -30,7 +30,7 @@ const create = async (req, res) => {
         id: feeCategoryList[i]._id,
         categoryName: feeCategoryList[i].categoryName,
         code: feeCategoryList[i].code,
-        amount: amount[i],
+        amount: amount[i].amount,
       });
     }
     const academicFeeTypeData = await academicFeeType.findOne({
