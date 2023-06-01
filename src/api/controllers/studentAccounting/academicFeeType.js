@@ -255,6 +255,7 @@ const createFeeConcession = async (req, res) => {
       });
     }
     const studentData = await students.findById({ _id: studentId });
+    const invoice = Math.floor(100000 + Math.random() * 900000);
     const AllFeeMode = [];
     if (studentData) {
       const FeeMonth = await feeMonth.find({ modeId: feemode }).select("-__v -createdAt");
@@ -274,6 +275,7 @@ const createFeeConcession = async (req, res) => {
       }
       if (FeeMonth) {
         const feeConcessionData = await feeConcession.create({
+          invoiceNo: invoice,
           studentId: studentId,
           feemode: feemode,
           academicYear: academicYear,
@@ -445,11 +447,49 @@ const updateModeStatus = async (req, res) => {
       .json([{ msg: err.message, res: "error", success: false }]);
   }
 };
+// class and year wise fee concession data 
+const classAndYearWise = async (req, res) => {
+  try {
+    const { studentClass, academicYear } = req.body;
+    if (isEmpty(studentClass)) {
+      return res.status(400).send({
+          message: "Student Class is required",
+          success: false,
+      });
+    }
+    if (isEmpty(academicYear)) {
+      return res.status(400).send({
+          message: "Academic Year is required",
+          success: false,
+      });
+    }
+    const feeData = await feeConcession.find({ studentClass, academicYear });
+    if (feeData) {
+      return res.status(200).json({
+        feeData,
+        message: "Fee Concession Data Get Successfully",
+        success: true,
+      });
+    } else {
+      return res.status(400).send({
+        messge: "Fee Concession Data Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
+
+
 
 module.exports = {
   create,
   getAll,
   getYearWise,
+  classAndYearWise,
   getClassandYearWise,
   getConcessionAmount,
   createFeeConcession,
