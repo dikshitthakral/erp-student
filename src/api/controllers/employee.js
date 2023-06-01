@@ -9,8 +9,11 @@ const { leavesRequest } = require("../models/humanResources");
 
 const save = async (req, res) => {
     try {
-        const { joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, city, state, presentAddress, permanentAddress
-            ,userName, password, facebook, twitter, linkedin, skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = req.body;
+        const { joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, 
+          presentAddressHouseNo, presentAddressStreet, presentAddressZipCode, presentAddressCity, presentAddressState, 
+          premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode, premanentAddressCity, premanentAddressState
+          ,userName, password, facebook, twitter, linkedin, skipBankDetails, bankName, holderName, bankBranch, 
+          bankAddress, ifscCode, accountNumber, designation, department } = req.body;
         const file = req.file;
         let image = '';
         if(!isEmpty(file)) {
@@ -21,7 +24,6 @@ const save = async (req, res) => {
           !isEmpty(qualification) &&
           !isEmpty(name) &&
           !isEmpty(number) &&
-          !isEmpty(permanentAddress) &&
           !isEmpty(userName) &&
           !isEmpty(email)
         ) {
@@ -30,7 +32,6 @@ const save = async (req, res) => {
             qualification,
             name,
             number,
-            permanentAddress,
             userName,
             email
           };
@@ -51,9 +52,16 @@ const save = async (req, res) => {
           }
           if(!isEmpty(religion)){ employeeCreation['religion'] = religion; }
           if(!isEmpty(dob)){ employeeCreation['dob'] = dob; }
-          if(!isEmpty(city)){ employeeCreation['city'] = city; }
-          if(!isEmpty(state)){ employeeCreation['state'] = state; }
-          if(!isEmpty(presentAddress)){ employeeCreation['presentAddress'] = presentAddress; }
+          if(!isEmpty(presentAddressHouseNo)){ employeeCreation['presentAddressHouseNo'] = presentAddressHouseNo; }
+          if(!isEmpty(presentAddressStreet)){ employeeCreation['presentAddressStreet'] = presentAddressStreet; }
+          if(!isEmpty(presentAddressZipCode)){ employeeCreation['presentAddressZipCode'] = presentAddressZipCode; }
+          if(!isEmpty(presentAddressCity)){ employeeCreation['presentAddressCity'] = presentAddressCity; }
+          if(!isEmpty(presentAddressState)){ employeeCreation['presentAddressState'] = presentAddressState; }
+          if(!isEmpty(premanentAddressHouseNo)){ employeeCreation['premanentAddressHouseNo'] = premanentAddressHouseNo; }
+          if(!isEmpty(premanentAddressStreet)){ employeeCreation['premanentAddressStreet'] = premanentAddressStreet; }
+          if(!isEmpty(premanentAddressZipCode)){ employeeCreation['premanentAddressZipCode'] = premanentAddressZipCode; }
+          if(!isEmpty(premanentAddressCity)){ employeeCreation['premanentAddressCity'] = premanentAddressCity; }
+          if(!isEmpty(premanentAddressState)){ employeeCreation['premanentAddressState'] = premanentAddressState; }
           if(!isEmpty(password)){ employeeCreation['password'] = password; }
           if(!isEmpty(facebook)){ employeeCreation['facebook'] = facebook; }
           if(!isEmpty(twitter)){ employeeCreation['twitter'] = twitter; }
@@ -75,7 +83,7 @@ const save = async (req, res) => {
             });
         } else {
           return res.status(422).json({
-            message: "Empty Fields found. Either joiningDate, qualification, name, number, permanentAddress and userName.",
+            message: "Empty Fields found. Either joiningDate, qualification, name, number and userName.",
             success: false,
           });
         }
@@ -153,8 +161,10 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const { employeeId, joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, city, state, presentAddress, permanentAddress
-            ,userName, password, facebook, twitter, linkedin, skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = req.body;
+        const { employeeId, joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, presentAddressHouseNo, presentAddressStreet, 
+          presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, 
+          premanentAddressZipCode, premanentAddressCity, premanentAddressState ,userName, password, facebook, twitter, linkedin, 
+          skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = req.body;
 
         if (!employeeId) {
             return res.status(400)
@@ -170,7 +180,6 @@ const update = async (req, res) => {
         profile.qualification = !isEmpty(qualification) ? qualification : employee.qualification;
         profile.name = !isEmpty(name) ? name : employee.name;
         profile.number = !isEmpty(number) ? number : employee.number;
-        profile.permanentAddress = !isEmpty(permanentAddress) ? permanentAddress : employee.permanentAddress;
         profile.userName = !isEmpty(userName) ? userName : employee.userName;
         profile.email = !isEmpty(email) ? email : employee.email;
         if(!isEmpty(experienceDetails)) { profile.experienceDetails = experienceDetails }
@@ -179,9 +188,16 @@ const update = async (req, res) => {
         if(!isEmpty(bloodGroup)) { profile.bloodGroup = bloodGroup}
         if(!isEmpty(religion)) { profile.religion = religion }
         if(!isEmpty(dob)) { profile.dob = dob }
-        if(!isEmpty(city)) { profile.city = city}
-        if(!isEmpty(state)) { profile.state = state}
-        if(!isEmpty(presentAddress)) { profile.presentAddress = presentAddress}
+        if(!isEmpty(presentAddressHouseNo)){ profile['presentAddressHouseNo'] = presentAddressHouseNo; }
+        if(!isEmpty(presentAddressStreet)){ profile['presentAddressStreet'] = presentAddressStreet; }
+        if(!isEmpty(presentAddressZipCode)){ profile['presentAddressZipCode'] = presentAddressZipCode; }
+        if(!isEmpty(presentAddressCity)){ profile['presentAddressCity'] = presentAddressCity; }
+        if(!isEmpty(presentAddressState)){ profile['presentAddressState'] = presentAddressState; }
+        if(!isEmpty(premanentAddressHouseNo)){ profile['premanentAddressHouseNo'] = premanentAddressHouseNo; }
+        if(!isEmpty(premanentAddressStreet)){ profile['premanentAddressStreet'] = premanentAddressStreet; }
+        if(!isEmpty(premanentAddressZipCode)){ profile['premanentAddressZipCode'] = premanentAddressZipCode; }
+        if(!isEmpty(premanentAddressCity)){ profile['premanentAddressCity'] = premanentAddressCity; }
+        if(!isEmpty(premanentAddressState)){ profile['premanentAddressState'] = premanentAddressState; }
         if(!isEmpty(password)) { profile.password = password}
         if(!isEmpty(facebook)) { profile.facebook = facebook}
         if(!isEmpty(twitter)) { profile.twitter = twitter}
@@ -231,14 +247,15 @@ const bulkSave = async (req, res) => {
         const file = req.file;
         const employees = await csvtojsonV2().fromFile(file.path);
         for(let employeeObj of employees) {
-            const { joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, city, state, presentAddress, permanentAddress
-                ,userName, password, facebook, twitter, linkedin, skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = employeeObj;
+            const { joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, presentAddressHouseNo, 
+              presentAddressStreet, presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, 
+              premanentAddressZipCode, premanentAddressCity, premanentAddressState ,userName, password, facebook, twitter, linkedin, skipBankDetails, 
+              bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = employeeObj;
             if (
               !isEmpty(joiningDate) &&
               !isEmpty(qualification) &&
               !isEmpty(name) &&
               !isEmpty(number) &&
-              !isEmpty(permanentAddress) &&
               !isEmpty(userName) &&
               !isEmpty(email)
             ) {
@@ -247,7 +264,6 @@ const bulkSave = async (req, res) => {
                 qualification,
                 name,
                 number,
-                permanentAddress,
                 userName,
                 email
               };
@@ -265,9 +281,16 @@ const bulkSave = async (req, res) => {
               }
               if(!isEmpty(religion)){ employeeCreation['religion'] = religion; }
               if(!isEmpty(dob)){ employeeCreation['dob'] = dob; }
-              if(!isEmpty(city)){ employeeCreation['city'] = city; }
-              if(!isEmpty(state)){ employeeCreation['state'] = state; }
-              if(!isEmpty(presentAddress)){ employeeCreation['presentAddress'] = presentAddress; }
+              if(!isEmpty(presentAddressHouseNo)){ employeeCreation['presentAddressHouseNo'] = presentAddressHouseNo; }
+              if(!isEmpty(presentAddressStreet)){ employeeCreation['presentAddressStreet'] = presentAddressStreet; }
+              if(!isEmpty(presentAddressZipCode)){ employeeCreation['presentAddressZipCode'] = presentAddressZipCode; }
+              if(!isEmpty(presentAddressCity)){ employeeCreation['presentAddressCity'] = presentAddressCity; }
+              if(!isEmpty(presentAddressState)){ employeeCreation['presentAddressState'] = presentAddressState; }
+              if(!isEmpty(premanentAddressHouseNo)){ employeeCreation['premanentAddressHouseNo'] = premanentAddressHouseNo; }
+              if(!isEmpty(premanentAddressStreet)){ employeeCreation['premanentAddressStreet'] = premanentAddressStreet; }
+              if(!isEmpty(premanentAddressZipCode)){ employeeCreation['premanentAddressZipCode'] = premanentAddressZipCode; }
+              if(!isEmpty(premanentAddressCity)){ employeeCreation['premanentAddressCity'] = premanentAddressCity; }
+              if(!isEmpty(premanentAddressState)){ employeeCreation['premanentAddressState'] = premanentAddressState; }
               if(!isEmpty(password)){ employeeCreation['password'] = password; }
               if(!isEmpty(facebook)){ employeeCreation['facebook'] = facebook; }
               if(!isEmpty(twitter)){ employeeCreation['twitter'] = twitter; }

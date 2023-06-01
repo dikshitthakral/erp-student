@@ -49,21 +49,45 @@ const employeeSchema = new mongoose.Schema({
         default: null,
         required: true
     },
-    city: {
+    presentAddressHouseNo: {
         type: String,
         required: false
     },
-    state: {
+    presentAddressStreet: {
         type: String,
         required: false
     },
-    presentAddress: {
+    presentAddressZipCode: {
         type: String,
         required: false
     },
-    permanentAddress: {
+    presentAddressCity: {
         type: String,
-        required: true
+        required: false
+    },
+    presentAddressState: {
+        type: String,
+        required: false
+    },
+    premanentAddressHouseNo: {
+        type: String,
+        required: false
+    },
+    premanentAddressStreet: {
+        type: String,
+        required: false
+    },
+    premanentAddressZipCode: {
+        type: String,
+        required: false
+    },
+    premanentAddressCity: {
+        type: String,
+        required: false
+    },
+    premanentAddressState: {
+        type: String,
+        required: false
     },
     image: {
         type: String,

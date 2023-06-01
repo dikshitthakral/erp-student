@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 
 const createGuardian = async (guardianObj, uploadedLocations) => {
     try {
-        const { userName, password, firstName, relation, fatherName, motherName, alreadyExists, occupation, income, education, number, email, city, state, permanentAddress } = guardianObj;
+        const { userName, password, firstName, relation, fatherName, motherName, alreadyExists, occupation, income, education, number, email, city, state, premanentAddressHouseNo,
+            premanentAddressStreet, premanentAddressZipCode } = guardianObj;
         if(isEmpty(userName)) {
             throw new Error('UserName missing while creating guardian.');
         }
@@ -31,7 +32,9 @@ const createGuardian = async (guardianObj, uploadedLocations) => {
         if(!isEmpty(education)) { guardianReq["education"] = education};
         if(!isEmpty(city)) { guardianReq["city"] = city};
         if(!isEmpty(state)) { guardianReq["state"] = state};
-        if(!isEmpty(permanentAddress)) { guardianReq["permanentAddress"] = permanentAddress};
+        if(!isEmpty(premanentAddressHouseNo)) { guardianReq["premanentAddressHouseNo"] = premanentAddressHouseNo};
+        if(!isEmpty(premanentAddressStreet)) { guardianReq["premanentAddressStreet"] = premanentAddressStreet};
+        if(!isEmpty(premanentAddressZipCode)) { guardianReq["premanentAddressZipCode"] = premanentAddressZipCode};
         if(!isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) && !isEmpty(uploadedLocations["guardian"]["image"])) { guardianReq["image"] = uploadedLocations["guardian"]["image"]}
         if(!isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) &&!isEmpty(uploadedLocations["guardian"]["idProofDocument"])) { guardianReq["idProofDocument"] = uploadedLocations["guardian"]["idProofDocument"]}
 
@@ -61,7 +64,8 @@ const remove = async (id) => {
 
 const updateGuardian = async (guardianObj, uploadedLocations, studentRecord) => {
     try {
-        const { userName, password, firstName, relation, fatherName, motherName, alreadyExists, occupation, income, education, number, email, city, state, permanentAddress } = guardianObj;
+        const { userName, password, firstName, relation, fatherName, motherName, alreadyExists, occupation, income, education, number, email, city, state, premanentAddressHouseNo,
+            premanentAddressStreet, premanentAddressZipCode } = guardianObj;
         const guardianReq = {};
         guardianReq.userName = !isEmpty(userName) ? userName : studentRecord.guardian.userName;
         guardianReq.password = !isEmpty(password) ? password : studentRecord.guardian.password;
@@ -77,7 +81,9 @@ const updateGuardian = async (guardianObj, uploadedLocations, studentRecord) => 
         guardianReq.education = !isEmpty(education) ? education : studentRecord.guardian.education;
         guardianReq.city = !isEmpty(city) ? city : studentRecord.guardian.city;
         guardianReq.state = !isEmpty(state) ? state : studentRecord.guardian.state;
-        guardianReq.permanentAddress = !isEmpty(permanentAddress) ? permanentAddress : studentRecord.guardian.permanentAddress;
+        guardianReq.premanentAddressHouseNo = !isEmpty(premanentAddressHouseNo) ? premanentAddressHouseNo : studentRecord.guardian.premanentAddressHouseNo;
+        guardianReq.premanentAddressStreet = !isEmpty(premanentAddressStreet) ? premanentAddressStreet : studentRecord.guardian.premanentAddressStreet;
+        guardianReq.premanentAddressZipCode = !isEmpty(premanentAddressZipCode) ? premanentAddressZipCode : studentRecord.guardian.premanentAddressZipCode;
         guardianReq.image = !isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) && !isEmpty(uploadedLocations["guardian"]["image"]) ? uploadedLocations["guardian"]["image"] : studentRecord.guardian.image;
         guardianReq.idProofDocument = !isEmpty(uploadedLocations) && !isEmpty(uploadedLocations["guardian"]) &&!isEmpty(uploadedLocations["guardian"]["idProofDocument"]) ? uploadedLocations["guardian"]["idProofDocument"] : studentRecord.guardian.idProofDocument;
         const updatedGuardian = await guardian.findOneAndUpdate(

@@ -390,7 +390,9 @@ const generateCsv = async (req, res) => {
 const updateStudent = async (req, res) => {
     try {
         let { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian,
-          lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress, 
+          lastName, gender, bloodGroup, motherTongue, religion, caste, presentAddressHouseNo, presentAddressStreet, 
+          presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode,
+          premanentAddressCity, premanentAddressState, 
           previousSchoolName, previousQualification, previousRemarks, vehicleRoute} = req.body;
 
         const id = req.params['id'];
@@ -429,10 +431,17 @@ const updateStudent = async (req, res) => {
         profile.motherTongue = !isEmpty(motherTongue) ? motherTongue : studentRecord.motherTongue;
         profile.religion = !isEmpty(religion) ? religion : studentRecord.religion;
         profile.caste = !isEmpty(caste) ? caste : studentRecord.caste;
-        profile.city = !isEmpty(city) ? city : studentRecord.city;
-        profile.state = !isEmpty(state) ? state : studentRecord.state;
-        profile.presentAddress = !isEmpty(presentAddress) ? presentAddress : studentRecord.presentAddress;
-        profile.permanentAddress = !isEmpty(permanentAddress) ? permanentAddress : studentRecord.permanentAddress;
+        profile.presentAddressHouseNo = !isEmpty(presentAddressHouseNo) ? presentAddressHouseNo : studentRecord.presentAddressHouseNo;
+        profile.presentAddressStreet = !isEmpty(presentAddressStreet) ? presentAddressStreet : studentRecord.presentAddressStreet;
+        profile.presentAddressZipCode = !isEmpty(presentAddressZipCode) ? presentAddressZipCode : studentRecord.presentAddressZipCode;
+        profile.presentAddressCity = !isEmpty(presentAddressCity) ? presentAddressCity : studentRecord.presentAddressCity;
+        profile.presentAddressState = !isEmpty(presentAddressState) ? presentAddressState : studentRecord.presentAddressState;
+        profile.premanentAddressHouseNo = !isEmpty(premanentAddressHouseNo) ? premanentAddressHouseNo : studentRecord.premanentAddressHouseNo;
+        profile.premanentAddressStreet = !isEmpty(premanentAddressStreet) ? premanentAddressStreet : studentRecord.premanentAddressStreet;
+        profile.premanentAddressZipCode = !isEmpty(premanentAddressZipCode) ? premanentAddressZipCode : studentRecord.premanentAddressZipCode;
+        profile.premanentAddressCity = !isEmpty(premanentAddressCity) ? premanentAddressCity : studentRecord.premanentAddressCity;
+        profile.premanentAddressState = !isEmpty(premanentAddressState) ? premanentAddressState : studentRecord.premanentAddressState;
+
         profile.previousSchoolName = !isEmpty(previousSchoolName) ? previousSchoolName : studentRecord.previousSchoolName;
         profile.previousQualification = !isEmpty(previousQualification) ? previousQualification : studentRecord.previousQualification;
         profile.previousRemarks = !isEmpty(previousRemarks) ? previousRemarks : studentRecord.previousRemarks;

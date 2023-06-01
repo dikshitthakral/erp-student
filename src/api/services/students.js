@@ -42,8 +42,10 @@ const fetchUpdatedAcademicsId = async (academicObj, studentRecord) => {
 }
 
 const add = async (studentObj, body) => {
-    const { lastName, gender, bloodGroup, motherTongue, religion, caste, city, state, presentAddress, permanentAddress,
-        previousSchoolName, previousQualification, previousRemarks, vehicleNo, vehicleRoute, type, category, rollNo} = body;
+    const { lastName, gender, bloodGroup, motherTongue, religion, caste, presentAddressHouseNo, presentAddressStreet, 
+        presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode,
+        premanentAddressCity, premanentAddressState, previousSchoolName, previousQualification, previousRemarks, 
+        vehicleNo, vehicleRoute, type, category, rollNo} = body;
 
     if(!isEmpty(category)) { studentObj["category"] = category};
     if(!isEmpty(rollNo)) { studentObj["rollNo"] = rollNo};
@@ -53,11 +55,17 @@ const add = async (studentObj, body) => {
     if(!isEmpty(motherTongue)) { studentObj["motherTongue"] = motherTongue};
     if(!isEmpty(religion)) { studentObj["religion"] = religion};
     if(!isEmpty(caste)) { studentObj["caste"] = caste};
-    if(!isEmpty(city)) { studentObj["city"] = city};
-    if(!isEmpty(state)) { studentObj["state"] = state};
     if(!isEmpty(type)) { studentObj["type"] = type};
-    if(!isEmpty(presentAddress)) { studentObj["presentAddress"] = presentAddress};
-    if(!isEmpty(permanentAddress)) { studentObj["permanentAddress"] = permanentAddress};
+    if(!isEmpty(presentAddressHouseNo)) { studentObj["presentAddressHouseNo"] = presentAddressHouseNo};
+    if(!isEmpty(presentAddressStreet)) { studentObj["presentAddressStreet"] = presentAddressStreet};
+    if(!isEmpty(presentAddressZipCode)) { studentObj["presentAddressZipCode"] = presentAddressZipCode};
+    if(!isEmpty(presentAddressCity)) { studentObj["presentAddressCity"] = presentAddressCity};
+    if(!isEmpty(presentAddressState)) { studentObj["presentAddressState"] = presentAddressState};
+    if(!isEmpty(premanentAddressHouseNo)) { studentObj["premanentAddressHouseNo"] = premanentAddressHouseNo};
+    if(!isEmpty(premanentAddressStreet)) { studentObj["premanentAddressStreet"] = premanentAddressStreet};
+    if(!isEmpty(premanentAddressZipCode)) { studentObj["premanentAddressZipCode"] = premanentAddressZipCode};
+    if(!isEmpty(premanentAddressCity)) { studentObj["premanentAddressCity"] = premanentAddressCity};
+    if(!isEmpty(premanentAddressState)) { studentObj["premanentAddressState"] = premanentAddressState};
     if(!isEmpty(previousSchoolName)) { studentObj["previousSchoolName"] = previousSchoolName};
     if(!isEmpty(previousQualification)) { studentObj["previousQualification"] = previousQualification};
     if(!isEmpty(previousRemarks)) { studentObj["previousRemarks"] = previousRemarks};

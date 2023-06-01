@@ -62,7 +62,15 @@ const guardianSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    permanentAddress: {
+    premanentAddressHouseNo: {
+        type: String,
+        required: false
+    },
+    premanentAddressStreet: {
+        type: String,
+        required: false
+    },
+    premanentAddressZipCode: {
         type: String,
         required: false
     },
