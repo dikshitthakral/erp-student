@@ -9,11 +9,23 @@ const feeConcessionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  concession: {
-    type: Array,
+  academicYear: {
+    type: String,
+    required: true,
   },
-  totalAmount: {
-    type: Number,
+  studentClass: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  totalFinalAmount: {
+    type: String,
+    required: true,
+  },
+  allFee: {
+    type: Array,
+    required: true,
+  },
+  allMode:{
+    type: Array,
   },
   createdAt: {
     type: Date,

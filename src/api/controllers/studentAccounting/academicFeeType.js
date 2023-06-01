@@ -2,8 +2,9 @@ const feeCategory = require("../../models/studentAccounting/feeCategory");
 const academicFeeType = require("../../models/studentAccounting/academicFeeType");
 const feePlan = require("../../models/studentAccounting/feePlan");
 const feeConcession = require("../../models/studentAccounting/feeConcession");
+const feeMonth = require("../../models/studentAccounting/feeMonth");
 const mongoose = require("mongoose");
-const { isEmpty } = require("lodash");
+const { isEmpty, merge } = require("lodash");
 const students = require("../../models/students");
 
 const create = async (req, res) => {
@@ -29,7 +30,7 @@ const create = async (req, res) => {
         id: feeCategoryList[i]._id,
         categoryName: feeCategoryList[i].categoryName,
         code: feeCategoryList[i].code,
-        amount: amount[i]['amount'],
+        amount: amount[i],
       });
     }
     const academicFeeTypeData = await academicFeeType.findOne({
@@ -94,6 +95,7 @@ const getYearWise = async (req, res) => {
     }
     const data = await academicFeeType
       .find({ year: year })
+      .populate("class", "className classNumeric")
       .select("-createdAt -__v");
     if (isEmpty(data)) {
       return res.status(400).send({
@@ -116,12 +118,12 @@ const getYearWise = async (req, res) => {
 //get data class and  year wise academic fee type
 const getClassandYearWise = async (req, res) => {
   try {
-    const {classId , year } = req.body;
+    const { classId, year } = req.body;
     if (isEmpty(classId)) {
       return res.status(400).send({
         messge: "ClassId is required",
         success: false,
-      }); 
+      });
     }
     if (isEmpty(year)) {
       return res.status(400).send({
@@ -141,95 +143,6 @@ const getClassandYearWise = async (req, res) => {
       return res.status(200).json({
         data,
         message: "Academic Fee Type List",
-        success: true,
-      });
-    }
-  } catch (err) {
-    return res
-      .status(400)
-      .json([{ msg: err.message, res: "error", success: false }]);
-  }
-};
-
-// create fee plan
-const createFeePlan = async (req, res) => {
-  try {
-    const { date, type } = req.body;
-    if (isEmpty(date)) {
-      return res.status(400).send({
-        messge: "Date is required",
-        success: false,
-      });
-    }
-    if (isEmpty(type)) {
-      return res.status(400).send({
-        messge: "Type is required",
-        success: false,
-      });
-    }
-    const data = [];
-    const dateArray = date.split(",");
-    for (let i = 0; i < dateArray.length; i++) {
-      data.push({ date: dateArray[i], status: false });
-    }
-    const newFeePlan = await feePlan.create({
-      date: data,
-      frequency: type,
-    });
-    if (newFeePlan) {
-      return res.status(200).json({
-        newFeePlan,
-        message: "Fee Plan Created Successfully",
-        success: true,
-      });
-    } else {
-      return res.status(400).send({
-        messge: "Fee Plan Creation Failed",
-        success: false,
-      });
-    }
-  } catch (err) {
-    return res
-      .status(400)
-      .json([{ msg: err.message, res: "error", success: false }]);
-  }
-};
-
-// get all fee plan
-const getAllFeePlan = async (req, res) => {
-  try {
-    const feePlanList = await feePlan.find().select("-__v");
-    if (isEmpty(feePlanList)) {
-      return res.status(400).send({
-        messge: "No Fee Plan Found",
-        success: false,
-      });
-    } else {
-      return res.status(200).json({
-        feePlanList,
-        message: "Fee Plan List",
-        success: true,
-      });
-    }
-  } catch (err) {
-    return res
-      .status(400)
-      .json([{ msg: err.message, res: "error", success: false }]);
-  }
-};
-// get all fee plan
-const allPlans = async (req, res) => {
-  try {
-    const feePlanList = await feePlan.find().select("-__v -date");
-    if (isEmpty(feePlanList)) {
-      return res.status(400).send({
-        messge: "No Fee Plan Found",
-        success: false,
-      });
-    } else {
-      return res.status(200).json({
-        feePlanList,
-        message: "Fee Plan List",
         success: true,
       });
     }
@@ -300,94 +213,247 @@ const getConcessionAmount = async (req, res) => {
   }
 };
 
-
 // create fee concession to student
-// const createFeeConcession = async (req, res) => {
-//   try {
-//     const { studentId, feemode,academicFeeTypeId,feeCatId,concession } = req.body;
-//     if (isEmpty(studentId)) {
-//       return res.status(400).send({
-//         messge: "Student Id is required",
-//         success: false,
-//       });
-//     }
-//     if (isEmpty(feemode)) {
-//       return res.status(400).send({
-//         messge: "Fee Mode is required",
-//         success: false,
-//       });
-//     }
-//     if (isEmpty(academicFeeTypeId)) {
-//       return res.status(400).send({
-//         messge: "Academic Fee Type Id is required",
-//         success: false,
-//       });
-//     }
-//     if (isEmpty(feeCatId)) {
-//       return res.status(400).send({
-//         messge: "Fee Category Id is required",
-//         success: false,
-//       });
-//     }
-//     if (isEmpty(concession)) {
-//       return res.status(400).send({
-//         messge: "Concession is required",
-//         success: false,
-//       });
-//     }
-//     const studentData = await students.findById({ _id: studentId });
-//     console.log(studentData)
-//     if (studentData) {
-//       const academicFeeTypeData = await academicFeeType.findById({
-//         _id: academicFeeTypeId,
-//       });
-//       if (academicFeeTypeData) {
-//         const feeCategoryData = academicFeeTypeData.feeCategory.find(
-//           (item) => item.id == feeCatId,
-//           console.log(feeCategoryData)
-//         );
-//         // if (feeCategoryData) {
-//         //   const amount = feeCategoryData.amount;
-//         //   const concessionAmount = (amount * concession) / 100;
-//         //   const total = amount - concessionAmount;
-//         //   console.log(total);
-//         // } else {
-//         //   return res.status(400).send({
-//         //     messge: "Fee Category Not Found",
-//         //     success: false,
-//         //   });
-//         // }
-//       } else {
-//         return res.status(400).send({
-//           messge: "Academic Fee Type Not Found",
-//           success: false,
-//         });
-//       }
-//     } else {
-//       return res.status(400).send({
-//         messge: "Student Not Found",
-//         success: false,
-//       });
-//     }
-//   } catch (err) {
-//     return res
-//       .status(400)
-//       .json([{ msg: err.message, res: "error", success: false }]);
-//   }
-// };
+const createFeeConcession = async (req, res) => {
+  try {
+    const { studentId, feemode, academicYear, studentClass, totalFinalAmount,allFee } =
+      req.body;
+    if (isEmpty(studentId)) {
+      return res.status(400).send({
+        messge: "Student Id is required",
+        success: false,
+      });
+    }
+    if (isEmpty(feemode)) {
+      return res.status(400).send({
+        messge: "Fee Mode id is required",
+        success: false,
+      });
+    }
+    if (isEmpty(academicYear)) {
+      return res.status(400).send({
+        messge: "Academic Year is required",
+        success: false,
+      });
+    }
+    if (isEmpty(studentClass)) {
+      return res.status(400).send({
+        messge: "student class id is required",
+        success: false,
+      });
+    }
+    if (isEmpty(totalFinalAmount)) {
+      return res.status(400).send({
+        messge: "totalFinalAmount is required",
+        success: false,
+      });
+    }
+    if (isEmpty(allFee)) {
+      return res.status(400).send({
+        messge: "allFee is required",
+        success: false,
+      });
+    }
+    const studentData = await students.findById({ _id: studentId });
+    const AllFeeMode = [];
+    if (studentData) {
+      const FeeMonth = await feeMonth.find({ modeId: feemode }).select("-__v -createdAt");
+      if (FeeMonth.length > 0) {
+        FeeMonth.map((item) => {
+          AllFeeMode.push({
+            id: item._id,
+            modeId: item.modeId,
+            month: item.month,
+            date: item.date,
+            status: item.status,
+            amount: totalFinalAmount / FeeMonth.length,
+            paymentMode:"",
+            invoice:""
+          });
+        } );
+      }
+      if (FeeMonth) {
+        const feeConcessionData = await feeConcession.create({
+          studentId: studentId,
+          feemode: feemode,
+          academicYear: academicYear,
+          studentClass: studentClass,
+          totalFinalAmount: totalFinalAmount,
+          allFee:allFee,
+          allMode:AllFeeMode
+        });
+        if (feeConcessionData) {
+          return res.status(200).json({
+            feeConcessionData,
+            message: "Fee Concession Created Successfully",
+            success: true,
+          });
+        } else {
+          return res.status(400).send({
+            messge: "Fee Concession Not Created",
+            success: false,
+          });
+        }
+      }
+       else {
+        return res.status(400).send({
+          messge: "Fee Mode Not Found",
+          success: false,
+        });
+      }
+    }
+     else {
+      return res.status(400).send({
+        messge: "Student Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
 
+// get fee details by student id
+const feeDtailByStudentID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (isEmpty(id)) {
+      return res.status(400).send({
+        messge: "Student Id is required",
+        success: false,
+      });
+    }
+    const studentData = await students.findById({ _id: id })
+    if (studentData) {
+        const feeDetails = await feeConcession.find({ studentId: id });
+        if (feeDetails) {
+          return res.status(200).json({
+            feeDetails,
+            message: "Fee Details Get Successfully",
+            success: true,
+          });
+        } else {
+          return res.status(400).send({
+            messge: "Fee Details Not Found",
+            success: false,
+          });
+        }
+    } else {
+      return res.status(400).send({
+        messge: "Student Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
 
-
-
+// get fee detail by id
+const getFeeDetailById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (isEmpty(id)) {
+      return res.status(400).send({
+        messge: "Id is required",
+        success: false,
+      });
+    }
+    const feeDetails = await feeConcession.findById({ _id: id });
+    if (feeDetails) {
+      return res.status(200).json({
+        feeDetails,
+        message: "Fee Details Get Successfully",
+        success: true,
+      });
+    } else {
+      return res.status(400).send({
+        messge: "Fee Details Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
+// update mode status
+const updateModeStatus = async (req, res) => {
+  try {
+    const { feeConcessionId,modeID,paymentMode } = req.body;
+    if (isEmpty(feeConcessionId)) {
+      return res.status(400).send({
+        messge: "feeConcessionId is required",
+        success: false,
+      });
+    }
+    if (isEmpty(modeID)) {
+      return res.status(400).send({
+        messge: "modeID is required",
+        success: false,
+      });
+    }
+    if (isEmpty(paymentMode)) {
+      return res.status(400).send({
+        messge: "paymentMode is required",
+        success: false,
+      });
+    }
+    const feeConcessionData = await feeConcession.findById({ _id: feeConcessionId });
+    const invoice = Math.floor(1000 + Math.random() * 9000);
+    if (feeConcessionData) {
+        for (let i = 0; i < feeConcessionData.allMode.length; i++) {
+          if (feeConcessionData.allMode[i].id == modeID) {
+            feeConcessionData.allMode[i].status = "Paid";
+            feeConcessionData.allMode[i].paymentMode = paymentMode;
+            feeConcessionData.allMode[i].invoice = invoice;
+          }
+        }
+        const updateMode = await feeConcession.findByIdAndUpdate(
+          { _id: feeConcessionId },
+          {
+            $set: {
+              allMode: feeConcessionData.allMode,
+            },
+          }
+        );
+        if (updateMode) {
+          return res.status(200).json({
+            message: "Fee Mode Status Updated Successfully",
+            success: true,
+          });
+        } else {
+          return res.status(400).send({
+            messge: "Fee Mode Status Not Updated",
+            success: false,
+          });
+        }
+    } else {
+      return res.status(400).send({
+        messge: "Fee Concession Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
 
 module.exports = {
   create,
   getAll,
   getYearWise,
   getClassandYearWise,
-  createFeePlan,
-  getAllFeePlan,
-  allPlans,
   getConcessionAmount,
-  // createFeeConcession
+  createFeeConcession,
+  feeDtailByStudentID,
+  getFeeDetailById,
+  updateModeStatus
 };
