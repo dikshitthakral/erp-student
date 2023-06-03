@@ -46,6 +46,7 @@ router.delete('/student/:academicYear/:section/:studentClass',studentsController
 router.post('/student/generateCsv', studentsController.generateCsv);
 router.put('/student/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.updateStudent);
 router.post('/guardian/login', studentsController.guardianLogin);
+router.post('/student/classYear',studentsController.searchByClassYear);
 
 // Category Routes
 router.post('/category',categoryController.save);
@@ -230,6 +231,7 @@ router.get('/academicFeeType/all', academicFeeTypeController.getAll);
 router.post('/getfeetype/year', academicFeeTypeController.getYearWise);
 router.post('/feeData/classandyearWise', academicFeeTypeController.classAndYearWise);
 router.post('/getClassandYearWise', academicFeeTypeController.getClassandYearWise);
+router.post('/feeData/studentIdandyearWise', academicFeeTypeController.studentIdAndYearWise);
 router.post('/getConcessionAmount', academicFeeTypeController.getConcessionAmount);
 router.post('/createFeeConcession', academicFeeTypeController.createFeeConcession);
 router.get('/feeDtailByStudent/:id', academicFeeTypeController.feeDtailByStudentID);

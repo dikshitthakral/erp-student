@@ -483,6 +483,42 @@ const classAndYearWise = async (req, res) => {
   }
 };
 
+// student ID and year wise fee concession data 
+const studentIdAndYearWise = async (req, res) => {
+  try {
+    const { studentId, academicYear } = req.body;
+    if (isEmpty(studentId)) {
+      return res.status(400).send({
+          message: "Student Id is required",
+          success: false,
+      });
+    }
+    if (isEmpty(academicYear)) {
+      return res.status(400).send({
+          message: "Academic Year is required",
+          success: false,
+      });
+    }
+    const feeData = await feeConcession.find({ studentId, academicYear });
+    if (feeData) {
+      return res.status(200).json({
+        feeData,
+        message: "Fee Concession Data Get Successfully",
+        success: true,
+      });
+    } else {
+      return res.status(400).send({
+        messge: "Fee Concession Data Not Found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json([{ msg: err.message, res: "error", success: false }]);
+  }
+};
+
 
 
 module.exports = {
@@ -495,5 +531,6 @@ module.exports = {
   createFeeConcession,
   feeDtailByStudentID,
   getFeeDetailById,
-  updateModeStatus
+  updateModeStatus,
+  studentIdAndYearWise
 };
