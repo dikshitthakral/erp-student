@@ -327,7 +327,7 @@ router.delete('/banner/delete', bannerController.deleteBannerById);
 
 //Notification Routes
 router.post('/createNotification', notificationController.createNotification);
-router.get('/notification/all', notificationController.getAllNotification);
+router.get('/notification/:type', notificationController.getAllNotification);
 router.delete('/notification/delete', notificationController.deleteNotificationById);
 
 module.exports = router;
