@@ -5,16 +5,17 @@ const mongoose = require("mongoose");
 //Create Notification
 const createNotification = async (req, res) => {
   try {
-    const { title,description } = req.body;
-    if (isEmpty(title) || isEmpty(description)) {
+    const { type, title, description } = req.body;
+    if ((isEmpty(type), isEmpty(title) || isEmpty(description))) {
       return res.status(400).send({
         messge: "Mandatory fields missing while creating Notification",
         success: false,
       });
     }
     const notification = await Notification.create({
-        title: title,
-        description: description,
+      notiType: type,
+      title: title,
+      description: description,
     });
     return res.status(200).json({
       notification: notification,
@@ -29,11 +30,12 @@ const createNotification = async (req, res) => {
 //Get All Notification
 const getAllNotification = async (req, res) => {
   try {
-    let notification = await Notification.find();
+    const { type } = req.params;
+    let notification = await Notification.find({ notiType: type });
     if (
-        notification !== undefined &&
-        notification.length !== 0 &&
-        notification !== null
+      notification !== undefined &&
+      notification.length !== 0 &&
+      notification !== null
     ) {
       return res.status(200).send({
         notification,
@@ -56,32 +58,36 @@ const getAllNotification = async (req, res) => {
 
 // Delete Notification By Id
 const deleteNotificationById = async (req, res) => {
-    try {
-        const { id } = req.body;
-        if (isEmpty(id)) {
-            return res.status(400).send({
-                messge: "Mandatory fields missing while deleting notification",
-                success: false,
-            });
-        }
-        const notification = await Notification.findByIdAndDelete(id);
-        if (notification !== undefined && notification !== null) {
-            return res.status(200).send({
-                messge: "Notification deleted successfully",
-                success: true,
-            });
-        } else {
-            return res.status(200).send({
-                messge: "Notification does not exist",
-                success: false,
-            });
-        }
-    } catch (error) {
-        return res.status(400).send({
-            messge: "Somethig went wrong",
-            success: false,
-        });
+  try {
+    const { id } = req.body;
+    if (isEmpty(id)) {
+      return res.status(400).send({
+        messge: "Mandatory fields missing while deleting notification",
+        success: false,
+      });
     }
+    const notification = await Notification.findByIdAndDelete(id);
+    if (notification !== undefined && notification !== null) {
+      return res.status(200).send({
+        messge: "Notification deleted successfully",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Notification does not exist",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
 };
 
-module.exports = { createNotification, getAllNotification,deleteNotificationById };
+module.exports = {
+  createNotification,
+  getAllNotification,
+  deleteNotificationById,
+};
