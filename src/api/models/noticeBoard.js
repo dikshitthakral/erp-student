@@ -2,6 +2,11 @@ const { string } = require("joi");
 const mongoose = require("mongoose");
 
 const noticeBoardSchema = new mongoose.Schema({
+    noticeBoardType: {
+        type: String,
+        required: true,
+        enum: ['guardian', 'teacher',]
+    },
     name: {
         type: String,
         required: false
