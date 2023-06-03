@@ -297,7 +297,7 @@ router.delete('/class/:id', classController.remove);
 router.put('/class', classController.update);
 // NoticeBoard
 router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
-router.get('/noticeBoard/all', noticeBoardController.getAll);
+router.get('/noticeBoard/:type', noticeBoardController.getAll);
 router.delete('/noticeBoard/delete', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
