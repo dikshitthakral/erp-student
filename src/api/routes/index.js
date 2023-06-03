@@ -311,7 +311,7 @@ router.delete('/attendance/:id', attendanceController.remove);
 router.put('/attendance', attendanceController.update);
 // Raise A Ticket
 router.post('/raiseTicket', raiseATicketController.create);
-router.get('/raiseTicket/all', raiseATicketController.getAll);
+router.get('/raiseTicket/:type', raiseATicketController.getAll);
 router.delete('/raiseTicket/delete', raiseATicketController.remove);
 router.put('/raiseTicket/status', raiseATicketController.updateStatus);
 
