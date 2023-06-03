@@ -297,7 +297,7 @@ router.delete('/class/:id', classController.remove);
 router.put('/class', classController.update);
 // NoticeBoard
 router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
-router.get('/noticeBoard/all', noticeBoardController.getAll);
+router.get('/noticeBoard/:type', noticeBoardController.getAll);
 router.delete('/noticeBoard/delete', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
@@ -311,7 +311,7 @@ router.delete('/attendance/:id', attendanceController.remove);
 router.put('/attendance', attendanceController.update);
 // Raise A Ticket
 router.post('/raiseTicket', raiseATicketController.create);
-router.get('/raiseTicket/all', raiseATicketController.getAll);
+router.get('/raiseTicket/:type', raiseATicketController.getAll);
 router.delete('/raiseTicket/delete', raiseATicketController.remove);
 router.put('/raiseTicket/status', raiseATicketController.updateStatus);
 
@@ -322,12 +322,12 @@ router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.rem
 
 // Banner Routes
 router.post('/banner', upload.single('file'), bannerController.createBanner);
-router.get('/banner/all', bannerController.getAllBanner);
+router.get('/banner/:type', bannerController.getAllBanner);
 router.delete('/banner/delete', bannerController.deleteBannerById);
 
 //Notification Routes
 router.post('/createNotification', notificationController.createNotification);
-router.get('/notification/all', notificationController.getAllNotification);
+router.get('/notification/:type', notificationController.getAllNotification);
 router.delete('/notification/delete', notificationController.deleteNotificationById);
 
 module.exports = router;

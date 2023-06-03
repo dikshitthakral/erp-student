@@ -6,7 +6,13 @@ const { uploadAttachment } = require("../utils");
 //Create Banner
 const createBanner = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { type, title } = req.body;
+    if (isEmpty(type)) {
+      return res.status(400).send({
+        messge: "Type is required like guardian or teacher",
+        success: false,
+      });
+    }
     if (isEmpty(title)) {
       return res.status(400).send({
         messge: "Mandatory fields missing while creating Banner",
@@ -20,6 +26,7 @@ const createBanner = async (req, res) => {
     }
     const newBanner = await banner.create({
       bannerName: title,
+      bannerType: type,
       bannerImage: isEmpty(attachment) ? undefined : attachment,
     });
     return res.status(200).json({
@@ -35,7 +42,8 @@ const createBanner = async (req, res) => {
 //Get All Banner
 const getAllBanner = async (req, res) => {
   try {
-    let allBanner = await banner.find();
+    const { type } = req.params;
+    let allBanner = await banner.find({ bannerType: type });
     if (
       allBanner !== undefined &&
       allBanner.length !== 0 &&
@@ -62,32 +70,32 @@ const getAllBanner = async (req, res) => {
 
 // Delete Banner By Id
 const deleteBannerById = async (req, res) => {
-    try {
-        const { id } = req.body;
-        if (isEmpty(id)) {
-            return res.status(400).send({
-                messge: "Mandatory fields missing while deleting Banner",
-                success: false,
-            });
-        }
-        const bannerData = await banner.findByIdAndDelete(id);
-        if (bannerData !== undefined && bannerData !== null) {
-            return res.status(200).send({
-                messge: "Banner deleted successfully",
-                success: true,
-            });
-        } else {
-            return res.status(200).send({
-                messge: "Banner does not exist",
-                success: false,
-            });
-        }
-    } catch (error) {
-        return res.status(400).send({
-            messge: "Somethig went wrong",
-            success: false,
-        });
+  try {
+    const { id } = req.body;
+    if (isEmpty(id)) {
+      return res.status(400).send({
+        messge: "Mandatory fields missing while deleting Banner",
+        success: false,
+      });
     }
+    const bannerData = await banner.findByIdAndDelete(id);
+    if (bannerData !== undefined && bannerData !== null) {
+      return res.status(200).send({
+        messge: "Banner deleted successfully",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Banner does not exist",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
 };
 
-module.exports = { createBanner, getAllBanner,deleteBannerById };
+module.exports = { createBanner, getAllBanner, deleteBannerById };

@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const raiseATicketSchema = new mongoose.Schema({
+    raiseType: {
+        type: String,
+        required: true,
+        enum: ['guardian', 'teacher']
+    },
     supportType: {
         type: String,
         required: true

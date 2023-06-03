@@ -5,8 +5,8 @@ const { uploadAttachment } = require('../utils');
 
 const create = async (req, res) => {
     try {
-        const { name, description, noticeDate } = req.body;
-        if(isEmpty(description) || isEmpty(noticeDate)) {
+        const {type, name, description, noticeDate } = req.body;
+        if(isEmpty(type),isEmpty(description) || isEmpty(noticeDate)) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating Notice Board.",
                 success: false,
@@ -18,6 +18,7 @@ const create = async (req, res) => {
             attachment = await uploadAttachment(file);
         }
         const newNoticeBoard = await noticeBoard.create({
+            noticeBoardType: type,
             description,
             noticeDate,
             name: isEmpty(name) ? undefined : name,
@@ -36,7 +37,8 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allNoticeBoard = await noticeBoard.find();
+        const { type } = req.params;
+        let allNoticeBoard = await noticeBoard.find( { noticeBoardType: type });
         if (
             allNoticeBoard !== undefined &&
             allNoticeBoard.length !== 0 &&
