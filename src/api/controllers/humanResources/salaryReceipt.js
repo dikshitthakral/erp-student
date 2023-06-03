@@ -108,8 +108,22 @@ const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
         const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, employee: employeeById._id });
         if(isEmpty(salaryReceiptDoc)) {
             empoyeeResult['salaryStatus'] = 'NOT-PAID';
+            empoyeeResult['totalAllowance'] = 0;
+            empoyeeResult['totalDeductions'] = 0;
+            empoyeeResult['overtimeHrs'] = 0;
+            empoyeeResult['overtimeAmount'] = 0;
+            empoyeeResult['netSalary'] = 0;
+            empoyeeResult['payVia'] = '';
+            empoyeeResult['account'] = '';
         } else {
             empoyeeResult['salaryStatus'] = salaryReceiptDoc.status;
+            empoyeeResult['totalAllowance'] = salaryReceiptDoc.totalAllowance;
+            empoyeeResult['totalDeductions'] = salaryReceiptDoc.totalDeductions;
+            empoyeeResult['overtimeHrs'] = salaryReceiptDoc.overtimeHrs;
+            empoyeeResult['overtimeAmount'] = salaryReceiptDoc.overtimeAmount;
+            empoyeeResult['netSalary'] = salaryReceiptDoc.netSalary;
+            empoyeeResult['payVia'] = salaryReceiptDoc.payVia;
+            empoyeeResult['account'] = salaryReceiptDoc.account;
         }
         empoyeeResult['salaryMonth'] = salaryPaidMonth;
         if (isEmpty(empoyeeResult)) {
