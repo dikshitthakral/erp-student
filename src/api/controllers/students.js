@@ -1077,50 +1077,53 @@ const removeVehicleRoute = async (req, res) => {
       });
     }
 }
+
 const searchByClassYear = async (req, res) => {
   try {
-      const { academicYear, studentClass } = req.body;
-      if(!academicYear || !studentClass) {
-        return res.status(400).send({
-          messge: "Please provide valid data",
-          success: false,
-        });
-      }
-      const classResponse = await Academics.find({
-        academicYear: academicYear,
-        studentClass: mongoose.Types.ObjectId(studentClass)
-      });
-      if(!classResponse || classResponse.length === 0) {
-        return res.status(400).send({
-          messge: "No records found with above filter critera",
-          success: false,
-        });
-      }
-      const filteredStudents = await students.find({academic: mongoose.Types.ObjectId(classResponse[0]._id) });
-     if (
-          filteredStudents !== undefined &&
-          filteredStudents.length !== 0 &&
-          filteredStudents !== null
-      ) {
-        return res.status(200).send({
-          students: filteredStudents,
-          messge: "All Filtered Students",
-          success: true,
-        });
-      } else {
-        return res.status(200).send({
-          messge: "No Students found with above filtered criteria.",
-          success: false,
-        });
-      }
-      
-  } catch(err) {
+    const { academicYear, studentClass } = req.body;
+    if (!academicYear || !studentClass) {
       return res.status(400).send({
-          messge: "Somethig went wrong",
-          success: false,
+        messge: "Please provide valid data",
+        success: false,
       });
+    }
+    const classResponse = await Academics.find({
+      academicYear: academicYear,
+      studentClass: mongoose.Types.ObjectId(studentClass),
+    });
+    if (!classResponse || classResponse.length === 0) {
+      return res.status(400).send({
+        messge: "No records found with above filter critera",
+        success: false,
+      });
+    }
+    const academicIds = classResponse.map((item) => item._id);
+    const filteredStudents = await students.find({
+      academic: { $in: academicIds },
+    });
+    if (
+      filteredStudents !== undefined &&
+      filteredStudents.length !== 0 &&
+      filteredStudents !== null
+    ) {
+      return res.status(200).send({
+        students: filteredStudents,
+        messge: "All Filtered Students",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "No Students found with above filtered criteria.",
+        success: false,
+      });
+    }
+  } catch (err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
   }
-}
+};
 
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
   addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin,
