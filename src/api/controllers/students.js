@@ -41,56 +41,113 @@ const uploadImage = async (req, res) => {
 }
 
 const createAdmission = async (req, res) => {
-    try {
-        const { academicYear, section, category, studentClass,rollNo, admissionDate, firstName, type, dob, number, email, guardian } = req.body;
-        const files = req?.files;
-        let uploadedLocations = {};
-        if(!isEmpty(files)) {
-            uploadedLocations = await studentService.uploadDocuments(files);
-        }
-        if(isEmpty(academicYear) || isEmpty(section) || isEmpty(category) || isEmpty(studentClass) || isEmpty(guardian) || isEmpty(rollNo) || isEmpty(admissionDate) || 
-        isEmpty(firstName) || isEmpty(type) || isEmpty(dob) || isEmpty(number) || isEmpty(email)) {
-            return res.status(400).send({
-                message: "Empty Fields found.",
-                success: false,
-            });
-        }
-        const studentObj = {
-            rollNo,
-            admissionDate,
-            firstName,
-            type,
-            dob,
-            number,
-            email
-        };
-        // academic section
-        const academicId = await studentService.fetchAcademicsId({ academicYear, studentClass, section });
-        studentObj["academic"] = academicId;
-        // category section
-        studentObj["category"] = category;
-        // guardian section
-        const guardianRes = await guardianService.createGuardian(guardian, uploadedLocations);
-        studentObj["guardian"] = guardianRes._id;
-        // student section
-        if(!isEmpty(uploadedLocations["image"])) { studentObj["image"] = uploadedLocations["image"]}
-        if(!isEmpty(uploadedLocations["idCardDocument"])) { studentObj["idCardDocument"] = uploadedLocations["idCardDocument"]}
-        const studentRes = await studentService.add(studentObj, req.body);
-        const updateRegisterNoInStudent = await students.findOneAndUpdate(
-          { _id: studentRes._id },
-          { $inc: { registerNo: 1 }},
-          { new: true});
-        return res.status(200).json({
-            student: updateRegisterNoInStudent,
-            message: "Added New Student Successfully",
-            success: true,
-        });
-    } catch(err) {
-        return res.status(500).send({
-            messge: "Something went wrong",
-            success: false,
-        });
+  try {
+    const {
+      academicYear,
+      section,
+      category,
+      studentClass,
+      rollNo,
+      admissionDate,
+      firstName,
+      type,
+      dob,
+      number,
+      email,
+      guardian,
+      guardian1,
+    } = req.body;
+    const files = req?.files;
+    let uploadedLocations = {};
+    if (!isEmpty(files)) {
+      uploadedLocations = await studentService.uploadDocuments(files);
     }
+    if (
+      isEmpty(academicYear) ||
+      isEmpty(section) ||
+      isEmpty(category) ||
+      isEmpty(studentClass) ||
+      isEmpty(guardian) ||
+      isEmpty(rollNo) ||
+      isEmpty(admissionDate) ||
+      isEmpty(firstName) ||
+      isEmpty(type) ||
+      isEmpty(dob) ||
+      isEmpty(number) ||
+      isEmpty(email)
+    ) {
+      return res.status(400).send({
+        message: "Empty Fields found.",
+        success: false,
+      });
+    }
+    const studentObj = {
+      rollNo,
+      admissionDate,
+      firstName,
+      type,
+      dob,
+      number,
+      email,
+    };
+    // academic section
+    const academicId = await studentService.fetchAcademicsId({
+      academicYear,
+      studentClass,
+      section,
+    });
+    studentObj["academic"] = academicId;
+    // category section
+    studentObj["category"] = category;
+    // guardian section
+    const guardianRes = await guardianService.createGuardian(
+      guardian,
+      uploadedLocations
+    );
+    studentObj["guardian"] = guardianRes._id;
+    // guardian2 section
+    if (
+      guardian1.relation !== "" &&
+      guardian1.firstName !== "" &&
+      guardian1.number !== "" &&
+      guardian1.email !== "" &&
+      guardian1.occupation !== ""
+    ) {
+      const guardianRes1 = await guardianService.createGuardian2(guardian1);
+      studentObj["guardian2"] = guardianRes1._id;
+    } else {
+      console.log("guardian2 is empty");
+      studentObj["guardian2"] = null;
+    }
+    // student section
+    if (!isEmpty(uploadedLocations["image"])) {
+      studentObj["image"] = uploadedLocations["image"];
+    }
+    if (!isEmpty(uploadedLocations["idCardDocument"])) {
+      studentObj["idCardDocument"] = uploadedLocations["idCardDocument"];
+    }
+    const studentRes = await studentService.add(studentObj, req.body);
+    const studentCount = await students.find({}).count();
+    var today = new Date();
+    var year = today.getFullYear();
+    year = year.toString().substr(-2);
+    regNo = year + "VIS" + "00" + studentCount;
+    const updateRegisterNoInStudent = await students.findOneAndUpdate(
+      { _id: studentRes._id },
+      { $set: { registerNo: regNo } },
+      { new: true }
+    );
+    return res.status(200).json({
+      student: updateRegisterNoInStudent,
+      message: "Added New Student Successfully",
+      success: true,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      messge: "Something went wrong",
+      success: false,
+    });
+  }
 };
 
 const createBulkAdmission = async (req, res) => {
