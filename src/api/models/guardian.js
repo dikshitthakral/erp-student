@@ -18,28 +18,12 @@ const guardianSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    fatherName: {
-        type: String,
-        required: false
-    },
-    motherName: {
-        type: String,
-        required: false
-    },
     alreadyExists: {
         type: Boolean,
         required: false,
         default: false
     },
     occupation: {
-        type: String,
-        required: false
-    },
-    income: {
-        type: String,
-        required: false
-    },
-    education: {
         type: String,
         required: false
     },
@@ -50,37 +34,8 @@ const guardianSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: false,
-        default: null,
+        default: "",
         required: true
-    },
-    city: {
-        type: String,
-        required: false
-    },
-    state: {
-        type: String,
-        required: false
-    },
-    premanentAddressHouseNo: {
-        type: String,
-        required: false
-    },
-    premanentAddressStreet: {
-        type: String,
-        required: false
-    },
-    premanentAddressZipCode: {
-        type: String,
-        required: false
-    },
-    image: {
-        type: String,
-        required: false
-    },
-    idProofDocument : {
-        type: String,
-        required: false
     },
   });
   
