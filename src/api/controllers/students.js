@@ -456,90 +456,181 @@ const generateCsv = async (req, res) => {
 }
 
 const updateStudent = async (req, res) => {
-    try {
-        let { academicYear, section, category, studentClass,registerNo,rollNo, admissionDate, firstName, type, dob, number, email, guardian,
-          lastName, gender, bloodGroup, motherTongue, religion, caste, presentAddressHouseNo, presentAddressStreet, 
-          presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode,
-          premanentAddressCity, premanentAddressState, 
-          previousSchoolName, previousQualification, previousRemarks, vehicleRoute} = req.body;
+  try {
+    let {
+      academicYear,
+      section,
+      category,
+      studentClass,
+      rollNo,
+      admissionDate,
+      firstName,
+      type,
+      dob,
+      number,
+      email,
+      guardian,
+      guardian1,
+      lastName,
+      gender,
+      bloodGroup,
+      motherTongue,
+      religion,
+      caste,
+      presentAddressHouseNo,
+      presentAddressStreet,
+      presentAddressZipCode,
+      presentAddressCity,
+      presentAddressState,
+      premanentAddressHouseNo,
+      premanentAddressStreet,
+      premanentAddressZipCode,
+      premanentAddressCity,
+      premanentAddressState,
+      previousSchoolName,
+      previousQualification,
+      previousRemarks,
+      vehicleRoute,
+    } = req.body;
 
-        const id = req.params['id'];
-        if (!id) {
-          return res.status(200).json({
-            message: "Student Id not found",
-            success: false,
-          });
-        }
-        const studentRecord = await students.findOne({_id: mongoose.Types.ObjectId(id)}).populate('academic').populate('guardian').exec();
-        const files = req?.files;
-        let uploadedLocations = {};
-        if(!isEmpty(files)) {
-            uploadedLocations = await studentService.uploadDocuments(files);
-        }
-        const profile = {};
-        // academic section
-        const academicId = await studentService.fetchUpdatedAcademicsId({ academicYear, studentClass, section }, studentRecord);
-        profile["academic"] = academicId;
-        // category section
-        profile["category"] = !isEmpty(category) ? category  : studentRecord.category;
-        // guardian section
-        const updatedGuardian = await guardianService.updateGuardian(guardian ?? {}, uploadedLocations, studentRecord);
-        profile["guardian"] = updatedGuardian._id;
-        profile.registerNo = !isEmpty(registerNo) ? registerNo : studentRecord.registerNo;
-        profile.rollNo = !isEmpty(rollNo) ? rollNo : studentRecord.rollNo;
-        profile.admissionDate = !isEmpty(admissionDate) ? admissionDate : studentRecord.admissionDate;
-        profile.firstName = !isEmpty(firstName) ? firstName : studentRecord.firstName;
-        profile.type = !isEmpty(type) ? type : studentRecord.type;
-        profile.dob = !isEmpty(dob) ? dob : studentRecord.dob;
-        profile.number = !isEmpty(number) ? number : studentRecord.number;
-        profile.email = !isEmpty(email) ? email : studentRecord.email;
-        profile.lastName = !isEmpty(lastName) ? lastName : studentRecord.lastName;
-        profile.gender = !isEmpty(gender) ? gender : studentRecord.gender;
-        profile.bloodGroup = !isEmpty(bloodGroup) ? bloodGroup : studentRecord.bloodGroup;
-        profile.motherTongue = !isEmpty(motherTongue) ? motherTongue : studentRecord.motherTongue;
-        profile.religion = !isEmpty(religion) ? religion : studentRecord.religion;
-        profile.caste = !isEmpty(caste) ? caste : studentRecord.caste;
-        profile.presentAddressHouseNo = !isEmpty(presentAddressHouseNo) ? presentAddressHouseNo : studentRecord.presentAddressHouseNo;
-        profile.presentAddressStreet = !isEmpty(presentAddressStreet) ? presentAddressStreet : studentRecord.presentAddressStreet;
-        profile.presentAddressZipCode = !isEmpty(presentAddressZipCode) ? presentAddressZipCode : studentRecord.presentAddressZipCode;
-        profile.presentAddressCity = !isEmpty(presentAddressCity) ? presentAddressCity : studentRecord.presentAddressCity;
-        profile.presentAddressState = !isEmpty(presentAddressState) ? presentAddressState : studentRecord.presentAddressState;
-        profile.premanentAddressHouseNo = !isEmpty(premanentAddressHouseNo) ? premanentAddressHouseNo : studentRecord.premanentAddressHouseNo;
-        profile.premanentAddressStreet = !isEmpty(premanentAddressStreet) ? premanentAddressStreet : studentRecord.premanentAddressStreet;
-        profile.premanentAddressZipCode = !isEmpty(premanentAddressZipCode) ? premanentAddressZipCode : studentRecord.premanentAddressZipCode;
-        profile.premanentAddressCity = !isEmpty(premanentAddressCity) ? premanentAddressCity : studentRecord.premanentAddressCity;
-        profile.premanentAddressState = !isEmpty(premanentAddressState) ? premanentAddressState : studentRecord.premanentAddressState;
-
-        profile.previousSchoolName = !isEmpty(previousSchoolName) ? previousSchoolName : studentRecord.previousSchoolName;
-        profile.previousQualification = !isEmpty(previousQualification) ? previousQualification : studentRecord.previousQualification;
-        profile.previousRemarks = !isEmpty(previousRemarks) ? previousRemarks : studentRecord.previousRemarks;
-        profile.vehicleRoute = !isEmpty(vehicleRoute) ? vehicleRoute : studentRecord.vehicleRoute;
-        profile.image = !isEmpty(uploadedLocations["image"]) ? uploadedLocations["image"] : studentRecord.image;
-        profile.idCardDocument = !isEmpty(uploadedLocations["idCardDocument"]) ? uploadedLocations["idCardDocument"] : studentRecord.idCardDocument;
-        let updateStudent = await students.findOneAndUpdate(
-            { _id: id },
-            profile
-          );
-          if (
-            updateStudent.length === 0 ||
-            updateStudent === undefined ||
-            updateStudent === null ||
-            updateStudent === ""
-          ) {
-              return res.status(200)
-                  .json([{ msg: "Student not found!!!", res: "error", }]);
-          } else {
-              const studentData = await students.findOne({ _id: id })
-              return res.status(200)
-                  .json([{ msg: "Student Profile updated successflly", data: studentData, res: "success" }]);
-          }
-    } catch(err) {
-        return res.status(500).send({
-            messge: "Somethig went wrong",
-            success: false,
-        });
+    const id = req.params["id"];
+    if (!id) {
+      return res.status(200).json({
+        message: "Student Id not found",
+        success: false,
+      });
     }
-}
+    const studentRecord = await students
+      .findOne({ _id: mongoose.Types.ObjectId(id) })
+      .populate("academic")
+      .populate("guardian")
+      .populate("guardian2")
+      .exec();
+
+    const files = req?.files;
+    let uploadedLocations = {};
+    if (!isEmpty(files)) {
+      uploadedLocations = await studentService.uploadDocuments(files);
+    }
+    const profile = {};
+    // academic section
+    const academicId = await studentService.fetchUpdatedAcademicsId(
+      { academicYear, studentClass, section },
+      studentRecord
+    );
+    profile["academic"] = academicId;
+    // category section
+    profile["category"] = !isEmpty(category)
+      ? category
+      : studentRecord.category;
+    // guardian section
+    const updatedGuardian = await guardianService.updateGuardian(
+      guardian ?? {},
+      studentRecord
+    );
+
+    profile["guardian"] = updatedGuardian._id;
+    const updatedGuardian1 = await guardianService.updateGuardian2(
+      guardian1 ?? {},
+      studentRecord
+    );
+    profile["guardian2"] = updatedGuardian1._id;
+    profile.rollNo = !isEmpty(rollNo) ? rollNo : studentRecord.rollNo;
+    profile.admissionDate = !isEmpty(admissionDate)
+      ? admissionDate
+      : studentRecord.admissionDate;
+    profile.firstName = !isEmpty(firstName)
+      ? firstName
+      : studentRecord.firstName;
+    profile.type = !isEmpty(type) ? type : studentRecord.type;
+    profile.dob = !isEmpty(dob) ? dob : studentRecord.dob;
+    profile.number = !isEmpty(number) ? number : studentRecord.number;
+    profile.email = !isEmpty(email) ? email : studentRecord.email;
+    profile.lastName = !isEmpty(lastName) ? lastName : studentRecord.lastName;
+    profile.gender = !isEmpty(gender) ? gender : studentRecord.gender;
+    profile.bloodGroup = !isEmpty(bloodGroup)
+      ? bloodGroup
+      : studentRecord.bloodGroup;
+    profile.motherTongue = !isEmpty(motherTongue)
+      ? motherTongue
+      : studentRecord.motherTongue;
+    profile.religion = !isEmpty(religion) ? religion : studentRecord.religion;
+    profile.caste = !isEmpty(caste) ? caste : studentRecord.caste;
+    profile.presentAddressHouseNo = !isEmpty(presentAddressHouseNo)
+      ? presentAddressHouseNo
+      : studentRecord.presentAddressHouseNo;
+    profile.presentAddressStreet = !isEmpty(presentAddressStreet)
+      ? presentAddressStreet
+      : studentRecord.presentAddressStreet;
+    profile.presentAddressZipCode = !isEmpty(presentAddressZipCode)
+      ? presentAddressZipCode
+      : studentRecord.presentAddressZipCode;
+    profile.presentAddressCity = !isEmpty(presentAddressCity)
+      ? presentAddressCity
+      : studentRecord.presentAddressCity;
+    profile.presentAddressState = !isEmpty(presentAddressState)
+      ? presentAddressState
+      : studentRecord.presentAddressState;
+    profile.premanentAddressHouseNo = !isEmpty(premanentAddressHouseNo)
+      ? premanentAddressHouseNo
+      : studentRecord.premanentAddressHouseNo;
+    profile.premanentAddressStreet = !isEmpty(premanentAddressStreet)
+      ? premanentAddressStreet
+      : studentRecord.premanentAddressStreet;
+    profile.premanentAddressZipCode = !isEmpty(premanentAddressZipCode)
+      ? premanentAddressZipCode
+      : studentRecord.premanentAddressZipCode;
+    profile.premanentAddressCity = !isEmpty(premanentAddressCity)
+      ? premanentAddressCity
+      : studentRecord.premanentAddressCity;
+    profile.premanentAddressState = !isEmpty(premanentAddressState)
+      ? premanentAddressState
+      : studentRecord.premanentAddressState;
+    profile.previousSchoolName = !isEmpty(previousSchoolName)
+      ? previousSchoolName
+      : studentRecord.previousSchoolName;
+    profile.previousQualification = !isEmpty(previousQualification)
+      ? previousQualification
+      : studentRecord.previousQualification;
+    profile.previousRemarks = !isEmpty(previousRemarks)
+      ? previousRemarks
+      : studentRecord.previousRemarks;
+    profile.vehicleRoute = !isEmpty(vehicleRoute)
+      ? vehicleRoute
+      : studentRecord.vehicleRoute;
+    profile.image = !isEmpty(uploadedLocations["image"])
+      ? uploadedLocations["image"]
+      : studentRecord.image;
+    profile.idCardDocument = !isEmpty(uploadedLocations["idCardDocument"])
+      ? uploadedLocations["idCardDocument"]
+      : studentRecord.idCardDocument;
+    let updateStudent = await students.findOneAndUpdate({ _id: id }, profile);
+    if (
+      updateStudent.length === 0 ||
+      updateStudent === undefined ||
+      updateStudent === null ||
+      updateStudent === ""
+    ) {
+      return res
+        .status(200)
+        .json([{ msg: "Student not found!!!", res: "error" }]);
+    } else {
+      const studentData = await students.findOne({ _id: id });
+      return res.status(200).json([
+        {
+          msg: "Student Profile updated successflly",
+          data: studentData,
+          res: "success",
+        },
+      ]);
+    }
+  } catch (err) {
+    return res.status(500).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+};
 
 const addFeesStructure = async (req, res) => {
   try {
