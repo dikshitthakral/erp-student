@@ -53,30 +53,37 @@ const getStudentsWithSameGuardian = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-      let allGuardians = await guardian.find();
-      if (
-        allGuardians !== undefined &&
-        allGuardians.length !== 0 &&
-        allGuardians !== null
-      ) {
-        return res.status(200).send({
-          guardians: allGuardians,
-          message: "All Guardians",
-          success: true,
-        });
-      } else {
-        return res.status(200).send({
-          messge: "Guardians does not exist",
-          success: false,
-        });
-      }
-    } catch (error) {
-      return res.status(400).send({
-        messge: "Somethig went wrong",
+    let allGuardians = await students
+      .find()
+      .select(
+        "-_id -__v -rollNo -admissionDate -firstName -lastName -gender -type -bloodGroup -dob -motherTongue -religion -caste -number -email -presentAddressHouseNo -presentAddressStreet -presentAddressZipCode -presentAddressCity -presentAddressState -premanentAddressHouseNo -premanentAddressStreet -premanentAddressZipCode -premanentAddressCity -premanentAddressState -previousSchoolName -previousQualification -academic -category -active -fees -registerNo -city -state -presentAddress"
+      )
+      .populate("guardian")
+      .populate("guardian2")
+      .exec();
+    if (
+      allGuardians !== undefined &&
+      allGuardians.length !== 0 &&
+      allGuardians !== null
+    ) {
+      return res.status(200).send({
+        guardians: allGuardians,
+        message: "All Guardians",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Guardians does not exist",
         success: false,
       });
-   }
-}
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+};
 
 const getGuardianByUserName = async (req, res) => {
   try {
