@@ -11,6 +11,13 @@ const create = async (req, res) => {
                 success: false,
             });
         }
+        const classData = await classModel.findOne({ sections, classNumeric });
+        if(classData) {
+            return res.status(400).send({
+                messge: "Class already exist.",
+                success: false,
+            });
+        } 
         const newClassModel = await classModel.create({
             className,
             sections,
