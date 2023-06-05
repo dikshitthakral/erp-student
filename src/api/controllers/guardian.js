@@ -56,7 +56,7 @@ const getAll = async (req, res) => {
     let allGuardians = await students
       .find()
       .select(
-        "-_id -__v -rollNo -admissionDate -firstName -lastName -gender -type -bloodGroup -dob -motherTongue -religion -caste -number -email -presentAddressHouseNo -presentAddressStreet -presentAddressZipCode -presentAddressCity -presentAddressState -premanentAddressHouseNo -premanentAddressStreet -premanentAddressZipCode -premanentAddressCity -premanentAddressState -previousSchoolName -previousQualification -academic -category -active -fees -registerNo -city -state -presentAddress"
+        "-_id -__v -rollNo -admissionDate -firstName -lastName -gender -type -bloodGroup -dob -motherTongue -religion -caste -number -email -presentAddressHouseNo -presentAddressStreet -presentAddressZipCode -presentAddressCity -presentAddressState -premanentAddressHouseNo -premanentAddressStreet -premanentAddressZipCode -premanentAddressCity -premanentAddressState -previousSchoolName -image -idCardDocument -previousQualification -academic -category -active -fees -registerNo -city -state -presentAddress"
       )
       .populate("guardian")
       .populate("guardian2")
