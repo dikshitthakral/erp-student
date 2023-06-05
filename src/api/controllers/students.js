@@ -234,43 +234,51 @@ const getAllStudents = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-      const id = req.params['id'];
-      let studentResponse = await students.findOne({_id: id}).populate('guardian').populate('category')
+    const id = req.params["id"];
+    let studentResponse = await students
+      .findOne({ _id: id })
+      .populate("guardian")
+      .populate("guardian2")
+      .populate("category")
       .populate({
-        path: 'vehicleRoute',
-        populate: [{path: 'vehicle', model: 'Vehicle'}, {path: 'route', model: 'Route'}]
+        path: "vehicleRoute",
+        populate: [
+          { path: "vehicle", model: "Vehicle" },
+          { path: "route", model: "Route" },
+        ],
       })
       .populate({
-        path: 'academic',
-        populate: [{path: 'studentClass', model: 'Class'}, {path: 'section', model: 'Section'}]
+        path: "academic",
+        populate: [
+          { path: "studentClass", model: "Class" },
+          { path: "section", model: "Section" },
+        ],
       })
       .populate({
-        path: 'fees',
-        populate: [{ path: 'feeType', model: 'FeeType'}]
-      }).exec();
-       const feeData = await FeeData.findOne({studentId: id});
-      if (
-        studentResponse !== undefined &&
-        studentResponse !== null
-      ) {
-        return res.status(200).send({
-           student: {studentResponse, feeData},
-          messge: "Fetch Student by id",
-          success: true,
-        });
-      } else {
-        return res.status(200).send({
-          messge: "Student does not exist",
-          success: false,
-        });
-      }
-    } catch (error) {
-      return res.status(400).send({
-        messge: "Somethig went wrong",
+        path: "fees",
+        populate: [{ path: "feeType", model: "FeeType" }],
+      })
+      .exec();
+    const feeData = await FeeData.findOne({ studentId: id });
+    if (studentResponse !== undefined && studentResponse !== null) {
+      return res.status(200).send({
+        student: { studentResponse, feeData },
+        messge: "Fetch Student by id",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Student does not exist",
         success: false,
       });
     }
-}
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+};
 
 
 const searchByAcademics = async (req, res) => {
