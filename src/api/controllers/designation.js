@@ -112,7 +112,6 @@ const update = async (req, res) => {
             }
         );
         if (
-            updateDesignation.length === 0 ||
             updateDesignation === undefined ||
             updateDesignation === null ||
             updateDesignation === ""
