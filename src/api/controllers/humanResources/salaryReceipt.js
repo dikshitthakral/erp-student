@@ -141,4 +141,25 @@ const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
     }
 }
 
-module.exports = { add, getSalaryReceiptsByMonthAndYear, getSalaryReceiptsByMonthAndEmployee }
+const getSalaryReceiptsOfEmployee = async (req, res) => {
+    try {
+        const { employee } = req.params;
+        let year =  new Date().getFullYear();
+        const salaryReceipts = await salaryReceipt.find({ salaryPaidMonth: { $regex: '.*' + year + '.*' }, employee: employee });
+        
+        if (isEmpty(salaryReceipts)) {
+            return res.status(400)
+                .json([{ msg: "salaryReceipts not found for employee", res: "error", }]);
+        }
+        return res.status(200).json({
+            salary_receipts: salaryReceipts,
+            message: "Fetched salary receipt by month and Year for employee",
+            success: true,
+        });
+    } catch(err) {
+        return res.status(400)
+            .json([{ msg: err.message, res: "error" }]);
+    }
+}
+
+module.exports = { add, getSalaryReceiptsByMonthAndYear, getSalaryReceiptsByMonthAndEmployee, getSalaryReceiptsOfEmployee }

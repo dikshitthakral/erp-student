@@ -252,6 +252,7 @@ router.delete('/salary/:id', salaryController.remove);
 router.put('/salary', salaryController.update);
 router.post('/salaryReceipt', salaryReceiptController.add);
 router.get('/salaryReceipt/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptsByMonthAndYear);
+router.get('/salaryReceipt/employees/:employee', salaryReceiptController.getSalaryReceiptsOfEmployee);
 router.get('/salaryReceipt/employee/:employee/:salaryPaidMonth', salaryReceiptController.getSalaryReceiptsByMonthAndEmployee);
 // Advance Salary
 router.post('/advanceSalary', advanceSalaryController.add);
