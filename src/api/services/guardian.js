@@ -3,7 +3,7 @@ const guardian = require("../models/guardian");
 const guardian2 = require("../models/guardian2");
 const mongoose = require("mongoose");
 
-const createGuardian = async (guardianObj, uploadedLocations) => {
+const createGuardian = async (guardianObj) => {
   try {
     const {
       userName,
@@ -14,6 +14,7 @@ const createGuardian = async (guardianObj, uploadedLocations) => {
       occupation,
       number,
       email,
+      isPrimary
     } = guardianObj;
     if (isEmpty(userName)) {
       throw new Error("UserName missing while creating guardian.");
@@ -41,20 +42,8 @@ const createGuardian = async (guardianObj, uploadedLocations) => {
     if (!isEmpty(occupation)) {
       guardianReq["occupation"] = occupation;
     }
-    if (
-      !isEmpty(uploadedLocations) &&
-      !isEmpty(uploadedLocations["guardian"]) &&
-      !isEmpty(uploadedLocations["guardian"]["image"])
-    ) {
-      guardianReq["image"] = uploadedLocations["guardian"]["image"];
-    }
-    if (
-      !isEmpty(uploadedLocations) &&
-      !isEmpty(uploadedLocations["guardian"]) &&
-      !isEmpty(uploadedLocations["guardian"]["idProofDocument"])
-    ) {
-      guardianReq["idProofDocument"] =
-        uploadedLocations["guardian"]["idProofDocument"];
+    if (!isEmpty(isPrimary)) {
+      guardianReq["isPrimary"] = isPrimary;
     }
 
     return guardian.create(guardianReq);
@@ -64,7 +53,7 @@ const createGuardian = async (guardianObj, uploadedLocations) => {
 };
 const createGuardian2 = async (guardianObj) => {
   try {
-    const { firstName, relation, occupation, number, email } = guardianObj;
+    const { firstName, relation, occupation, number, email,isPrimary } = guardianObj;
     if (isEmpty(firstName)) {
       throw new Error("firstName missing while creating guardian 2.");
     }
@@ -85,6 +74,9 @@ const createGuardian2 = async (guardianObj) => {
     }
     if (!isEmpty(occupation)) {
       guardianReq["occupation"] = occupation;
+    }
+    if (!isEmpty(isPrimary)) {
+      guardianReq["isPrimary"] = isPrimary;
     }
     return guardian2.create(guardianReq);
   } catch (error) {
@@ -124,6 +116,7 @@ const updateGuardian = async (
       occupation,
       number,
       email,
+      isPrimary
     } = guardianObj;
     const guardianReq = {};
     guardianReq.userName = !isEmpty(userName)
@@ -148,6 +141,7 @@ const updateGuardian = async (
     guardianReq.occupation = !isEmpty(occupation)
       ? occupation
       : studentRecord.guardian.occupation;
+      guardianReq.isPrimary = !isEmpty(isPrimary) ? isPrimary : studentRecord.guardian.isPrimary
       const id = studentRecord?.guardian?._id.toString();
     const updatedGuardian = await guardian.findOneAndUpdate(
       { _id: id },
@@ -172,7 +166,7 @@ const updateGuardian2 = async (
   studentRecord
 ) => {
   try {
-    const { firstName, relation, occupation, number, email } = guardianObj;
+    const { firstName, relation, occupation, number, email,isPrimary } = guardianObj;
     const guardianReq = {};
     guardianReq.firstName = !isEmpty(firstName)
       ? firstName
@@ -187,6 +181,7 @@ const updateGuardian2 = async (
     guardianReq.occupation = !isEmpty(occupation)
       ? occupation
       : studentRecord.guardian2.occupation;
+      guardianReq.isPrimary = !isEmpty(isPrimary) ? isPrimary : studentRecord.guardian2.isPrimary
     const updatedGuardian = await guardian2.findOneAndUpdate(
       { _id: studentRecord.guardian2._id },
       guardianReq,
