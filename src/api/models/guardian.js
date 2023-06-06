@@ -37,6 +37,10 @@ const guardianSchema = new mongoose.Schema({
         default: "",
         required: true
     },
+    isPrimary:{
+        type:Boolean,
+        default:false
+    }
   });
   
   const guardian = new mongoose.model("Guardian", guardianSchema);
