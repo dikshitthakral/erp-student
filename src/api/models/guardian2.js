@@ -20,6 +20,10 @@ const guardian2Schema = new mongoose.Schema({
         unique: false,
         default: "",
     },
+    isPrimary:{
+        type:Boolean,
+        default:false
+    }
   });
   
   const guardian2 = new mongoose.model("Guardian2", guardian2Schema);
