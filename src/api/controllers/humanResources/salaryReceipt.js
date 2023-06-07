@@ -14,7 +14,14 @@ const add = async (req, res) => {
                 success: false,
             });
         }
-
+        const salaryReceiptExists = await salaryReceipt.findOne({ salaryPaidMonth, employee });
+        if(!isEmpty(salaryReceiptExists)) {
+            return res.status(200).json({
+                salaryReceipt: salaryReceiptExists,
+                message: "Salary Receipt Already Exists",
+                success: true,
+            });
+        }
         const salaryReceiptObj = {
             status,
             salaryPaidMonth,
