@@ -109,8 +109,8 @@ const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
             }).exec();
         let empoyeeResult = {
             ...employeeById._doc,
-            designationName: employeeById.designation.name,
-            designationId: employeeById.designation._id
+            designationName: employeeById?.designation?.name,
+            designationId: employeeById?.designation?._id
         }
         const salaryReceiptDoc = await salaryReceipt.findOne({ salaryPaidMonth, employee: employeeById._id });
         if(isEmpty(salaryReceiptDoc)) {
