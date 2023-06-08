@@ -126,7 +126,7 @@ router.put('/designation',designationController.update);
 
 // Employee Routes
 router.post('/employee', upload.single('file'), employeeController.save);
-router.get('/employee/all/:page', employeeController.getAll);
+router.get('/employee/all/:page/:designation?', employeeController.getAll);
 router.delete('/employee/:id', employeeController.remove);
 router.put('/employee', upload.single('file'), employeeController.update);
 router.post('/employee/uploadcsv', upload.single('file'), employeeController.bulkSave);

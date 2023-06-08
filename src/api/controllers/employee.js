@@ -94,9 +94,14 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
+        const designation = req.params.designation;
         const perPage = 5, page = Math.max(0, req.params.page || 0);
-        const totalCount = await Employee.count();
-        let allEmployees = await Employee.find().limit(perPage)
+        let query = {};
+        if(!isEmpty(designation)) {
+          query['designation'] = designation;
+        }
+        const totalCount = await Employee.count(query);
+        let allEmployees = await Employee.find(query).limit(perPage)
         .skip(perPage * page)
         .sort({
             name: 'asc'
