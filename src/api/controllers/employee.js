@@ -94,7 +94,13 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allEmployees = await Employee.find().populate('designation').populate('department').exec();
+        const perPage = 5, page = Math.max(0, req.params.page || 0)
+        let allEmployees = await Employee.find().limit(perPage)
+        .skip(perPage * page)
+        .sort({
+            name: 'asc'
+        })
+        .populate('designation').populate('department').exec();
         if (
             allEmployees !== undefined &&
             allEmployees.length !== 0 &&
