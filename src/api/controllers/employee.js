@@ -94,7 +94,8 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        const perPage = 5, page = Math.max(0, req.params.page || 0)
+        const perPage = 5, page = Math.max(0, req.params.page || 0);
+        const totalCount = await Employee.count();
         let allEmployees = await Employee.find().limit(perPage)
         .skip(perPage * page)
         .sort({
@@ -108,6 +109,7 @@ const getAll = async (req, res) => {
         ) {
           return res.status(200).send({
             employees: allEmployees,
+            totalCount: totalCount,
             messge: "All Employees",
             success: true,
           });
