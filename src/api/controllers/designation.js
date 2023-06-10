@@ -1,4 +1,5 @@
 const designation = require('../models/designation');
+const employee = require("../models/employee");
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 
@@ -130,5 +131,34 @@ const update = async (req, res) => {
         });
       }
 }
+// get all designation
+const allTeacher = async (req, res) => {
+  try {
+    const { name } = req.params;
+    let allDesignations = await designation.find({ name: name });
+    const designationId = allDesignations[0]._id;
+    let allTeachers = await employee
+      .find({ designation: designationId })
+      .select(
+        "-joiningDate -salaryGrade -premanentAddressHouseNo -premanentAddressStreet -premanentAddressZipCode -premanentAddressCity -premanentAddressState -qualification -experienceDetails -totalExperience -gender -bloodGroup -religion -dob -number -email -presentAddress -permanentAddress -userName -password -facebook -twitter -linkedin -skipBankDetails -bankName -holderName -bankBranch -bankAddress -ifscCode -accountNumber -designation -department -__v -presentAddressHouseNo -presentAddressStreet -presentAddressZipCode -presentAddressCity -presentAddressState -image"
+      );
+    if (
+      allTeachers !== undefined &&
+      allTeachers.length !== 0 &&
+      allTeachers !== null
+    ) {
+      return res.status(200).send({
+        teachers: allTeachers,
+        messge: "All Teachers",
+        success: true,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+};
 
-module.exports = { remove, create, getAll, update }
+module.exports = { remove, create, getAll, update,allTeacher }
