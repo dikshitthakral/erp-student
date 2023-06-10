@@ -123,6 +123,7 @@ router.post('/designation',designationController.create);
 router.get('/designation/all',designationController.getAll);
 router.delete('/designation/:id',designationController.remove);
 router.put('/designation',designationController.update);
+router.get('/allTeacher/:name',designationController.allTeacher);
 
 // Employee Routes
 router.post('/employee', upload.single('file'), employeeController.save);
