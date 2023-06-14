@@ -4,6 +4,7 @@ const fineSetupController = require('./fineSetup');
 const feeCategoryController = require('./feeCategory');
 const academicFeeTypeController = require('./academicFeeType');
 const feeModeController = require('./feeMode');
+const promotionController = require('./promotion');
 
 module.exports = {
     feeTypeController,
@@ -11,5 +12,6 @@ module.exports = {
     fineSetupController,
     feeCategoryController,
     academicFeeTypeController,
-    feeModeController
+    feeModeController,
+    promotionController
 };
