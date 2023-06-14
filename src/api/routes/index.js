@@ -19,7 +19,7 @@ const marksController = require('../controllers/marks');
 const { routeValidator, stoppageValidator, vehicleValidator, vehicleRouteValidator } = require('../validators/transport');
 const { enquiryValidator, callLogValidator, visitorLogValidator } = require('../validators/reception');
 const { certificateValidator } = require('../validators/certificate/certificate');
-const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController,feeModeController } = require('../controllers/studentAccounting');
+const { feeTypeController, feeGroupController, fineSetupController,feeCategoryController,academicFeeTypeController,feeModeController,promotionController } = require('../controllers/studentAccounting');
 const { salaryController, salaryReceiptController, leavesCategoryController, leavesRequestController, awardController, advanceSalaryController } = require('../controllers/humanResources');
 const router = express.Router();
 const upload = require("../../common");
@@ -244,6 +244,10 @@ router.post('/createMonthType', feeModeController.createMonthType);
 router.get('/getAllMode', feeModeController.allMode);
 router.post('/createFeeMonth', feeModeController.createFeeMonth);
 router.get('/allFeeMonth/:id', feeModeController.allFeeMonth);
+
+// promotion routes
+router.post('/promoteAll', promotionController.promoteAll);
+router.post('/notPromoteAll', promotionController.notPromoteAll);
 
 // Human Resources
 router.post('/salary', salaryController.add);
