@@ -37,11 +37,23 @@ const promoteAll = async (req, res) => {
       studentClass,
       section,
     });
+    if (findAcademic === null) {
+      return res.status(400).send({
+        messge: "Academic not found.",
+        success: false,
+      });
+    }
     const updateAcademic = await academicsService.getIdIfAcademicExists({
       academicYear: promoteacademicYear,
       studentClass: promotestudentClass,
       section: promoteSection,
     });
+    if (updateAcademic === null) {
+      return res.status(400).send({
+        messge: "Update Academic not found.",
+        success: false,
+      });
+    }
     const findStudent = await students.find({ academic: findAcademic._id });
     const academicFee = await academicFeeType.find({
       class: studentClass,
@@ -138,11 +150,23 @@ const notPromoteAll = async (req, res) => {
       studentClass,
       section,
     });
+    if (findAcademic === null) {
+      return res.status(400).send({
+        messge: "Academic not found.",
+        success: false,
+      });
+    }
     const updateAcademic = await academicsService.getIdIfAcademicExists({
       academicYear: promoteacademicYear,
       studentClass: promotestudentClass,
       section: promoteSection,
     });
+    if (updateAcademic === null) {
+      return res.status(400).send({
+        messge: "Update Academic not found.",
+        success: false,
+      });
+    }
     const findStudent = await students.find({ academic: findAcademic._id });
     const academicFee = await academicFeeType.find({
       class: studentClass,
