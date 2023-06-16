@@ -8,7 +8,7 @@ const feeConcessionSchema = new mongoose.Schema({
   },
   feemode: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
   },
   academicYear: {
     type: String,
@@ -19,6 +19,11 @@ const feeConcessionSchema = new mongoose.Schema({
   },
   totalFinalAmount: {
     type: String,
+    required: false,
+    default: ""
+  },
+  isEditableCategory: {
+    type: Boolean,
     required: true,
   },
   allFee: {
