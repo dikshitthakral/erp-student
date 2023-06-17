@@ -259,7 +259,7 @@ const getById = async (req, res) => {
         populate: [{ path: "feeType", model: "FeeType" }],
       })
       .exec();
-    const feeData = await FeeData.findOne({ studentId: id });
+    const feeData = await FeeData.findOne({ studentId: id,academicYear:studentResponse?.academic?.academicYear});
     if (studentResponse !== undefined && studentResponse !== null) {
       return res.status(200).send({
         student: { studentResponse, feeData },
