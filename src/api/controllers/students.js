@@ -131,7 +131,7 @@ const createAdmission = async (req, res) => {
     var today = new Date();
     var year = today.getFullYear();
     year = year.toString().substr(-2);
-    regNo = year + "VIS" + "00" + studentCount;
+    regNo = "VIS" + year + "00" + studentCount;
     const updateRegisterNoInStudent = await students.findOneAndUpdate(
       { _id: studentRes._id },
       { $set: { registerNo: regNo } },
