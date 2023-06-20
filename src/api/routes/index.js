@@ -198,6 +198,9 @@ router.get('/marks/all', marksController.getAll);
 router.delete('/marks/:id', marksController.remove);
 router.put('/marks', marksController.update);
 router.post('/marks/student', marksController.getMarksByAcademicAndStudentId);
+router.post('/marks/student/page/:page', marksController.getMarksByFilter);
+router.put('/marks/students', marksController.updateMultiple);
+
 //Student Accounting
 router.post('/feeType', feeTypeController.create);
 router.get('/feeType/all', feeTypeController.getAll);

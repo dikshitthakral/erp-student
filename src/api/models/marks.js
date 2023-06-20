@@ -27,6 +27,11 @@ const marksSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
+    written: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     totalPractical: {
         type: Number,
         required: false,

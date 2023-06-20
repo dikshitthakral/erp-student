@@ -1,5 +1,6 @@
 const marks = require('../models/marks');
 const grades = require('../models/grade');
+const students = require('../models/students');
 const mongoose = require('mongoose');
 const { isEmpty } = require('lodash');
 const academicsService = require('../services/academic');
@@ -207,4 +208,99 @@ const getMarksByAcademicAndStudentId = async (req, res) => {
     }
 }
 
-module.exports = { create, getAll, remove, update, getMarksByAcademicAndStudentId };
+const getMarksByFilter = async (req, res) => {
+  try {
+    const { academicYear, section, studentClass, exam, subject } = req.body;
+    const perPage = 10, page = Math.max(0, req.params.page || 0);
+    const academicsId = await academicsService.getIdIfAcademicExists({ academicYear, section, studentClass });
+    if(!academicsId) {
+      return res.status(400).send({
+        messge: "Academics not found.",
+        success: false,
+      });
+    }
+    let allMarksByFilter = await marks.find({examId: exam, subject , academic: academicsId});
+    if(isEmpty(allMarksByFilter) || allMarksByFilter.length === 0) {
+      const allStudents = await students.find({ academic: academicsId, active : true});
+      let allMarks = [];
+      for(let student of allStudents) {
+          allMarks.push({
+            examId: exam,
+            subject,
+            student: student._id,
+            isAbsent : false,
+            practical : 0,
+            written : 0,
+            academic: academicsId,
+            totalPractical: 30,
+            totalWritten: 70,
+            totalMarksScored: 0
+          });
+      }
+      await marks.insertMany(allMarks);
+    }
+    let studentMarks = await marks.find({academic: academicsId, examId: exam, subject})
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({
+            name: 'asc'
+        })
+        .populate('examId').populate('subject');
+    const totalCount = await marks.count({academic: academicsId, examId: exam, subject});
+    return res.status(200).send({
+      studentMarks,
+      totalCount: totalCount,
+      messge: "All Student marks",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Something went wrong",
+      success: false,
+    });
+  }
+}
+
+const updateMultiple = async (req, res) => {
+  try {
+      const { studentMarks } = req.body;
+      // const { examId, subject, studentId, isAbsent, practical, written, academicYear, studentClass, section,
+      //   totalPractical, totalWritten } = req.body;
+      if(isEmpty(studentMarks)) {
+          return res.status(400).send({
+              messge: "Mandatory fields missing while creating Marks.",
+              success: false,
+          });
+      }
+      let marksArray = [];
+      for(let mark of studentMarks) {
+        let updatedMarks = await marks.findOneAndUpdate(
+          { _id: mark.id },
+          {
+              $set: {
+                student: isEmpty(mark.studentId) ? undefined : mark.studentId,
+                isAbsent: isEmpty(mark.isAbsent) ? undefined : mark.isAbsent,
+                practical : isNaN(mark.practical) ? undefined : mark.practical,
+                written : isNaN(mark.written) ? undefined : mark.written,
+                totalPractical: isNaN(mark.totalPractical) ? 30 : mark.totalPractical,
+                totalWritten: isNaN(mark.totalWritten) ? 70 : mark.totalWritten,
+                totalMarksScored: isNaN(mark.practical) && isNaN(mark.written) ? 0 : (mark.practical + mark.written)
+              }
+          }, {
+            new: true
+          }
+        );
+        marksArray.push(updatedMarks);
+      }
+      return res.status(200).json({
+          updatedMarks: marksArray,
+          message: "Added Multiple Marks Successfully",
+          success: true,
+      });
+  }catch (err) {
+      return res.status(400)
+          .json([{ msg: err.message, res: "error" }]);
+  }
+}
+
+module.exports = { create, getAll, remove, update, getMarksByAcademicAndStudentId, getMarksByFilter, updateMultiple };
