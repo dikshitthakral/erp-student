@@ -216,7 +216,7 @@ const getConcessionAmount = async (req, res) => {
 // create fee concession to student
 const createFeeConcession = async (req, res) => {
   try {
-    const { studentId, feemode, academicYear, studentClass, totalFinalAmount,allFee } =
+    const { studentId, feemode, academicYear, studentClass, totalFinalAmount,allFee,isEditableCategory } =
       req.body;
     if (isEmpty(studentId)) {
       return res.status(400).send({
@@ -282,7 +282,8 @@ const createFeeConcession = async (req, res) => {
           studentClass: studentClass,
           totalFinalAmount: totalFinalAmount,
           allFee:allFee,
-          allMode:AllFeeMode
+          allMode:AllFeeMode,
+          isEditableCategory: isEditableCategory
         });
         if (feeConcessionData) {
           return res.status(200).json({
