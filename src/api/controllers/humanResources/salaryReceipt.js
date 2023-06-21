@@ -83,6 +83,8 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
                 empoyeeResult['account'] = salaryReceiptDoc.account;
             }
             empoyeeResult['salaryMonth'] = salaryPaidMonth;
+            empoyeeResult['receiptNo'] = salaryReceiptDoc.receiptNo;
+            empoyeeResult['createdAt'] = salaryReceiptDoc.createdAt;
             response.push(empoyeeResult);
         }
         if (isEmpty(response)) {
@@ -134,6 +136,8 @@ const getSalaryReceiptsByMonthAndEmployee = async (req, res) => {
             empoyeeResult['account'] = salaryReceiptDoc.account;
         }
         empoyeeResult['salaryMonth'] = salaryPaidMonth;
+        empoyeeResult['receiptNo'] = salaryReceiptDoc.receiptNo;
+        empoyeeResult['createdAt'] = salaryReceiptDoc.createdAt;
         if (isEmpty(empoyeeResult)) {
             return res.status(400)
                 .json([{ msg: "salaryReceipts not found for employee", res: "error", }]);

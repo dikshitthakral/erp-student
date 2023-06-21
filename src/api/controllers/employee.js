@@ -340,7 +340,7 @@ const bulkSave = async (req, res) => {
 const getByDesignation = async (req, res) => {
   try {
       const designationId = req.params['designationId'];
-      let getEmployeesByDesignation = await Employee.findOne({ designation: mongoose.Types.ObjectId(designationId)})
+      let getEmployeesByDesignation = await Employee.find({ designation: mongoose.Types.ObjectId(designationId)})
           .populate('designation').populate('department').exec()
       if (!isEmpty(getEmployeesByDesignation)) {
         return res.status(200).send({
