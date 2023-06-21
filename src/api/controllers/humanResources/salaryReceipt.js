@@ -23,6 +23,7 @@ const add = async (req, res) => {
             });
         }
         const salaryReceiptObj = {
+            receiptNo: Math.floor(100000 + Math.random() * 900000),
             status,
             salaryPaidMonth,
             employee,

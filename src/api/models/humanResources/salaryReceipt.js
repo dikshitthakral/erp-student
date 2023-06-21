@@ -17,8 +17,9 @@ const salaryReceiptSchema = new mongoose.Schema({
     overtimeAmount: { type: Number, default: 0 },
     netSalary: { type: Number, default: 0 },
     payVia: { type: String, default: 'CASH' },
-    account: { type: String, required: false}
-});
+    account: { type: String, required: false},
+    receiptNo: { type: Number }
+}, { timestamps: true });
 
 const salaryReceipt = new mongoose.model("SalaryReceipt", salaryReceiptSchema);
 module.exports = salaryReceipt;

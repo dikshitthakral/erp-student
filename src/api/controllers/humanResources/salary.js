@@ -149,8 +149,8 @@ const update = async (req, res) => {
         updateObject["salaryGrade"] = !isEmpty(salaryGrade) ? salaryGrade : salaryRecord.salaryGrade;
         updateObject["basicSalary"] = !isNaN(basicSalary) && basicSalary > 0 ? basicSalary : salaryRecord.basicSalary;
         updateObject["overTimeRatePerHr"] = !isNaN(basicSalary) && basicSalary > 0 ? overTimeRatePerHr: salaryRecord.overTimeRatePerHr;
-        updateObject["allowances"] = !isEmpty(allowances) ? validateAllowanceAndDeductionsModel(allowances || []) : salaryRecord.allowances;
-        updateObject["deductions"] = !isEmpty(deductions) ? validateAllowanceAndDeductionsModel(deductions || []) : salaryRecord.deductions;
+        updateObject["allowances"] = !isEmpty(allowances) ? [...salaryRecord.allowances, ...validateAllowanceAndDeductionsModel(allowances || [])] : salaryRecord.allowances;
+        updateObject["deductions"] = !isEmpty(deductions) ? [...salaryRecord.deductions, ...validateAllowanceAndDeductionsModel(deductions || [])] : salaryRecord.deductions;
         
         updateObject.allowances.length > 0 ? updateObject['totalAllowance'] = sumBy(updateObject.allowances, 'amount') : 0;
         updateObject.deductions.length > 0 ? updateObject['totalDeductions'] = sumBy(updateObject.deductions, 'amount') : 0;

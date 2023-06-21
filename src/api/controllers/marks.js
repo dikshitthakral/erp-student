@@ -245,7 +245,7 @@ const getMarksByFilter = async (req, res) => {
         .sort({
             name: 'asc'
         })
-        .populate('examId').populate('subject');
+        .populate('student');
     const totalCount = await marks.count({academic: academicsId, examId: exam, subject});
     return res.status(200).send({
       studentMarks,
@@ -279,7 +279,7 @@ const updateMultiple = async (req, res) => {
           {
               $set: {
                 student: isEmpty(mark.studentId) ? undefined : mark.studentId,
-                isAbsent: isEmpty(mark.isAbsent) ? undefined : mark.isAbsent,
+                isAbsent: !Boolean(mark.isAbsent) ? undefined : mark.isAbsent,
                 practical : isNaN(mark.practical) ? undefined : mark.practical,
                 written : isNaN(mark.written) ? undefined : mark.written,
                 totalPractical: isNaN(mark.totalPractical) ? 30 : mark.totalPractical,
