@@ -29,6 +29,7 @@ const classController = require('../controllers/class');
 const noticeBoardController = require('../controllers/noticeBoard');
 const homeworkSubmissionController = require('../controllers/homework-submission');
 const attendanceController = require('../controllers/attendance');
+const employeeAttendanceController = require('../controllers/employeeAttandance');
 const studentAttendance = require('../controllers/studentAttandance');
 const raiseATicketController = require('../controllers/raiseATicket');
 const bannerController = require('../controllers/banner');
@@ -346,5 +347,9 @@ router.get('/getAllAttandance', studentAttendance.getAll);
 router.post('/halfDayStudent', studentAttendance.getAllByHalfdayList);
 router.post('/getAllAbsentList', studentAttendance.getAllAbsentList);
 router.post('/showAttandanceList', studentAttendance.getAllAttandance);
+
+// Employee Attendance
+router.post('/empAttandance/filter', employeeAttendanceController.filter);
+router.post('/empAttandance/create', employeeAttendanceController.add);
 
 module.exports = router;
