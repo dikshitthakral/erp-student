@@ -35,6 +35,7 @@ const raiseATicketController = require('../controllers/raiseATicket');
 const bannerController = require('../controllers/banner');
 const notificationController = require('../controllers/notification');
 const route = require('../models/transport/route');
+const principalDailyReportController = require('../controllers/principalDailyReport');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -351,5 +352,9 @@ router.post('/showAttandanceList', studentAttendance.getAllAttandance);
 // Employee Attendance
 router.post('/empAttandance/filter', employeeAttendanceController.filter);
 router.post('/empAttandance/create', employeeAttendanceController.add);
+
+// principal daily report routes
+router.post('/createReport', principalDailyReportController.create);
+router.post('/getReportByDate', principalDailyReportController.getReportByDate);
 
 module.exports = router;
