@@ -15,7 +15,7 @@ const create = async (req, res) => {
             name
         });
         return res.status(200).json({
-            section: newType,
+            type: newType,
             message: "Added New Type Successfully",
             success: true,
         });
@@ -34,7 +34,7 @@ const getAll = async (req, res) => {
             allType !== null
         ) {
           return res.status(200).send({
-            sections: allType,
+            type: allType,
             message: "All Type",
             success: true,
           });
