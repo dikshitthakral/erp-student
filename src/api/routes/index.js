@@ -10,6 +10,7 @@ const employeeController = require('../controllers/employee');
 const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
+const typeController = require('../controllers/type');
 const homeworkController = require('../controllers/homework');
 const gradeController = require('../controllers/grade');
 const examController = require('../controllers/exam');
@@ -356,5 +357,11 @@ router.post('/empAttandance/create', employeeAttendanceController.add);
 // principal daily report routes
 router.post('/createReport', principalDailyReportController.create);
 router.post('/getReportByDate', principalDailyReportController.getReportByDate);
+
+// Type
+router.post('/y', typeController.create);
+router.get('/type/all', typeController.getAll);
+router.delete('/type/:id', typeController.remove);
+router.put('/updateType', typeController.update);
 
 module.exports = router;
