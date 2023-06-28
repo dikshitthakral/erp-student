@@ -359,7 +359,7 @@ router.post('/createReport', principalDailyReportController.create);
 router.post('/getReportByDate', principalDailyReportController.getReportByDate);
 
 // Type
-router.post('/y', typeController.create);
+router.post('/createType', typeController.create);
 router.get('/type/all', typeController.getAll);
 router.delete('/type/:id', typeController.remove);
 router.put('/updateType', typeController.update);
