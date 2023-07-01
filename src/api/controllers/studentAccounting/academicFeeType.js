@@ -269,7 +269,9 @@ const createFeeConcession = async (req, res) => {
             status: item.status,
             amount: totalFinalAmount / FeeMonth.length,
             paymentMode:"",
-            invoice:""
+            invoice:"",
+            hike: "",
+            paidDate: "",
           });
         } );
       }
@@ -415,6 +417,8 @@ const updateModeStatus = async (req, res) => {
             feeConcessionData.allMode[i].status = "Paid";
             feeConcessionData.allMode[i].paymentMode = paymentMode;
             feeConcessionData.allMode[i].invoice = invoice;
+            feeConcessionData.allMode[i].hike = "";
+            feeConcessionData.allMode[i].paidDate = Date.now();
           }
         }
         const updateMode = await feeConcession.findByIdAndUpdate(

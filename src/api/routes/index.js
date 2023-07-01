@@ -10,6 +10,7 @@ const employeeController = require('../controllers/employee');
 const academicController = require('../controllers/academic');
 const subjectController = require('../controllers/subject');
 const scheduleController = require('../controllers/schedule');
+const typeController = require('../controllers/type');
 const homeworkController = require('../controllers/homework');
 const gradeController = require('../controllers/grade');
 const examController = require('../controllers/exam');
@@ -29,11 +30,13 @@ const classController = require('../controllers/class');
 const noticeBoardController = require('../controllers/noticeBoard');
 const homeworkSubmissionController = require('../controllers/homework-submission');
 const attendanceController = require('../controllers/attendance');
+const employeeAttendanceController = require('../controllers/employeeAttandance');
 const studentAttendance = require('../controllers/studentAttandance');
 const raiseATicketController = require('../controllers/raiseATicket');
 const bannerController = require('../controllers/banner');
 const notificationController = require('../controllers/notification');
 const route = require('../models/transport/route');
+const principalDailyReportController = require('../controllers/principalDailyReport');
 
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
@@ -346,5 +349,19 @@ router.get('/getAllAttandance', studentAttendance.getAll);
 router.post('/halfDayStudent', studentAttendance.getAllByHalfdayList);
 router.post('/getAllAbsentList', studentAttendance.getAllAbsentList);
 router.post('/showAttandanceList', studentAttendance.getAllAttandance);
+
+// Employee Attendance
+router.post('/empAttandance/filter', employeeAttendanceController.filter);
+router.post('/empAttandance/create', employeeAttendanceController.add);
+
+// principal daily report routes
+router.post('/createReport', principalDailyReportController.create);
+router.post('/getReportByDate', principalDailyReportController.getReportByDate);
+
+// Type
+router.post('/createType', typeController.create);
+router.get('/type/all', typeController.getAll);
+router.delete('/type/:id', typeController.remove);
+router.put('/updateType', typeController.update);
 
 module.exports = router;
