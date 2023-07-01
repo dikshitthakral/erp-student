@@ -349,6 +349,7 @@ router.get('/getAllAttandance', studentAttendance.getAll);
 router.post('/halfDayStudent', studentAttendance.getAllByHalfdayList);
 router.post('/getAllAbsentList', studentAttendance.getAllAbsentList);
 router.post('/showAttandanceList', studentAttendance.getAllAttandance);
+router.post('/getAllStudent', studentAttendance.getAllStudent);
 
 // Employee Attendance
 router.post('/empAttandance/filter', employeeAttendanceController.filter);
