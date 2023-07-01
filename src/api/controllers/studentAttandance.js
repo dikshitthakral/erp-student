@@ -267,7 +267,45 @@ const getAllAttandance = async (req, res) => {
     return res.status(400).json([{ msg: err.message, res: "error" }]);
   }
 };
+// get all student by classId, sectionId, year
+const getAllStudent = async (req, res) => {
+  try {
+    const { studentClass, section, academicYear } = req.body;
+      if (isEmpty(studentClass) || isEmpty(section) || isEmpty(academicYear)) {
+        return res
+          .status(400)
+          .json([{ msg: "All fields are required", res: "error" }]);
+      }
+      const findAcademic = await academicsService.getIdIfAcademicExists({
+        academicYear,
+        studentClass,
+        section,
+      });
+      console.log(findAcademic,academicYear,studentClass,section)
+      if (findAcademic === null) {
+        return res.status(400).send({
+          messge: "Academic not found.",
+          success: false,
+        });
+      }
+      const findStudent = await students.find({ academic: findAcademic._id })
+      .select("_id firstName lastName registerNo");
+      if (findStudent.length === 0) {
+        return res.status(400).send({
+          messge: "Student not found.",
+          success: false,
+        });
+      }
+      return res.status(200).send({
+        messge: "list fetched successfully.",
+        success: true,
+        data: findStudent,
+      });
+  } catch (err) {
+    return res.status(400).json([{ msg: err.message, res: "error" }]);
+  }
+};
 
 
 
-module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance };
+module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance,getAllStudent };
