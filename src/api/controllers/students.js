@@ -823,7 +823,7 @@ const updateFeeStatus = async (req, res) => {
 const fetchStudentsByFilter = async (req, res) => {
     try {
       const type = req.params['type'];
-      const { academicYear, caste, fromDate, toDate } = req.body;
+      const { academicYear, caste, fromDate, toDate, studentClass } = req.body;
       const academicsList = await Academics.find({ academicYear: academicYear })
             .populate('studentClass').populate('section');
       if(type === 'GENDER') {
@@ -839,6 +839,13 @@ const fetchStudentsByFilter = async (req, res) => {
         return res. status(200).send({
           casteResponse: result,
           messge: "All Caste wise class response",
+          success: true,
+        });
+      } else if(type === 'CLASS') {
+        const result = await classWiseResponse(academicYear, studentClass);
+        return res. status(200).send({
+          genderResponse: result,
+          messge: "All Gender wise class response",
           success: true,
         });
       } else {
@@ -897,6 +904,26 @@ const casteWiseResponse = async (academicList, caste) => {
       })
     }
     return casteList;
+  } catch(err) {
+    throw err;
+  }
+}
+
+const classWiseResponse = async (academicYear, studentClass) => {
+  try {
+    const academicList = await Academics.find({ academicYear: academicYear, studentClass })
+            .populate('studentClass').populate('section');
+    let classList = [];
+    for(let academic of academicList) {
+      const countStudents = await students.find({
+        academic : academic._id
+      }).count();
+      classList.push({
+        ...academic._doc,
+        total: countStudents
+      })
+    }
+    return classList;
   } catch(err) {
     throw err;
   }
