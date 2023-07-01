@@ -37,7 +37,15 @@ const bannerController = require('../controllers/banner');
 const notificationController = require('../controllers/notification');
 const route = require('../models/transport/route');
 const principalDailyReportController = require('../controllers/principalDailyReport');
+const queriesController = require('../controllers/query');
 
+// Queries Routes
+router.post('/query/add', upload.single('file'),queriesController.addQuestion);
+router.put('/query/answer/add', upload.single('file'),queriesController.updateAnswer);
+router.get('/query/fetch/:id',queriesController.getById);
+router.get('/query/all',queriesController.getAll);
+router.get('/query/teacher/:teacherId', queriesController.getByTeacher);
+router.get('/query/student/:studentId', queriesController.getQueriesByStudent);
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
 router.post('/student/admission', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.createAdmission);

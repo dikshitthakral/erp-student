@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "6cdafffa-4293-4ff1-aeaa-0cbd9b8e5419",
+		"name": "Query Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "question",
+							"value": "asbhasdhdjkdjdjdjnda?",
+							"type": "text"
+						},
+						{
+							"key": "student",
+							"value": "sakwdkewewe333233jk3",
+							"type": "text"
+						},
+						{
+							"key": "employee",
+							"value": "e3232rerffrfdew3",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/query/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"query",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Answer to query",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "queryId",
+							"value": "adew3322errrf",
+							"type": "text"
+						},
+						{
+							"key": "answer",
+							"value": "3e3fffdfgfssffs",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/query/answer/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"query",
+						"answer",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Queries By Teacher(Employee)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/query/teacher/:teacherId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"query",
+						"teacher",
+						":teacherId"
+					],
+					"variable": [
+						{
+							"key": "teacherId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Queries By Student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/query/student/:studentId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"query",
+						"student",
+						":studentId"
+					],
+					"variable": [
+						{
+							"key": "studentId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/query/fetch/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"query",
+						"fetch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
