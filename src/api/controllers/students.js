@@ -822,45 +822,33 @@ const updateFeeStatus = async (req, res) => {
 
 const fetchStudentsByFilter = async (req, res) => {
     try {
-      const { gender, religion, fromDate, toDate } = req.body;
-      let query = [];
-      if(!isEmpty(gender)) {
-        query.push({ gender })
-      }
-      if(!isEmpty(religion)) {
-        query.push({ religion })
-      }
-      if(!isEmpty(fromDate) && !isEmpty(toDate)) {
-        query.push({ admissionDate: {
-          $gte: new Date(fromDate),
-          $lte: new Date(toDate),
-        }
-      })
-      }
-      const filteredStudents = await students.find({
-        $and: query
-      }).populate('academic').populate({
-        path: 'fees',
-        populate: [{
-          path: 'feeType',
-          model: 'FeeType'
-      }]
-      }).exec();
-      if (
-          filteredStudents === undefined ||
-          filteredStudents.length == 0 ||
-          filteredStudents === null
-      ) {
-        return res.status(200).send({
-          messge: "No Students found with above filtered criteria.",
-          success: false,
+      const type = req.params['type'];
+      const { academicYear, caste, fromDate, toDate } = req.body;
+      const academicsList = await Academics.find({ academicYear: academicYear })
+            .populate('studentClass').populate('section');
+      if(type === 'GENDER') {
+        const result = await genderWiseResponse(academicsList);
+        return res. status(200).send({
+          genderResponse: result,
+          messge: "All Gender wise class response",
+          success: true,
         });
       }
-    return res. status(200).send({
-      students: filteredStudents,
-      messge: "All Filtered Students",
-      success: true,
-    });
+      else if(type === 'CASTE') {
+        const result = await casteWiseResponse(academicsList, caste);
+        return res. status(200).send({
+          casteResponse: result,
+          messge: "All Caste wise class response",
+          success: true,
+        });
+      } else {
+        const result = await dateWiseResponse(academicsList, fromDate, toDate);
+        return res. status(200).send({
+          dateResponse: result,
+          messge: "All Date wise class response",
+          success: true,
+        });
+      }
   } catch(err) {
       return res.status(400).send({
           messge: "Somethig went wrong",
@@ -869,10 +857,88 @@ const fetchStudentsByFilter = async (req, res) => {
   }
 }
 
+const genderWiseResponse = async (academicList) => {
+  try {
+    let genderList = [];
+    for(let academic of academicList) {
+      const countMaleStudents = await students.find({
+        academic : academic._id,
+        gender: 'Male'
+      }).count();
+      const countFemaleStudents = await students.find({
+        academic : academic._id,
+        gender: 'Female'
+      }).count();
+      genderList.push({
+        ...academic._doc,
+        boy: countMaleStudents,
+        girl: countFemaleStudents,
+        total: countMaleStudents + countFemaleStudents
+      })
+    }
+    return genderList;
+  } catch(err) {
+    throw err;
+  }
+}
+
+const casteWiseResponse = async (academicList, caste) => {
+  try {
+    let casteList = [];
+    for(let academic of academicList) {
+      const countCasteStudents = await students.find({
+        academic : academic._id,
+        caste: caste
+      }).count();
+      casteList.push({
+        ...academic._doc,
+        caste,
+        total: countCasteStudents
+      })
+    }
+    return casteList;
+  } catch(err) {
+    throw err;
+  }
+}
+
+const dateWiseResponse = async (academicList, fromDate, toDate) => {
+  try {
+    let dateList = [];
+    for(let academic of academicList) {
+      const countDateStudents = await students.find({
+        academic : academic._id,
+        admissionDate: {
+          $gte: new Date(fromDate),
+          $lte: new Date(toDate),
+        }
+      }).count();
+      dateList.push({
+        ...academic._doc,
+        fromDate,
+        toDate,
+        total: countDateStudents
+      })
+    }
+    return dateList;
+  } catch(err) {
+    throw err;
+  }
+}
+
 const fetchStudentsByStatus = async (req, res) => {
   try {
+      const { academicYear, section, studentClass } = req.body;
       const status = req.params['status'];
+      const academicsId = await academicsService.getIdIfAcademicExists({ academicYear, section, studentClass });
+      if(!mongoose.Types.ObjectId.isValid(academicsId)) {
+          return res.status(400).send({
+              messge: "No records found with above filter critera",
+              success: false,
+          });
+      }
       const filteredStudents = await students.find({
+        academic: academicsId,
         active: Boolean(status)
       }).populate('academic').populate({
         path: 'fees',

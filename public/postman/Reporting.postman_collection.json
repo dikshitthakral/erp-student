@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "610f187d-b979-49e6-8a44-7834b3839ff9",
+		"name": "Reporting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Student strength by filter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"2023-2024\",\n    \"caste\": \"OC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/filter/CASTE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"filter",
+						"CASTE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Active/Inactive students",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"academicYear\": \"\",\n    \"section\": \"\",\n    \"studentClass\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/active/true/academic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"active",
+						"true",
+						"academic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Status",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"studentId\" : \"63e94d3cd685b2bc3c52410a\",\n    \"status\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FetchStudentByGuardian",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ParkashArora\",\n    \"number\": \"9876598765\",\n    \"email\": \"prakasharora@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/guardian/filter",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"guardian",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Promotion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n    \"studentId\": \"63e94d3cd685b2bc3c52410a\", \n    \"academicYear\": \"2023-2024\", \n    \"section\": \"A\", \n    \"studentClass\": \"10th\",\n    \"rollNo\": \"2\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/promote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"promote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Students Marks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/students/63e9353e2b93962bfb2d6c8f/marks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"students",
+						"63e9353e2b93962bfb2d6c8f",
+						"marks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

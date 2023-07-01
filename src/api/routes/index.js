@@ -287,8 +287,8 @@ router.get('/award/all', awardController.getAll);
 router.delete('/award/:id', awardController.remove);
 router.put('/award', awardController.update);
 // Reports
-router.post('/students/filter', studentsController.fetchStudentsByFilter);
-router.get('/students/active/:status', studentsController.fetchStudentsByStatus);
+router.post('/students/filter/:type', studentsController.fetchStudentsByFilter);
+router.post('/students/active/:status/academic', studentsController.fetchStudentsByStatus);
 router.put('/students/status', studentsController.updateStatus);
 router.post('/students/guardian/filter', guardianController.getStudentsWithSameGuardian);
 router.get('/guardian/all', guardianController.getAll);
