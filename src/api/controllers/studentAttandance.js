@@ -6,13 +6,13 @@ const students = require("../models/students");
 
 const create = async (req, res) => {
   try {
-    const { classId, sectionId, year, type, students } = req.body;
+    const { classId, sectionId, year, type, students,date } = req.body;
     if (
       isEmpty(classId) ||
       isEmpty(sectionId) ||
       isEmpty(year) ||
       isEmpty(type) ||
-      isEmpty(students)
+      isEmpty(students) || isEmpty(date)
     ) {
       return res
         .status(400)
@@ -28,7 +28,7 @@ const create = async (req, res) => {
       year,
       type,
       students: studentArray,
-      date: new Date().toLocaleDateString(),
+      date: date,
     });
     const result = await newAttendance.save();
     if (result) {
