@@ -538,7 +538,6 @@ const updateStudent = async (req, res) => {
       guardian1.email !== "" &&
       guardian1.occupation !== ""
     ) {
-      profile["guardian"] = updatedGuardian._id;
       const updatedGuardian1 = await guardianService.updateGuardian2(
         guardian1 ?? {},
         studentRecord
