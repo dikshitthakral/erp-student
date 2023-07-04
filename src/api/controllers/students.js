@@ -531,11 +531,23 @@ const updateStudent = async (req, res) => {
     );
 
     profile["guardian"] = updatedGuardian._id;
-    const updatedGuardian1 = await guardianService.updateGuardian2(
-      guardian1 ?? {},
-      studentRecord
-    );
-    profile["guardian2"] = updatedGuardian1._id;
+     if (
+      guardian1.relation !== "" &&
+      guardian1.firstName !== "" &&
+      guardian1.number !== "" &&
+      guardian1.email !== "" &&
+      guardian1.occupation !== ""
+    ) {
+      profile["guardian"] = updatedGuardian._id;
+      const updatedGuardian1 = await guardianService.updateGuardian2(
+        guardian1 ?? {},
+        studentRecord
+      );
+      profile["guardian2"] = updatedGuardian1._id;
+    } else {
+      console.log("guardian2 is empty");
+      profile["guardian2"] = null;
+    }
     profile.rollNo = !isEmpty(rollNo) ? rollNo : studentRecord.rollNo;
     profile.admissionDate = !isEmpty(admissionDate)
       ? admissionDate
