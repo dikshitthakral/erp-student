@@ -491,6 +491,7 @@ const updateStudent = async (req, res) => {
       previousQualification,
       previousRemarks,
       vehicleRoute,
+        active
     } = req.body;
 
     const id = req.params["id"];
@@ -548,6 +549,7 @@ const updateStudent = async (req, res) => {
     profile.email = !isEmpty(email) ? email : studentRecord.email;
     profile.lastName = !isEmpty(lastName) ? lastName : studentRecord.lastName;
     profile.gender = !isEmpty(gender) ? gender : studentRecord.gender;
+       profile.active = !isEmpty(active) ? active : studentRecord.active;
     profile.bloodGroup = !isEmpty(bloodGroup)
       ? bloodGroup
       : studentRecord.bloodGroup;
