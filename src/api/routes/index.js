@@ -350,6 +350,7 @@ router.delete('/banner/delete', bannerController.deleteBannerById);
 //Notification Routes
 router.post('/createNotification', notificationController.createNotification);
 router.get('/notification/:type', notificationController.getAllNotification);
+router.get('/notificationAll', notificationController.allNotification);
 router.delete('/notification/delete', notificationController.deleteNotificationById);
 
 // Student Attendance
