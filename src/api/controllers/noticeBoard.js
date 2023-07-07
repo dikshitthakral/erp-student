@@ -62,6 +62,36 @@ const getAll = async (req, res) => {
         });
       }
 }
+
+// noticeBoard details by id
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let allNoticeBoard = await noticeBoard.find( { _id: id });
+    if (
+        allNoticeBoard !== undefined &&
+        allNoticeBoard.length !== 0 &&
+        allNoticeBoard !== null
+    ) {
+      return res.status(200).send({
+        noticeBoard: allNoticeBoard,
+        messge: "All Notice Board",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Notice Board does not exist",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Something went wrong",
+      success: false,
+    });
+  }
+}
+
 const getAllNoticeBoard = async (req, res) => {
   try {
       let allNoticeBoard = await noticeBoard.find();
@@ -129,4 +159,4 @@ const remove = async (req, res) => {
       }
 }
 
-module.exports = { create, getAll,getAllNoticeBoard, remove };
+module.exports = { create, getAll,getAllNoticeBoard,getById, remove };
