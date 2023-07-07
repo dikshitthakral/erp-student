@@ -319,6 +319,7 @@ router.put('/class', classController.update);
 // NoticeBoard
 router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
 router.get('/noticeBoard/:type', noticeBoardController.getAll);
+router.get('/allNoticeBoard', noticeBoardController.getAllNoticeBoard);
 router.delete('/noticeBoard/delete', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
