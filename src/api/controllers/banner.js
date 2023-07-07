@@ -42,8 +42,7 @@ const createBanner = async (req, res) => {
 //Get All Banner
 const getAllBanner = async (req, res) => {
   try {
-    const { type } = req.params;
-    let allBanner = await banner.find({ bannerType: type });
+    let allBanner = await banner.find();
     if (
       allBanner !== undefined &&
       allBanner.length !== 0 &&
