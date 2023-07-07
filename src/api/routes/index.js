@@ -343,7 +343,7 @@ router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.rem
 
 // Banner Routes
 router.post('/banner', upload.single('file'), bannerController.createBanner);
-router.get('/banner/:type', bannerController.getAllBanner);
+router.get('/bannerAll', bannerController.getAllBanner);
 router.delete('/banner/delete', bannerController.deleteBannerById);
 
 //Notification Routes
