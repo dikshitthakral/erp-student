@@ -22,6 +22,8 @@ const create = async (req, res) => {
     students.map((student) => {
       studentArray.push({ student: student });
     });
+     const dateArray = date.split("/");
+    const newDate = dateArray[0] + "/" + dateArray[2];
     const newAttendance = new attendance({
       classId,
       sectionId,
@@ -29,6 +31,7 @@ const create = async (req, res) => {
       type,
       students: studentArray,
       date: date,
+      monthYear: newDate,
     });
     const result = await newAttendance.save();
     if (result) {
