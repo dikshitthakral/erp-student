@@ -365,6 +365,7 @@ router.post('/getAllStudent', studentAttendance.getAllStudent);
 // Employee Attendance
 router.post('/empAttandance/filter', employeeAttendanceController.filter);
 router.post('/empAttandance/create', employeeAttendanceController.add);
+router.post('/filteremp/attandance', employeeAttendanceController.filterByMonth);
 
 // principal daily report routes
 router.post('/createReport', principalDailyReportController.create);
