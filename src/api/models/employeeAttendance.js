@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["Present", "Absent", "Half Day", "Late"],
+      enum: ["Present", "Absent", "Half Day"],
       required: true,
     },
   },
