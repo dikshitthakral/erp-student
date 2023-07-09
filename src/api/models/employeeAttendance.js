@@ -27,6 +27,9 @@ const employeeAttendanceSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    monthYear: {
+      type: String,
+    },
     employee: [employeeSchema],
   },
   (createAt = { timestamps: true, autoIndex: false, autoCreate: false })
