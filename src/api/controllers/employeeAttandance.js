@@ -83,6 +83,8 @@ const add = async (req, res) => {
   employee.map((emp) => {
     employeeArray.push({ employeeId: emp.employee, type: emp.type });
   });
+   const dateArray = date.split("/");
+  const newDate = dateArray[0] + "/" + dateArray[2];
   try {
     const findAttandance = await attendance.findOne({ designation, date });
     if (findAttandance) {
@@ -103,6 +105,7 @@ const add = async (req, res) => {
       const newAttendance = new attendance({
         designation,
         date,
+        monthYear: newDate,
         employee: employeeArray,
       });
       const result = await newAttendance.save();
