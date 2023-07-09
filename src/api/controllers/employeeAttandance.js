@@ -126,7 +126,75 @@ const add = async (req, res) => {
   }
 };
 
+// filter employee attandance by month and designation
+const filterByMonth = async (req, res) => {
+  const { designation, date } = req.body;
+  if (isEmpty(designation) || isEmpty(date)) {
+    return res
+      .status(400)
+      .json([{ msg: "All fields are required", res: "error" }]);
+  }
+  try {
+    const empAttandance = await attendance
+      .find({ designation, monthYear: date })
+      .populate("employee.employeeId", "name");
+    if (empAttandance.length >= 1) {
+      let empArray = [];
+      empAttandance.map((e) => {
+        e?.employee?.map((emp) => {
+          empArray?.push({
+            id: emp?.employeeId?._id ? emp?.employeeId?._id : "",
+            name: emp?.employeeId?.name ? emp.employeeId?.name : "",
+            type: emp?.type ? emp?.type : "",
+          });
+        });
+      });
+      const getUniqueValues = (arr, key) => {
+        return [...new Map(arr.map((item) => [item[key], item])).values()];
+      };
+      const empCounts = {};
+      empArray.forEach((item) => {
+        if (!empCounts[item?.id]) {
+          empCounts[item?.id] = {
+            id: item?.id,
+            name: item?.name,
+            totalPresentCount: 0,
+            totalAbsentCount: 0,
+            totalHalfDayCount: 0,
+          };
+        }
+        if (item?.type === "Present") {
+          empCounts[item?.id].totalPresentCount++;
+        } else if (item?.type === "Absent") {
+          empCounts[item?.id].totalAbsentCount++;
+        } else if (item?.type === "Half Day") {
+          empCounts[item?.id].totalHalfDayCount++;
+        }
+      });
+      const empCountsArray = Object.values(empCounts);
+      return res.status(200).json([
+        {
+          msg: "Employee Attendance fetched successfully",
+          res: "success",
+          data: empCountsArray,
+        },
+      ]);
+    } else {
+      return res.status(200).json([
+        {
+          msg: "Employee Attendance not found",
+          res: "error",
+          data: [],
+        },
+      ]);
+    }
+  } catch (error) {
+    return res.status(400).json([{ msg: error.message, res: "error" }]);
+  }
+};
+
 module.exports = {
   filter,
   add,
+  filterByMonth
 };
