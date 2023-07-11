@@ -964,9 +964,15 @@ const fetchStudentsByStatus = async (req, res) => {
               success: false,
           });
       }
+      let active;
+      if(String(status) === 'true') {
+        active = true;
+      } else {
+        active = false;
+      }
       const filteredStudents = await students.find({
         academic: academicsId,
-        active: Boolean(status)
+        active: active
       }).populate('academic').populate({
         path: 'fees',
         populate: [{
