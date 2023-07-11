@@ -36,6 +36,9 @@ const studentaAttendanceSchema = new mongoose.Schema(
       type: String,
       default:"",
     },
+    monthYear: {
+      type: String,
+    },
     students: [studentSchema],
   },
   (createAt = { timestamps: true, autoIndex: false, autoCreate: false })

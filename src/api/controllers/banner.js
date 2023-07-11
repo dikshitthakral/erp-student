@@ -5,14 +5,8 @@ const { uploadAttachment } = require("../utils");
 
 //Create Banner
 const createBanner = async (req, res) => {
-  try {
-    const { type, title } = req.body;
-    if (isEmpty(type)) {
-      return res.status(400).send({
-        messge: "Type is required like guardian or teacher",
-        success: false,
-      });
-    }
+ try {
+    const { title } = req.body;
     if (isEmpty(title)) {
       return res.status(400).send({
         messge: "Mandatory fields missing while creating Banner",
@@ -26,7 +20,6 @@ const createBanner = async (req, res) => {
     }
     const newBanner = await banner.create({
       bannerName: title,
-      bannerType: type,
       bannerImage: isEmpty(attachment) ? undefined : attachment,
     });
     return res.status(200).json({
@@ -42,8 +35,7 @@ const createBanner = async (req, res) => {
 //Get All Banner
 const getAllBanner = async (req, res) => {
   try {
-    const { type } = req.params;
-    let allBanner = await banner.find({ bannerType: type });
+    let allBanner = await banner.find();
     if (
       allBanner !== undefined &&
       allBanner.length !== 0 &&

@@ -6,13 +6,13 @@ const students = require("../models/students");
 
 const create = async (req, res) => {
   try {
-    const { classId, sectionId, year, type, students } = req.body;
+    const { classId, sectionId, year, type, students,date } = req.body;
     if (
       isEmpty(classId) ||
       isEmpty(sectionId) ||
       isEmpty(year) ||
       isEmpty(type) ||
-      isEmpty(students)
+      isEmpty(students) || isEmpty(date)
     ) {
       return res
         .status(400)
@@ -22,13 +22,16 @@ const create = async (req, res) => {
     students.map((student) => {
       studentArray.push({ student: student });
     });
+     const dateArray = date.split("/");
+    const newDate = dateArray[0] + "/" + dateArray[2];
     const newAttendance = new attendance({
       classId,
       sectionId,
       year,
       type,
       students: studentArray,
-      date: new Date().toLocaleDateString(),
+      date: date,
+      monthYear: newDate,
     });
     const result = await newAttendance.save();
     if (result) {
@@ -306,6 +309,76 @@ const getAllStudent = async (req, res) => {
   }
 };
 
+const filterAttandanceStudent = async (req, res) => {
+  const { classId,sectionId, date } = req.body;
+  if (isEmpty(classId) || isEmpty(sectionId) || isEmpty(date)) {
+    return res
+      .status(400)
+      .json([{ msg: "All fields are required", res: "error" }]);
+  }
+  try {
+    const studentAttandance = await attendance
+      .find({ 
+        classId: classId,
+        sectionId: sectionId,
+        monthYear: date,
+       })
+      .populate("students.student", "firstName lastName")
+    if (studentAttandance.length >= 1) {
+      let studentArray = [];
+      studentAttandance.map((e) => {
+        e?.students.map((student) => {
+          studentArray.push({
+            id: student?.student?._id,
+            name: student?.student?.firstName + " " + student?.student?.lastName,
+            type: e?.type,
+          });
+        });
+
+      });
+      const getUniqueValues = (arr, key) => {
+        return [...new Map(arr.map((item) => [item[key], item])).values()];
+      };
+      const studentCounts = {};
+      studentArray.forEach((item) => {
+        if (!studentCounts[item?.id]) {
+          studentCounts[item?.id] = {
+            name: item?.name,
+            totalPresentCount: 0,
+            totalAbsentCount: 0,
+            totalHalfDayCount: 0,
+          };
+        }
+        if (item?.type === "fullDay") {
+          studentCounts[item?.id].totalPresentCount++;
+        } else if (item?.type === "absent") {
+          studentCounts[item?.id].totalAbsentCount++;
+        } else if (item?.type === "halfDay") {
+          studentCounts[item?.id].totalHalfDayCount++;
+        }
+      });
+      const studentCountsArray = Object.values(studentCounts);
+      return res.status(200).json([
+        {
+          msg: "Employee Attendance fetched successfully",
+          res: "success",
+          data: studentCountsArray
+        },
+      ]);
+    } else {
+      return res.status(200).json([
+        {
+          msg: "Employee Attendance not found",
+          res: "error",
+          data: [],
+        },
+      ]);
+    }
+  } catch (error) {
+    return res.status(400).json([{ msg: error.message, res: "error" }]);
+  }
+};
 
 
-module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance,getAllStudent };
+
+module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance,getAllStudent,filterAttandanceStudent };

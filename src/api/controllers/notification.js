@@ -56,6 +56,33 @@ const getAllNotification = async (req, res) => {
   }
 };
 
+const allNotification = async (req, res) => {
+  try {
+    let notification = await Notification.find();
+    if (
+      notification !== undefined &&
+      notification.length !== 0 &&
+      notification !== null
+    ) {
+      return res.status(200).send({
+        notification,
+        messge: "All Notification",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        messge: "Notification does not exist",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+};
+
 // Delete Notification By Id
 const deleteNotificationById = async (req, res) => {
   try {
@@ -89,5 +116,6 @@ const deleteNotificationById = async (req, res) => {
 module.exports = {
   createNotification,
   getAllNotification,
+  allNotification,
   deleteNotificationById,
 };

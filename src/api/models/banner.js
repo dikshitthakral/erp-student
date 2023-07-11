@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const bannerSchema = new mongoose.Schema({
-  bannerType: {
-    type: String,
-    required: true,
-    enum: ["guardian", "teacher"],
-  },
   bannerName: {
     type: String,
     default: "",

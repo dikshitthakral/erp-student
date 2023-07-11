@@ -319,6 +319,8 @@ router.put('/class', classController.update);
 // NoticeBoard
 router.post('/noticeBoard', upload.single('file'), noticeBoardController.create);
 router.get('/noticeBoard/:type', noticeBoardController.getAll);
+router.get('/allNoticeBoard', noticeBoardController.getAllNoticeBoard);
+router.get('/getById/:id', noticeBoardController.getById);
 router.delete('/noticeBoard/delete', noticeBoardController.remove);
 // Homework Submissions
 router.post('/homework-submission', upload.single('file'), homeworkSubmissionController.create);
@@ -343,12 +345,13 @@ router.delete('/student/:studentId/vehicleRoutes/remove', studentsController.rem
 
 // Banner Routes
 router.post('/banner', upload.single('file'), bannerController.createBanner);
-router.get('/banner/:type', bannerController.getAllBanner);
+router.get('/bannerAll', bannerController.getAllBanner);
 router.delete('/banner/delete', bannerController.deleteBannerById);
 
 //Notification Routes
 router.post('/createNotification', notificationController.createNotification);
 router.get('/notification/:type', notificationController.getAllNotification);
+router.get('/notificationAll', notificationController.allNotification);
 router.delete('/notification/delete', notificationController.deleteNotificationById);
 
 // Student Attendance
@@ -358,10 +361,12 @@ router.post('/halfDayStudent', studentAttendance.getAllByHalfdayList);
 router.post('/getAllAbsentList', studentAttendance.getAllAbsentList);
 router.post('/showAttandanceList', studentAttendance.getAllAttandance);
 router.post('/getAllStudent', studentAttendance.getAllStudent);
+router.post('/filterStudent/attandance', studentAttendance.filterAttandanceStudent);
 
 // Employee Attendance
 router.post('/empAttandance/filter', employeeAttendanceController.filter);
 router.post('/empAttandance/create', employeeAttendanceController.add);
+router.post('/filteremp/attandance', employeeAttendanceController.filterByMonth);
 
 // principal daily report routes
 router.post('/createReport', principalDailyReportController.create);

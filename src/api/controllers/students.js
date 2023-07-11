@@ -491,6 +491,7 @@ const updateStudent = async (req, res) => {
       previousQualification,
       previousRemarks,
       vehicleRoute,
+        active
     } = req.body;
 
     const id = req.params["id"];
@@ -530,11 +531,22 @@ const updateStudent = async (req, res) => {
     );
 
     profile["guardian"] = updatedGuardian._id;
-    const updatedGuardian1 = await guardianService.updateGuardian2(
-      guardian1 ?? {},
-      studentRecord
-    );
-    profile["guardian2"] = updatedGuardian1._id;
+     if (
+      guardian1.relation !== "" &&
+      guardian1.firstName !== "" &&
+      guardian1.number !== "" &&
+      guardian1.email !== "" &&
+      guardian1.occupation !== ""
+    ) {
+      const updatedGuardian1 = await guardianService.updateGuardian2(
+        guardian1 ?? {},
+        studentRecord
+      );
+      profile["guardian2"] = updatedGuardian1._id;
+    } else {
+      console.log("guardian2 is empty");
+      profile["guardian2"] = null;
+    }
     profile.rollNo = !isEmpty(rollNo) ? rollNo : studentRecord.rollNo;
     profile.admissionDate = !isEmpty(admissionDate)
       ? admissionDate
@@ -548,6 +560,7 @@ const updateStudent = async (req, res) => {
     profile.email = !isEmpty(email) ? email : studentRecord.email;
     profile.lastName = !isEmpty(lastName) ? lastName : studentRecord.lastName;
     profile.gender = !isEmpty(gender) ? gender : studentRecord.gender;
+       profile.active = !isEmpty(active) ? active : studentRecord.active;
     profile.bloodGroup = !isEmpty(bloodGroup)
       ? bloodGroup
       : studentRecord.bloodGroup;
