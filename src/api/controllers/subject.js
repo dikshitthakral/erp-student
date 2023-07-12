@@ -109,7 +109,7 @@ const update = async (req, res) => {
         updateObject["subjectAuthor"] = !isEmpty(subjectAuthor) ? subjectAuthor : subjectResult.subjectAuthor;
         updateObject["subjectType"] = !isEmpty(subjectType) ? subjectType : subjectResult.subjectType;
         let updateSubject = await subject.findOneAndUpdate(
-            { _id: id },
+            { _id: subjectId },
             {
                 $set: updateObject
             }
@@ -123,7 +123,7 @@ const update = async (req, res) => {
             return res.status(200)
                 .json([{ msg: "Subject not found!!!", res: "error", }]);
         } else {
-            const subjectData = await subject.findOne({ _id: id })
+            const subjectData = await subject.findOne({ _id: subjectId })
             return res.status(200)
                 .json([{ msg: "Subject updated successflly", data: subjectData, res: "success" }]);
         }
