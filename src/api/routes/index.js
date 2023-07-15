@@ -362,6 +362,7 @@ router.post('/getAllAbsentList', studentAttendance.getAllAbsentList);
 router.post('/showAttandanceList', studentAttendance.getAllAttandance);
 router.post('/getAllStudent', studentAttendance.getAllStudent);
 router.post('/filterStudent/attandance', studentAttendance.filterAttandanceStudent);
+router.post('/studentAttandancebyid', studentAttendance.getAttandaceDetail);
 
 // Employee Attendance
 router.post('/empAttandance/filter', employeeAttendanceController.filter);
