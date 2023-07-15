@@ -379,6 +379,61 @@ const filterAttandanceStudent = async (req, res) => {
   }
 };
 
+//  find attandace bt studentId and date toatal count absent and present
+const getAttandaceDetail = async (req, res) => {
+  const { studentId } = req.body;
+  if (isEmpty(studentId)) {
+    return res
+      .status(400)
+      .json([{ msg: "student id is required", res: "error" }]);
+  }
+  const date = new Date();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+  const monthYear = month + "/" + year;
+  try {
+    const studentAttandance = await attendance
+      .find({ monthYear: monthYear, "students.student": studentId })
+      .populate("students.student", "firstName lastName");
+    let fullDay = 0;
+    let halfDay = 0;
+    let absent = 0;
+    studentAttandance.map((e) => {
+      e?.students.map((student) => {
+        if (student?.student?._id == studentId) {
+          if (e.type == "fullDay") {
+            fullDay = fullDay + 1;
+          } else if (e.type == "halfDay") {
+            halfDay = halfDay + 1;
+          } else if (e.type == "absent") {
+            absent = absent + 1;
+          }
+        }
+      });
+    });
+    let total = fullDay + halfDay + absent;
+    if (studentAttandance.length >= 1) {
+      return res.status(200).json([
+        {
+          msg: "Student Attendance fetched successfully",
+          res: "success",
+          data: { fullDay, halfDay, absent,total }
+        },
+      ]);
+    } else {
+      return res.status(200).json([
+        {
+          msg: "Student Attendance not found",
+          res: "error",
+          data: [],
+        },
+      ]);
+    }
+  } catch (error) {
+    return res.status(400).json([{ msg: error.message, res: "error" }]);
+  }
+};
 
 
-module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance,getAllStudent,filterAttandanceStudent };
+
+module.exports = { create, getAll, getAllByHalfdayList,getAllAbsentList,getAllAttandance,getAllStudent,filterAttandanceStudent,getAttandaceDetail };
