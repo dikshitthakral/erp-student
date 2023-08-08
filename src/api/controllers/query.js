@@ -136,13 +136,9 @@ const getByTeacher = async (req, res) => {
     try {
         const teacherId = req.params['teacherId'];
         let queriesByTeacher = await query.find({ employee: teacherId}).populate('employee').populate('student');
-        if (
-            queriesByTeacher !== undefined &&
-            queriesByTeacher.length !== 0 &&
-            queriesByTeacher !== null
-        ) {
+        if (queriesByTeacher.length >= 1) {
           return res.status(200).send({
-            queries: queryByTeacher,
+            queries: queriesByTeacher,
             messge: "Query By Teacher",
             success: true,
           });
