@@ -50,7 +50,13 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
     try {
         let allLeavesRequest = await leavesRequest.find().populate('leaveType').populate('employee')
-        .populate('classTeacher').populate('student').exec();
+        .populate('classTeacher').populate({
+          path: 'student',
+          populate: [{
+            path: 'academic',
+            populate: [{path: 'studentClass', model: 'Class'}, {path: 'section', model: 'Section'}]
+          }]
+        }).exec();
         if (
             allLeavesRequest !== undefined &&
             allLeavesRequest.length !== 0 &&
