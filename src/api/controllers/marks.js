@@ -175,8 +175,8 @@ const getMarksByAcademicAndStudentId = async (req, res) => {
               ...mark._doc,
               totalMarksScored: mark._doc.practical + mark._doc.written,
               percentage : percentage,
-              grade: resultGrade._doc.name,
-              point: resultGrade._doc.gradePoint
+              grade: resultGrade?._doc.name,
+              point: resultGrade?._doc.gradePoint
             }
             if(academicMarks.has(mark.examId.name)) {
               let examMarks = academicMarks.get(mark.examId.name);
