@@ -6,6 +6,7 @@ const employeeService = require('../services/employee');
 const csvtojsonV2=require("csvtojson/v2");
 const util = require("util");
 const { leavesRequest } = require("../models/humanResources");
+const department = require("../models/department");
 
 const save = async (req, res) => {
     try {
@@ -496,4 +497,41 @@ const employeeLogin = async (req, res) => {
   }
 }
 
-module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation, getById, employeeLogin };
+const adminLogin = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const departmentData = await department.findOne({ name : 'ADMIN'});
+    const employeeData = await Employee.findOne({ userName, password, department: departmentData._id });
+    if(isEmpty(employeeData)) {
+      return res.status(400).send({
+        messge: "Employee not found with given login details",
+        success: false,
+      });
+    }
+    const fetchEmployee = await Employee.findOne({
+      _id: mongoose.Types.ObjectId(employeeData._id),
+    }).populate('designation').populate('department').
+    populate({
+      path: 'salaryGrade',
+      populate: [{ path: 'allowances', model: 'Allowance'}, { path: 'deductions', model: 'Deduction'}]
+    }).exec();
+    if (
+      fetchEmployee === undefined ||
+      fetchEmployee === null ||
+      fetchEmployee === ""
+    ) {
+        return res.status(200)
+            .json([{ msg: "Employee not found!!!", res: "error", }]);
+    } else {
+        return res.status(200)
+            .json([{ msg: "Employee Profile", data: fetchEmployee, res: "success" }]);
+    }
+  } catch(err) {
+    return res.status(400).send({
+      messge: "Somethig went wrong",
+      success: false,
+    });
+  }
+}
+
+module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation, getById, employeeLogin, adminLogin };

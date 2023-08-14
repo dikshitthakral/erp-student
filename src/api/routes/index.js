@@ -146,6 +146,7 @@ router.post('/employee/uploadcsv', upload.single('file'), employeeController.bul
 router.get('/employee/designation/:designationId', employeeController.getByDesignation);
 router.put('/employee/salaryGrade', employeeController.updateSalaryGradeForEmployee);
 router.post('/employee/teacher/login', employeeController.employeeLogin);
+router.post('/employee/admin/login', employeeController.adminLogin);
 
 // Academic Routes
 router.post('/academic',academicController.create);

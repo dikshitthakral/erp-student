@@ -68,7 +68,7 @@ const createAdmission = async (req, res) => {
       isEmpty(category) ||
       isEmpty(studentClass) ||
       isEmpty(guardian) ||
-      isEmpty(rollNo) ||
+      // isEmpty(rollNo) ||
       isEmpty(admissionDate) ||
       isEmpty(firstName) ||
       isEmpty(type) ||
@@ -82,7 +82,7 @@ const createAdmission = async (req, res) => {
       });
     }
     const studentObj = {
-      rollNo,
+      // rollNo,
       admissionDate,
       firstName,
       type,
@@ -857,7 +857,7 @@ const fetchStudentsByFilter = async (req, res) => {
       } else if(type === 'CLASS') {
         const result = await classWiseResponse(academicYear, studentClass);
         return res. status(200).send({
-          genderResponse: result,
+          classResponse: result,
           messge: "All Gender wise class response",
           success: true,
         });
