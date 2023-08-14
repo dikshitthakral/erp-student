@@ -30,6 +30,13 @@ const add = async (req, res) => {
             scehduleObj['academic'] = academicId
         }
         scehduleObj['activities'] = mapActivities(activities);
+        const scheduleResult = await schedule.findOne({day : day.toUpperCase(), academic: academicId});
+        if(scheduleResult) {
+            return res.status(400).json({
+                message: "Schedule for same day and academic exists",
+                success: true,
+            });
+        }
         const newSchedule = await schedule.create(scehduleObj);
         return res.status(200).json({
             schedule: newSchedule,
