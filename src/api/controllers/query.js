@@ -135,10 +135,22 @@ const getById = async (req, res) => {
 const getByTeacher = async (req, res) => {
     try {
         const teacherId = req.params['teacherId'];
-        let queriesByTeacher = await query.find({ employee: teacherId}).populate('employee').populate('student');
+        let queriesByTeacher = await query.find({ employee: teacherId}).populate('employee').populate('student')
+        .sort({
+          createdAt: 'asc'
+        });
         if (queriesByTeacher.length >= 1) {
+          let queriesMap = new Map();
+          for(let query of queriesByTeacher) {
+            if(!queriesMap.has(query.student.firstName + ' ' + query.student.lastName)) {
+              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [query])
+            } else {
+              let queriesArr = queriesMap.get(query.student.firstName + ' ' + query.student.lastName);
+              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [...queriesArr, query])
+            }
+          }
           return res.status(200).send({
-            queries: queriesByTeacher,
+            queries: Object.fromEntries(queriesMap),
             messge: "Query By Teacher",
             success: true,
           });
@@ -159,14 +171,26 @@ const getByTeacher = async (req, res) => {
 const getQueriesByStudent = async (req, res) => {
     try {
         const studentId = req.params['studentId'];
-        let queriesByStudent = await query.find({ student: studentId}).populate('employee').populate('student');
+        let queriesByStudent = await query.find({ student: studentId}).populate('employee').populate('student')
+        .sort({
+          createdAt: 'asc'
+        });
         if (
             queriesByStudent !== undefined &&
             queriesByStudent.length !== 0 &&
             queriesByStudent !== null
         ) {
+          let queriesMap = new Map();
+          for(let query of queriesByStudent) {
+            if(!queriesMap.has(query.employee.name + ' ' + query.employee.email)) {
+              queriesMap.set(query.employee.name + ' ' + query.employee.email, [query])
+            } else {
+              let queriesArr = queriesMap.get(query.employee.name + ' ' + query.employee.email);
+              queriesMap.set(query.employee.name + ' ' + query.employee.email, [...queriesArr, query])
+            }
+          }
           return res.status(200).send({
-            queries: queriesByStudent,
+            queries: Object.fromEntries(queriesMap),
             messge: "Query By Student",
             success: true,
           });
