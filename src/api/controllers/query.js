@@ -135,10 +135,22 @@ const getById = async (req, res) => {
 const getByTeacher = async (req, res) => {
     try {
         const teacherId = req.params['teacherId'];
-        let queriesByTeacher = await query.find({ employee: teacherId}).populate('employee').populate('student');
+        let queriesByTeacher = await query.find({ employee: teacherId}).populate('employee').populate('student')
+        .sort({
+          createdAt: 'asc'
+        });
         if (queriesByTeacher.length >= 1) {
+          let queriesMap = new Map();
+          for(let query of queriesByTeacher) {
+            if(!queriesMap.has(query.student.firstName + ' ' + query.student.lastName)) {
+              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [query])
+            } else {
+              let queriesArr = queriesMap.get(query.student.firstName + ' ' + query.student.lastName);
+              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [...queriesArr, query])
+            }
+          }
           return res.status(200).send({
-            queries: queriesByTeacher,
+            queries: Object.fromEntries(queriesMap),
             messge: "Query By Teacher",
             success: true,
           });
