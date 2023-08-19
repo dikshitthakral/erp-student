@@ -289,7 +289,7 @@ router.put('/leavesCategory', leavesCategoryController.update);
 // LeavesRequest
 router.post('/leavesRequest', upload.single('file'), leavesRequestController.create);
 router.get('/leavesRequest/all', leavesRequestController.getAll);
-router.delete('/leavesRequest/delete', leavesRequestController.remove);
+router.delete('/leavesRequest/:id', leavesRequestController.remove);
 router.put('/leavesRequest/status', leavesRequestController.updateStatus);
 router.get('/employee/leavesRequest/:designationId', employeeController.getAllLeavesRequestByDesignation);
 router.get('/employee/:id', employeeController.getById);
