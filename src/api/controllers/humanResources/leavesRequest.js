@@ -83,7 +83,7 @@ const getAll = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) {
         return res.status(200).json({
           message: "Leaves Request Id not found",
