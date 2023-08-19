@@ -5,7 +5,7 @@ const { isEmpty, isNumber } = require('lodash');
 const create = async (req, res) => {
     try {
         const { name, gradePoint, minPercentage, maxPercentage, remarks } = req.body;
-        if(isEmpty(name) || isEmpty(gradePoint) || !isNumber(minPercentage) || !isNumber(maxPercentage)) {
+        if(isEmpty(name) || isEmpty(gradePoint) || !isNumber(Number(minPercentage)) || !isNumber(Number(maxPercentage))) {
             return res.status(400).send({
                 messge: "Mandatory fields missing while creating grades.",
                 success: false,
