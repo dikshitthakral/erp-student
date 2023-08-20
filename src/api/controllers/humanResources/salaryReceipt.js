@@ -72,6 +72,7 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
                 empoyeeResult['netSalary'] = 0;
                 empoyeeResult['payVia'] = '';
                 empoyeeResult['account'] = '';
+                empoyeeResult['receiptNo'] = ''
             } else {
                 empoyeeResult['salaryStatus'] = salaryReceiptDoc.status;
                 empoyeeResult['totalAllowance'] = salaryReceiptDoc.totalAllowance;
@@ -81,10 +82,10 @@ const getSalaryReceiptsByMonthAndYear = async (req, res) => {
                 empoyeeResult['netSalary'] = salaryReceiptDoc.netSalary;
                 empoyeeResult['payVia'] = salaryReceiptDoc.payVia;
                 empoyeeResult['account'] = salaryReceiptDoc.account;
+                empoyeeResult['receiptNo'] = salaryReceiptDoc.receiptNo ? salaryReceiptDoc.receiptNo : '';
+                empoyeeResult['createdAt'] = salaryReceiptDoc.createdAt;
             }
             empoyeeResult['salaryMonth'] = salaryPaidMonth;
-            empoyeeResult['receiptNo'] = salaryReceiptDoc.receiptNo;
-            empoyeeResult['createdAt'] = salaryReceiptDoc.createdAt;
             response.push(empoyeeResult);
         }
         if (isEmpty(response)) {
