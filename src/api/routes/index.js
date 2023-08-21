@@ -38,6 +38,7 @@ const notificationController = require('../controllers/notification');
 const route = require('../models/transport/route');
 const principalDailyReportController = require('../controllers/principalDailyReport');
 const queriesController = require('../controllers/query');
+const adminController = require('../controllers/admin');
 
 // Queries Routes
 router.post('/query/add', upload.single('file'),queriesController.addQuestion);
@@ -380,5 +381,11 @@ router.post('/createType', typeController.create);
 router.get('/type/all', typeController.getAll);
 router.delete('/type/:id', typeController.remove);
 router.put('/updateType', typeController.update);
+
+// admin Routes
+router.get('/dashbaoradData',adminController.getAll);
+router.get('/getAllRaiseTicket',adminController.getTickets);
+router.get('/getAllVehicle',adminController.getVehicleCount);
+router.get('/classSectionCount',adminController.getClassSectionCount);
 
 module.exports = router;
