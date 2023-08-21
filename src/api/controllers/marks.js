@@ -219,7 +219,12 @@ const getMarksByFilter = async (req, res) => {
         success: false,
       });
     }
-    let allMarksByFilter = await marks.find({examId: exam, subject , academic: academicsId, student});
+    let filterKeys = {};
+    if(exam) { filterKeys['examId'] = exam; }
+    if(subject) { filterKeys['subject'] = subject; }
+    if(academicsId) { filterKeys['academic'] = academicsId; }
+    if(student) { filterKeys['student'] = student; }
+    let allMarksByFilter = await marks.find({ ...filterKeys });
     if(isEmpty(allMarksByFilter) || allMarksByFilter.length === 0) {
       const allStudents = await students.find({ academic: academicsId, active : true});
       let allMarks = [];
@@ -239,14 +244,14 @@ const getMarksByFilter = async (req, res) => {
       }
       await marks.insertMany(allMarks);
     }
-    let studentMarks = await marks.find({academic: academicsId, examId: exam, subject, student})
+    let studentMarks = await marks.find({ ...filterKeys })
         .limit(perPage)
         .skip(perPage * page)
         .sort({
             name: 'asc'
         })
         .populate('student');
-    const totalCount = await marks.count({academic: academicsId, examId: exam, subject, student});
+    const totalCount = await marks.count({ ...filterKeys });
     return res.status(200).send({
       studentMarks,
       totalCount: totalCount,
