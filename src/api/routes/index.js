@@ -45,6 +45,7 @@ router.put('/query/answer/add', upload.single('file'),queriesController.updateAn
 router.get('/query/fetch/:id',queriesController.getById);
 router.get('/query/all',queriesController.getAll);
 router.get('/query/teacher/:teacherId', queriesController.getByTeacher);
+router.get('/query/teacher/:teacherId/student/:studentId', queriesController.getByTeacherAndStudent);
 router.get('/query/student/:studentId', queriesController.getQueriesByStudent);
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);

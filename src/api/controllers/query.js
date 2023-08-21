@@ -142,15 +142,22 @@ const getByTeacher = async (req, res) => {
         if (queriesByTeacher.length >= 1) {
           let queriesMap = new Map();
           for(let query of queriesByTeacher) {
-            if(!queriesMap.has(query.student.firstName + ' ' + query.student.lastName)) {
-              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [query])
-            } else {
-              let queriesArr = queriesMap.get(query.student.firstName + ' ' + query.student.lastName);
-              queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [...queriesArr, query])
+            // if(!queriesMap.has(query.student.firstName + ' ' + query.student.lastName)) {
+            //   queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [query])
+            // } else {
+            //   let queriesArr = queriesMap.get(query.student.firstName + ' ' + query.student.lastName);
+            //   queriesMap.set(query.student.firstName + ' ' + query.student.lastName, [...queriesArr, query])
+            // }
+            if(!queriesMap.has(query.student._id)) {
+              queriesMap.set(query.student._id, {
+                studentId: query.student._id,
+                studentName: query.student.firstName + ' ' + query.student.lastName,
+                studentEmail: query.student.email
+              })
             }
           }
           return res.status(200).send({
-            queries: Object.fromEntries(queriesMap),
+            queries: [...queriesMap.values()],
             messge: "Query By Teacher",
             success: true,
           });
@@ -182,15 +189,22 @@ const getQueriesByStudent = async (req, res) => {
         ) {
           let queriesMap = new Map();
           for(let query of queriesByStudent) {
-            if(!queriesMap.has(query.employee.name + ' ' + query.employee.email)) {
-              queriesMap.set(query.employee.name + ' ' + query.employee.email, [query])
-            } else {
-              let queriesArr = queriesMap.get(query.employee.name + ' ' + query.employee.email);
-              queriesMap.set(query.employee.name + ' ' + query.employee.email, [...queriesArr, query])
+            // if(!queriesMap.has(query.employee.name + ' ' + query.employee.email)) {
+            //   queriesMap.set(query.employee.name + ' ' + query.employee.email, [query])
+            // } else {
+            //   let queriesArr = queriesMap.get(query.employee.name + ' ' + query.employee.email);
+            //   queriesMap.set(query.employee.name + ' ' + query.employee.email, [...queriesArr, query])
+            // }
+            if(!queriesMap.has(query.employee._id)) {
+              queriesMap.set(query.employee._id, {
+                employeeId: query.employee._id,
+                employeeName: query.employee.name,
+                employeeEmail: query.employee.email
+              })
             }
           }
           return res.status(200).send({
-            queries: Object.fromEntries(queriesMap),
+            queries: [...queriesMap.values()],
             messge: "Query By Student",
             success: true,
           });
@@ -208,5 +222,36 @@ const getQueriesByStudent = async (req, res) => {
       }
 }
 
+const getByTeacherAndStudent = async (req, res) => {
+  try {
+    const teacherId = req.params['teacherId'];
+    const studentId = req.params['studentId'];
+    let queriesByTeacherAndStudent = await query.find({ employee: teacherId, student: studentId }).populate('employee').populate('student')
+    .sort({
+      createdAt: 'asc'
+    });
+    if (
+      queriesByTeacherAndStudent !== undefined &&
+      queriesByTeacherAndStudent.length !== 0 &&
+      queriesByTeacherAndStudent !== null
+  ) { 
+    return res.status(200).send({
+      queries: queriesByTeacherAndStudent,
+      messge: "Query By Student",
+      success: true,
+    });
+  } else {
+    return res.status(200).send({
+      messge: "Query does not exist",
+      success: false,
+    });
+  }
+  } catch (error) {
+    return res.status(400).send({
+      messge: "Something went wrong",
+      success: false,
+    });
+  }
+}
 
-module.exports = { addQuestion, updateAnswer, getAll, getById, getByTeacher, getQueriesByStudent };
+module.exports = { addQuestion, updateAnswer, getAll, getById, getByTeacher, getQueriesByStudent, getByTeacherAndStudent };
