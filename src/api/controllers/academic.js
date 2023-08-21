@@ -136,7 +136,6 @@ const getByAcademicDetails = async (req, res) => {
       let academicsByDetails = await academics.findOne({ academicYear, studentClass, section }).populate('subjects').populate('teachers');
       if (
         academicsByDetails !== undefined &&
-        academicsByDetails.length !== 0 &&
         academicsByDetails !== null
       ) {
         return res.status(200).send({
