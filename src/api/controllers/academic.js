@@ -263,7 +263,7 @@ const removeSubject = async (req, res) => {
             return res.status(200)
                 .json([{ msg: "Update Subject in Academic.", res: "error", }]);
         } else {
-            const academicsData = await academics.findOne({ _id: id }).populate('subjects');
+            const academicsData = await academics.findOne({ _id: academicId }).populate('subjects');
             return res.status(200)
                 .json([{ msg: "Subject in Academics updated successflly", data: academicsData, res: "success" }]);
         }
