@@ -41,13 +41,11 @@ const queriesController = require('../controllers/query');
 const adminController = require('../controllers/admin');
 
 // Queries Routes
-router.post('/query/add', upload.single('file'),queriesController.addQuestion);
-router.put('/query/answer/add', upload.single('file'),queriesController.updateAnswer);
-router.get('/query/fetch/:id',queriesController.getById);
-router.get('/query/all',queriesController.getAll);
-router.get('/query/teacher/:teacherId', queriesController.getByTeacher);
-router.get('/query/teacher/:teacherId/student/:studentId', queriesController.getByTeacherAndStudent);
-router.get('/query/student/:studentId', queriesController.getQueriesByStudent);
+router.post('/query/add', upload.single('file'),queriesController.createQuery);
+router.post('/query/addAnswer', upload.single('file'),queriesController.replyQuery);
+router.get('/query/teacher/:teacherId', queriesController.getTeacherHistory);
+router.get('/query/student/:studentId', queriesController.getStudentHistory);
+router.get('/query/teacher/:teacherId/student/:studentId', queriesController.getAllQueryStudentAndTeacher);
 // Students Routes
 router.post('/student/upload', upload.single('file'),studentsController.uploadImage);
 router.post('/student/admission', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.createAdmission);
