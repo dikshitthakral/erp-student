@@ -2,17 +2,22 @@ const { mongoose, Schema } = require("mongoose");
 
 
 const querySchema = new mongoose.Schema({
+    type: {
+        type: String,
+        enum: ["student", "teacher"],
+        required: true,
+      },
     question: {
         type: String,
-        required: true,
+        default:""
     },
     questionAttachment: {
         type: String,
-        required: false
+        default:""
     },
     answer: {
         type: String,
-        default:null
+        default:""
     },
     answerAttachment: {
         type: String,
