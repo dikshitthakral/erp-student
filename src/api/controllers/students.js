@@ -144,7 +144,7 @@ const createAdmission = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).send({
-      messge: "Something went wrong",
+      messge: err.message || "Something went wrong",
       success: false,
     });
   }
@@ -153,6 +153,7 @@ const createAdmission = async (req, res) => {
 const createBulkAdmission = async (req, res) => {
     try {
         const file = req.file;
+        let errorArr = [];
         const {studentClass, section, academicYear} = req.body;
         if(isEmpty(academicYear) || isEmpty(section) || isEmpty(studentClass)) {
             return res.status(400).send({
@@ -188,6 +189,11 @@ const createBulkAdmission = async (req, res) => {
                 { $inc: { registerNo: count }},
                 { new: true});
             } catch(err) {
+                errorArr.push({
+                  message: err.message,
+                  number,
+                  email
+                })
                 continue;
             }
         }
@@ -195,6 +201,7 @@ const createBulkAdmission = async (req, res) => {
         console.log(`successfully deleted file from path : ${file.path}`);
         return res.status(200).send({
             messge: "Successfull",
+            errorData: errorArr,
             success: true,
         });
     } catch(err) {
@@ -532,11 +539,11 @@ const updateStudent = async (req, res) => {
 
     profile["guardian"] = updatedGuardian._id;
      if (
-      guardian1.relation !== "" &&
-      guardian1.firstName !== "" &&
-      guardian1.number !== "" &&
-      guardian1.email !== "" &&
-      guardian1.occupation !== ""
+      !isEmpty(guardian1.relation) &&
+      !isEmpty(guardian1.firstName) &&
+      !isEmpty(guardian1.number) &&
+      !isEmpty(guardian1.email) &&
+      !isEmpty(guardian1.occupation)
     ) {
       const updatedGuardian1 = await guardianService.updateGuardian2(
         guardian1 ?? {},
@@ -639,7 +646,7 @@ const updateStudent = async (req, res) => {
     }
   } catch (err) {
     return res.status(500).send({
-      messge: "Somethig went wrong",
+      messge: err.message || "Somethig went wrong",
       success: false,
     });
   }

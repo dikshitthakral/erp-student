@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validatorPackage = require('validator');
 
 const employeeSchema = new mongoose.Schema({
     joiningDate: {
@@ -41,13 +42,21 @@ const employeeSchema = new mongoose.Schema({
     number: {
         type: String,
         unique: false,
-        required: true
+        required: true,
+        validate: {
+            validator: validatorPackage.isMobilePhone,
+            message: 'Please provide a valid phone number'
+        }
     },
     email: {
         type: String,
         unique: false,
         default: null,
-        required: true
+        required: true,
+        validate: {
+            validator: validatorPackage.isEmail,
+            message: 'Please provide a valid email',
+        }
     },
     presentAddressHouseNo: {
         type: String,
@@ -59,7 +68,16 @@ const employeeSchema = new mongoose.Schema({
     },
     presentAddressZipCode: {
         type: String,
-        required: false
+        required: false,
+        validate: {
+            validator: function(v) {
+                if(v === undefined || v === null || v === '') {
+                    return true;
+                }
+                return /^\d+$/.test(v);
+            },
+            message: 'Please provide a valid zip code',
+        }
     },
     presentAddressCity: {
         type: String,
@@ -79,7 +97,16 @@ const employeeSchema = new mongoose.Schema({
     },
     premanentAddressZipCode: {
         type: String,
-        required: false
+        required: false,
+        validate: {
+            validator: function(v) {
+                if(v === undefined || v === null || v === '') {
+                    return true;
+                }
+                return /^\d+$/.test(v);
+            },
+            message: 'Please provide a valid zip code',
+        }
     },
     premanentAddressCity: {
         type: String,

@@ -1,17 +1,17 @@
 // Create admission
 curl --location --request POST 'http://localhost:8080/api/v1/student/admission' \
---form 'academicYear="2022-2023"' \
---form 'section="A"' \
+--form 'academicYear="2023-2024"' \
+--form 'section="64ff3c0429680982aad9e004"' \
 --form 'category="63e7fe7ba407b229ae22e41e"' \
---form 'studentClass="9th"' \
+--form 'studentClass="64ff3c0c29680982aad9e008"' \
 --form 'registerNo="1213457"' \
 --form 'rollNo="2"' \
 --form 'admissionDate="2023-02-09"' \
 --form 'firstName="Mohit Kumar"' \
 --form 'type="TYPE-A"' \
 --form 'dob="2009-07-04"' \
---form 'number="9876598766"' \
---form 'email="mohitkumar@gmail.com"' \
+--form 'number="9876598766123"' \
+--form 'email="mohitkumar@gm"' \
 --form 'lastName="Arora"' \
 --form 'gender="Male"' \
 --form 'bloodGroup="O+"' \
@@ -23,11 +23,11 @@ curl --location --request POST 'http://localhost:8080/api/v1/student/admission' 
 --form 'presentAddressZipCode="124331"' \
 --form 'presentAddressCity="Amritsar"' \
 --form 'presentAddressState="Punjab"' \
---form 'permanentAddressHouseNo="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
---form 'permanentAddressStreet="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
---form 'permanentAddressZipCode="124331"' \
---form 'permanentAddressCity="Amritsar"' \
---form 'permanentAddressState="Punjab"' \
+--form 'premanentAddressHouseNo="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+--form 'premanentAddressStreet="House No 13 , Street 22 Kulcha market Subhash Nagar"' \
+--form 'premanentAddressZipCode="124331"' \
+--form 'premanentAddressCity="Amritsar"' \
+--form 'premanentAddressState="Punjab"' \
 --form 'previousSchoolName="DPS International"' \
 --form 'previousQualification="8th"' \
 --form 'guardian[userName]="AmanArora"' \

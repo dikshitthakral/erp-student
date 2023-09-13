@@ -89,7 +89,7 @@ const save = async (req, res) => {
           });
         }
       } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message || 'Something went wrong', success: false });
       }
 }
 
@@ -250,7 +250,7 @@ const update = async (req, res) => {
           }
     } catch(error) {
         return res.status(400).send({
-            messge: "Somethig went wrong",
+            messge: error.message || "Somethig went wrong",
             success: false,
         });
     }
@@ -318,7 +318,11 @@ const bulkSave = async (req, res) => {
               if(!isEmpty(accountNumber)){ employeeCreation['accountNumber'] = accountNumber; }
               if(!isEmpty(designation)){ employeeCreation['designation'] = designation; }
               if(!isEmpty(department)){ employeeCreation['department'] = department; }
-              await Employee.create(employeeCreation);
+              try {
+                await Employee.create(employeeCreation);
+              } catch(err) {
+                continue;
+              }
             } else {
               console.log(`Employee with Name ${name} not created`);
             }
@@ -332,7 +336,7 @@ const bulkSave = async (req, res) => {
         });
     } catch(err) {
         return res.status(500).send({
-            messge: "Somethig went wrong",
+            messge: err.message || "Somethig went wrong",
             success: false,
         });
     }
