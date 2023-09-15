@@ -161,7 +161,7 @@ const getMarksByAcademicAndStudentId = async (req, res) => {
         allMarksByStudentAndAcademic.length !== 0 &&
         allMarksByStudentAndAcademic !== null
       ) {
-        let academicMarks = new Map();
+        let academicMarks = [];
         const allGrades = await grades.find({});
         for(let mark of allMarksByStudentAndAcademic) {
             let percentage = ((mark._doc.practical + mark._doc.written) * 100)/ (mark._doc.totalPractical + mark._doc.totalWritten);
@@ -178,19 +178,20 @@ const getMarksByAcademicAndStudentId = async (req, res) => {
               grade: resultGrade?._doc.name,
               point: resultGrade?._doc.gradePoint
             }
-            if(academicMarks.has(mark.examId.name)) {
-              let examMarks = academicMarks.get(mark.examId.name);
-              examMarks.push(updatedMarks)
-              academicMarks.set(mark.examId.name, examMarks);
-            }
-            else {
-              let examMarks = [];
-              examMarks.push(updatedMarks);
-              academicMarks.set(mark.examId.name, examMarks);
-            }
+            academicMarks.push(updatedMarks);
+            // if(academicMarks.has(mark.examId.name)) {
+            //   let examMarks = academicMarks.get(mark.examId.name);
+            //   examMarks.push(updatedMarks)
+            //   academicMarks.set(mark.examId.name, examMarks);
+            // }
+            // else {
+            //   let examMarks = [];
+            //   examMarks.push(updatedMarks);
+            //   academicMarks.set(mark.examId.name, examMarks);
+            // }
         }
         return res.status(200).send({
-          marks: Object.fromEntries(academicMarks),
+          marks: academicMarks,
           messge: "All Marks",
           success: true,
         });

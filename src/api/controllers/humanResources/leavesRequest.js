@@ -49,7 +49,17 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allLeavesRequest = await leavesRequest.find().populate('leaveType').populate('employee')
+        let allLeavesRequest = await leavesRequest.find().populate('leaveType')
+        .populate({
+          path: 'employee',
+          populate: [{
+            path: 'designation',
+            model: 'Designation'
+          }, {
+            path: 'department',
+            model: 'Department'
+          }]
+        })
         .populate('classTeacher').populate({
           path: 'student',
           populate: [{
