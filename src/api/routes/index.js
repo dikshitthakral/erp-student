@@ -385,5 +385,7 @@ router.get('/dashbaoradData',adminController.getAll);
 router.get('/getAllRaiseTicket',adminController.getTickets);
 router.get('/getAllVehicle',adminController.getVehicleCount);
 router.get('/classSectionCount',adminController.getClassSectionCount);
+router.get('/allAttandace',adminController.getStudentEmpAttandance);
+router.get('/allReception',adminController.allReceptionCount);
 
 module.exports = router;
