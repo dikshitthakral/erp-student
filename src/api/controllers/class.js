@@ -111,7 +111,7 @@ const update = async (req, res) => {
         const updateObject = {}
         updateObject["className"] = !isEmpty(className) ? className : undefined;
         updateObject["classNumeric"] = isNumber(classNumeric) ? classNumeric : undefined;
-        updateObject["sections"] = !isEmpty(sections) ? sections : undefined;
+        updateObject["sections"] = !isEmpty(sections) ? sections : [];
         let updateClass = await classModel.findOneAndUpdate(
             { _id: classId },
             {
