@@ -245,6 +245,28 @@ const getMarksByFilter = async (req, res) => {
       }
       await marks.insertMany(allMarks);
     }
+    else {
+      const allStudents = await students.find({ academic: academicsId, active : true});
+      let allMarks = [];
+      for(let student of allStudents) {
+        if(!isEmpty(allMarksByFilter.find(mark => mark.student.equals(student._id)))) {
+          continue;
+        }
+        allMarks.push({
+          examId: exam,
+          subject,
+          student: student._id,
+          isAbsent : false,
+          practical : 0,
+          written : 0,
+          academic: academicsId,
+          totalPractical: 30,
+          totalWritten: 70,
+          totalMarksScored: 0
+        });
+    }
+    await marks.insertMany(allMarks);
+    }
     let studentMarks = await marks.find({ ...filterKeys })
         .limit(perPage)
         .skip(perPage * page)
