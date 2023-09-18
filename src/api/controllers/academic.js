@@ -5,6 +5,7 @@ const academicsService = require('../services/academic');
 const ObjectId = require('mongoose').Types.ObjectId;
 const classService = require('../services/class');
 const sectionService = require('../services/section');
+const  studentService = require('../services/students');
 
 const remove = async (req, res) => {
     try {
@@ -203,16 +204,14 @@ const update = async (req, res) => {
 const addSubject = async (req, res) => {
     try {
         const { academicYear, studentClass, section, subjects } = req.body;
-        const academicsExist = await academics.findOne({ 
-          academicYear: academicYear, 
-          studentClass: ObjectId(studentClass), 
-          section: ObjectId(section)
+        // academic section
+        const academicId = await studentService.fetchAcademicsId({
+          academicYear,
+          studentClass,
+          section,
         });
-        if(!academicsExist) {
-          return res.status(400)
-                .json([{ msg: "Academic not found.", res: "error", }]);
-        }
-        if (academicsExist && !ObjectId.isValid(academicsExist._id)) {
+        const academicsExist = await academics.findOne({ _id: academicId});
+        if (!academicsExist || (academicsExist && !ObjectId.isValid(academicsExist._id))) {
             return res.status(400)
                 .json([{ msg: "Academic not found.", res: "error", }]);
         }
@@ -282,12 +281,14 @@ const removeSubject = async (req, res) => {
 const addTeacher = async (req, res) => {
   try {
       const { academicYear, studentClass, section, teachers } = req.body;
-      const academicsExist = await academics.findOne({ 
-        academicYear: academicYear, 
-        studentClass: ObjectId(studentClass), 
-        section: ObjectId(section)
+      // academic section
+      const academicId = await studentService.fetchAcademicsId({
+        academicYear,
+        studentClass,
+        section,
       });
-      if (academicsExist && !ObjectId.isValid(academicsExist._id)) {
+      const academicsExist = await academics.findOne({ _id: academicId});
+      if (!academicsExist || (academicsExist && !ObjectId.isValid(academicsExist._id))) {
           return res.status(400)
               .json([{ msg: "Academic not found.", res: "error", }]);
       }
