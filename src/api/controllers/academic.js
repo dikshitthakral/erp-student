@@ -208,6 +208,10 @@ const addSubject = async (req, res) => {
           studentClass: ObjectId(studentClass), 
           section: ObjectId(section)
         });
+        if(!academicsExist) {
+          return res.status(400)
+                .json([{ msg: "Academic not found.", res: "error", }]);
+        }
         if (academicsExist && !ObjectId.isValid(academicsExist._id)) {
             return res.status(400)
                 .json([{ msg: "Academic not found.", res: "error", }]);
