@@ -418,7 +418,7 @@ const updateModeStatus = async (req, res) => {
             feeConcessionData.allMode[i].paymentMode = paymentMode;
             feeConcessionData.allMode[i].invoice = invoice;
             feeConcessionData.allMode[i].hike = "";
-            feeConcessionData.allMode[i].paidDate = Date.now();
+             feeConcessionData.allMode[i].paidDate = new Date().toISOString();
           }
         }
         const updateMode = await feeConcession.findByIdAndUpdate(
