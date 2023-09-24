@@ -5,6 +5,10 @@ const designationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    designationId:{
+        type:Number,
+        required:true
+    },
     description: {
         type: String,
         required: false
