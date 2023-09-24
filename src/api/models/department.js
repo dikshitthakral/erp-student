@@ -5,6 +5,10 @@ const departmentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    departmentId:{
+        type:Number,
+        required:true
+    },
     description: {
         type: String,
         required: false
