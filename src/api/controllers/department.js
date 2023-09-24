@@ -48,9 +48,11 @@ const create = async (req, res) => {
             name,
            description
           } = req.body;
+          const departmentLength = await department.find();
           const newDepartment = await department.create({
             name,
-            description:  isEmpty(description) ? undefined : description
+            description:  isEmpty(description) ? undefined : description,
+            departmentId:departmentLength.length +1 ? departmentLength.length +1 : 1
           });
           return res.status(200).json({
             department: newDepartment,
