@@ -50,10 +50,12 @@ const create = async (req, res) => {
            description,
            department
           } = req.body;
+          const designationLength = await designation.find();
           const newDesignation = await designation.create({
             name,
             description:  isEmpty(description) ? undefined : description,
-            department: isEmpty(department) ? undefined : department
+            department: isEmpty(department) ? undefined : department,
+            designationId:designationLength.length +1 ? designationLength.length +1 : 1
           });
           return res.status(200).json({
             designation: newDesignation,
