@@ -6,6 +6,7 @@ const feeMonth = require("../../models/studentAccounting/feeMonth");
 const mongoose = require("mongoose");
 const { isEmpty, merge } = require("lodash");
 const students = require("../../models/students");
+const trackConcession = require("../../models/studentAccounting/trackConcession");
 
 const create = async (req, res) => {
   try {
@@ -287,6 +288,16 @@ const createFeeConcession = async (req, res) => {
           allMode:AllFeeMode,
           isEditableCategory: isEditableCategory
         });
+        if (allFee[0]?.concession === '') {
+          console.log(allFee,"empty")
+        }else{
+          const concession = await trackConcession.create({
+          studentId: studentId,
+          concessionInPercentage: allFee[0]?.concession,
+          amount:allFee[0]?.totalAmount
+        })
+        concession.save();
+        }
         if (feeConcessionData) {
           return res.status(200).json({
             feeConcessionData,
@@ -418,7 +429,7 @@ const updateModeStatus = async (req, res) => {
             feeConcessionData.allMode[i].paymentMode = paymentMode;
             feeConcessionData.allMode[i].invoice = invoice;
             feeConcessionData.allMode[i].hike = "";
-             feeConcessionData.allMode[i].paidDate = new Date().toISOString();
+            feeConcessionData.allMode[i].paidDate = new Date().toISOString();
           }
         }
         const updateMode = await feeConcession.findByIdAndUpdate(
