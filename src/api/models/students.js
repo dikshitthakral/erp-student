@@ -179,7 +179,7 @@ const studentSchema = new mongoose.Schema({
     },
     academic: { type: mongoose.Schema.Types.ObjectId, ref: 'Academic'},
     guardian: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian'},
-    guardian2: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian2',default:""},
+    guardian2: { type: mongoose.Schema.Types.ObjectId, ref: 'Guardian2', required: false},
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
     vehicleRoute: { type: mongoose.Schema.Types.ObjectId, ref: 'VehicleRoute'},
     fees: {
