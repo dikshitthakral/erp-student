@@ -183,11 +183,16 @@ const createBulkAdmission = async (req, res) => {
               const guardianRes = await guardianService.createGuardian(guardian);
               studentObj["guardian"] = guardianRes._id;
               const studentRes = await studentService.add(studentObj, admissionObj);
-              const count = await students.find({}).count();
-              await students.findOneAndUpdate(
+              const studentCount = await students.find({}).count();
+              var today = new Date();
+              var year = today.getFullYear();
+              year = year.toString().substr(-2);
+              regNo = "VIS" + year + "00" + studentCount;
+              const updateRegisterNoInStudent = await students.findOneAndUpdate(
                 { _id: studentRes._id },
-                { $inc: { registerNo: count }},
-                { new: true});
+                { $set: { registerNo: regNo } },
+                { new: true }
+              );
             } catch(err) {
                 errorArr.push({
                   message: err.message,
