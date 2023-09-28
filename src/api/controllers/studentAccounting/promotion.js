@@ -68,8 +68,6 @@ const promoteAll = async (req, res) => {
       const fConcession = await trackConcession.find({
         studentId: student._id
       });
-
-
       const totalAmount = findFeeConcession[0]?.allFee[0]?.totalAmount;
       const totalFinalAmount = totalAmount + (totalAmount * 10) / 100;
       let promotionAmount = '0';
@@ -91,22 +89,41 @@ const promoteAll = async (req, res) => {
         studentClass: promotestudentClass,
         totalFinalAmount: promotionAmount,
         isEditableCategory: true,
-        allFee: academicFee[0]?.feeCategory.map((fee) => {
-          return {
-            id: fee._id,
-            categoryName: fee.categoryName,
-            code: fee.code,
-            // amount:fee.concession === "" ? totalAmount : totalFinalAmount,
-            amount: promotionAmount,
-            concession: fee.concession ? fee.concession : "",
-            // totalAmount: fee.concession === "" ? totalAmount : totalFinalAmount,
-            totalAmount: promotionAmount,
-            isChecked: fee.isChecked ? fee.isChecked : true,
-          };
+        // allFee: academicFee[0]?.feeCategory.map((fee) => {
+        //   return {
+        //     id: fee._id,
+        //     categoryName: fee.categoryName,
+        //     code: fee.code,
+        //     // amount:fee.concession === "" ? totalAmount : totalFinalAmount,
+        //     amount: promotionAmount,
+        //     concession: fee.concession ? fee.concession : "",
+        //     // totalAmount: fee.concession === "" ? totalAmount : totalFinalAmount,
+        //     totalAmount: promotionAmount,
+        //     isChecked: fee.isChecked ? fee.isChecked : true,
+        //   };
+        // }),
+        allFee: academicFee[0].feeCategory.map((fee, index) => {
+          if (index === 0) {
+            return {
+              ...fee,
+              amount: fee?.concession === "" ? fee?.amount : totalFinalAmount,
+              concession: "0",
+              hike: "10",
+              totalAmount: fee?.concession === "" ? fee?.totalAmount : totalFinalAmount,
+              isChecked: fee?.isChecked ? fee?.isChecked : true,
+            };
+          } else {
+            return {
+              ...fee,
+              concession: "0",
+              hike: "",
+              totalAmount: fee?.amount,
+              isChecked: false,
+            };
+          }
         }),
         allMode: [],
       });
-      console.log(newFeeConcession)
       if (
         findFeeConcession[0]?.studentId.toString() === student._id.toString()
       ) {
@@ -216,16 +233,25 @@ const notPromoteAll = async (req, res) => {
         studentClass: promotestudentClass,
         totalFinalAmount: promotionAmount,
         isEditableCategory: true,
-        allFee: academicFee[0]?.feeCategory.map((fee) => {
-          return {
-            id: fee._id,
-            categoryName: fee.categoryName,
-            code: fee.code,
-            amount: fee.categoryName === "" ? totalAmount : promotionAmount,
-            concession: fee.concession,
-            totalAmount: fee.categoryName === "" ? totalAmount : promotionAmount,
-            isChecked: fee.isChecked,
-          };
+        allFee: academicFee[0].feeCategory.map((fee, index) => {
+          if (index === 0) {
+            return {
+              ...fee,
+              amount: fee?.concession === "" ? fee?.amount : totalFinalAmount,
+              concession: "0",
+              hike: "10",
+              totalAmount: fee?.concession === "" ? fee?.totalAmount : totalFinalAmount,
+              isChecked: fee?.isChecked ? fee?.isChecked : true,
+            };
+          } else {
+            return {
+              ...fee,
+              concession: "0",
+              hike: "",
+              totalAmount: fee?.amount,
+              isChecked: false,
+            };
+          }
         }),
         allMode: [],
       });
