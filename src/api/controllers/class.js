@@ -36,7 +36,10 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        let allClasses = await classModel.find().populate('sections').exec();
+        let allClasses = await classModel.find().populate('sections')
+        .sort({
+          classNumeric: 'asc'
+        }).exec();
         if (
             allClasses !== undefined &&
             allClasses.length !== 0 &&
