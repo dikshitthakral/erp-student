@@ -137,7 +137,7 @@ const update = async (req, res) => {
 const allTeacher = async (req, res) => {
   try {
     const { name } = req.params;
-    let allDesignations = await designation.find({ name: name });
+    let allDesignations = await designation.find({ name: { "$regex": name, "$options": "i" } });
     const designationId = allDesignations[0]._id;
     let allTeachers = await employee
       .find({ designation: designationId })
