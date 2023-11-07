@@ -138,9 +138,10 @@ const allTeacher = async (req, res) => {
   try {
     const { name } = req.params;
     let allDesignations = await designation.find({ name: { "$regex": name, "$options": "i" } });
-    const designationId = allDesignations[0]._id;
+    // const designationId = allDesignations[0]._id;
+    const designationIds = allDesignations.map(designation => designation._id);
     let allTeachers = await employee
-      .find({ designation: designationId })
+      .find({ designation: {$in: designationIds } })
       .select(
         "-joiningDate -salaryGrade -premanentAddressHouseNo -premanentAddressStreet -premanentAddressZipCode -premanentAddressCity -premanentAddressState -qualification -experienceDetails -totalExperience -gender -bloodGroup -religion -dob -number -email -presentAddress -permanentAddress -userName -password -facebook -twitter -linkedin -skipBankDetails -bankName -holderName -bankBranch -bankAddress -ifscCode -accountNumber -designation -department -__v -presentAddressHouseNo -presentAddressStreet -presentAddressZipCode -presentAddressCity -presentAddressState -image"
       );
