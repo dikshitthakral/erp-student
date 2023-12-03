@@ -56,6 +56,7 @@ const createAdmission = async (req, res) => {
       email,
       guardian,
       guardian1,
+      permanentEducationNumber
     } = req.body;
     const files = req?.files;
     let uploadedLocations = {};
@@ -74,7 +75,8 @@ const createAdmission = async (req, res) => {
       isEmpty(type) ||
       isEmpty(dob) ||
       isEmpty(number) ||
-      isEmpty(email)
+      isEmpty(email) ||
+      isEmpty(permanentEducationNumber)
     ) {
       return res.status(400).send({
         message: "Empty Fields found.",
@@ -165,8 +167,9 @@ const createBulkAdmission = async (req, res) => {
         const academicId = await studentService.fetchAcademicsId({ academicYear, studentClass, section });
         const admissionArray = await csvtojsonV2().fromFile(file.path);
         for(let admissionObj of admissionArray) {
-            const { admissionDate, firstName, dob, number, email, guardian } = admissionObj;
-            if(isEmpty(guardian) || isEmpty(admissionDate) || isEmpty(firstName) || isEmpty(dob) || isEmpty(email)) {
+            const { admissionDate, firstName, dob, number, email, guardian, permanentEducationNumber } = admissionObj;
+            if(isEmpty(guardian) || isEmpty(admissionDate) || isEmpty(firstName) || isEmpty(dob) || isEmpty(email)
+            || isEmpty(permanentEducationNumber)) {
                 console.log("Empty fields found , admission failed.");
                 continue;
             }
@@ -503,7 +506,8 @@ const updateStudent = async (req, res) => {
       previousQualification,
       previousRemarks,
       vehicleRoute,
-        active
+      active,
+      permanentEducationNumber
     } = req.body;
 
     const id = req.params["id"];
@@ -544,6 +548,7 @@ const updateStudent = async (req, res) => {
 
     profile["guardian"] = updatedGuardian._id;
      if (
+      !isEmpty(guardian1) &&
       !isEmpty(guardian1.relation) &&
       !isEmpty(guardian1.firstName) &&
       !isEmpty(guardian1.number) &&
@@ -629,6 +634,9 @@ const updateStudent = async (req, res) => {
     profile.idCardDocument = !isEmpty(uploadedLocations["idCardDocument"])
       ? uploadedLocations["idCardDocument"]
       : studentRecord.idCardDocument;
+    profile.permanentEducationNumber = !isEmpty(permanentEducationNumber)
+      ? permanentEducationNumber
+      : studentRecord.permanentEducationNumber;
     let updateStudent = await students.findOneAndUpdate({ _id: id }, profile);
     if (
       updateStudent.length === 0 ||

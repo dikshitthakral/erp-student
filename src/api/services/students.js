@@ -45,7 +45,7 @@ const add = async (studentObj, body) => {
     const { lastName, gender, bloodGroup, motherTongue, religion, caste, presentAddressHouseNo, presentAddressStreet, 
         presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode,
         premanentAddressCity, premanentAddressState, previousSchoolName, previousQualification, previousRemarks, 
-        vehicleNo, vehicleRoute, type, category, rollNo} = body;
+        vehicleNo, vehicleRoute, type, category, rollNo, permanentEducationNumber} = body;
 
     if(!isEmpty(category)) { studentObj["category"] = category};
     if(!isEmpty(rollNo)) { studentObj["rollNo"] = rollNo};
@@ -71,7 +71,8 @@ const add = async (studentObj, body) => {
     if(!isEmpty(previousRemarks)) { studentObj["previousRemarks"] = previousRemarks};
     if(!isEmpty(vehicleRoute)) { studentObj["vehicleRoute"] = vehicleRoute};
     if(!isEmpty(vehicleNo)) { studentObj["vehicleNo"] = vehicleNo};
-    
+    if(!isEmpty(permanentEducationNumber)) { studentObj["permanentEducationNumber"] = permanentEducationNumber};
+
     return students.create(studentObj);
 }
 

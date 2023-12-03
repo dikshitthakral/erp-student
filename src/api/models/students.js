@@ -186,9 +186,14 @@ const studentSchema = new mongoose.Schema({
         type: [feesSchema],
         default: []
     },
-    active: { type: Boolean, default: true }
+    active: { type: Boolean, default: true },
+    permanentEducationNumber: {
+        type: String,
+        required: true,
+        default: null
+    }
 });
   
-  const students = new mongoose.model("Student", studentSchema);
-  
-  module.exports = students;
+const students = new mongoose.model("Student", studentSchema);
+
+module.exports = students;
