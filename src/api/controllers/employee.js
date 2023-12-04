@@ -96,7 +96,7 @@ const save = async (req, res) => {
 const getAll = async (req, res) => {
     try {
         const designation = req.params.designation;
-        const perPage = 5, page = Math.max(0, req.params.page || 0);
+        const perPage = 15, page = Math.max(0, req.params.page || 0);
         let query = {};
         if(!isEmpty(designation)) {
           query['designation'] = designation;
