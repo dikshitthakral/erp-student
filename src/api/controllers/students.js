@@ -20,6 +20,7 @@ const { vehicleRouteModel } = require('../models/transport');
 const classService = require('../services/class');
 const sectionService = require('../services/section');
 const Academics = require('../models/academic');
+const path = require('path');
 
 const uploadImage = async (req, res) => {
     try {
@@ -468,6 +469,23 @@ const generateCsv = async (req, res) => {
             success: false,
         });
     }
+}
+
+const downloadAdmissionFile = async (req, res) => {
+  try {
+    let fileName = '../../../public/files/admission_file.csv';
+    let filepath = path.resolve(__dirname, fileName);
+    const jsonArray = await csvtojsonV2().fromFile(filepath);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment; filename=admission.csv");
+    res.status(200).attachment('admission.csv').send(jsonArray);
+
+  } catch(err) {
+    return res.status(400).send({
+        messge: "Something went wrong",
+        success: false,
+    });
+  }
 }
 
 const updateStudent = async (req, res) => {
@@ -1358,4 +1376,4 @@ const searchByClassYear = async (req, res) => {
 
 module.exports = { uploadImage, createAdmission, createBulkAdmission, getAllStudents, searchByAcademics, remove, removeMultiple, generateCsv, updateStudent, 
   addFeesStructure, searchStudentsFeeByAcademics, updateFeeStatus, fetchStudentsByFilter, fetchStudentsByStatus, updateStatus, promoteStudent, fetchStudentMarks, guardianLogin,
-  addVehicleRoute, searchStudentRoutesByAcademics, removeVehicleRoute, getById,searchByClassYear}
+  addVehicleRoute, searchStudentRoutesByAcademics, removeVehicleRoute, getById,searchByClassYear, downloadAdmissionFile }

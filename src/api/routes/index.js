@@ -59,7 +59,7 @@ router.post('/student/generateCsv', studentsController.generateCsv);
 router.put('/student/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idCardDocument', maxCount: 1 }, { name: 'guardian.image', maxCount: 1 }, { name: 'guardian.idProofDocument', maxCount: 1 }]), studentsController.updateStudent);
 router.post('/guardian/login', studentsController.guardianLogin);
 router.post('/student/classYear',studentsController.searchByClassYear);
-
+router.get('/student/admission/download', studentsController.downloadAdmissionFile);
 // Category Routes
 router.post('/category',categoryController.save);
 router.get('/category/all',categoryController.getAll);
