@@ -5,17 +5,25 @@ const mongoose = require("mongoose");
 const { isEmpty } = require("lodash");
 
 // filter
-const filter = async (req, res) => {
-  const { designation, date } = req.body;
-  if (isEmpty(designation) || isEmpty(date)) {
+const 
+filter = async (req, res) => {
+  const { designation, date, department } = req.body;
+  if ((isEmpty(designation) && isEmpty(department)) || isEmpty(date)) {
     return res
       .status(400)
       .json([{ msg: "All fields are required", res: "error" }]);
   }
   try {
+    let findObj = { date };
+    if(!isEmpty(designation)) {
+      findObj["designation"] = designation;
+    }
+    if(!isEmpty(department)) {
+      findObj["department"] = department;
+    }
     const empAttandance = await attendance
-      .find({ designation, date })
-      .populate("employee.employeeId", "name image designation");
+      .find({ ...findObj })
+      .populate("employee.employeeId", "name image designation department");
     let empArray = [];
     empAttandance.map((e) => {
       e.employee.map((emp) => {
@@ -25,6 +33,9 @@ const filter = async (req, res) => {
           image: emp.employeeId.image ? emp.employeeId.image : "",
           designation: emp.employeeId.designation
             ? emp.employeeId.designation
+            : "",
+          department: emp.employeeId.department
+            ? emp.employeeId.department
             : "",
           type: emp.type ? emp.type : "",
         });
@@ -39,9 +50,16 @@ const filter = async (req, res) => {
         },
       ]);
     } else {
+      let findObj = {};
+      if(!isEmpty(designation)) {
+        findObj["designation"] = designation;
+      }
+      if(!isEmpty(department)) {
+        findObj["department"] = department;
+      }
       const emp = await employees
-        .find({ designation })
-        .select(" _id name image designation");
+        .find({ ...findObj })
+        .select(" _id name image designation department");
       let empArray = [];
       emp.map((e) => {
         empArray.push({
@@ -73,8 +91,8 @@ const filter = async (req, res) => {
 
 // add employee attendance
 const add = async (req, res) => {
-  const { designation, date, employee } = req.body;
-  if (isEmpty(designation) || isEmpty(date) || isEmpty(employee)) {
+  const { designation, date, employee, department } = req.body;
+  if (isEmpty(designation) || isEmpty(department) || isEmpty(date) || isEmpty(employee)) {
     return res
       .status(400)
       .json([{ msg: "All fields are required", res: "error" }]);
@@ -83,7 +101,7 @@ const add = async (req, res) => {
   employee.map((emp) => {
     employeeArray.push({ employeeId: emp.employee, type: emp.type });
   });
-   const dateArray = date.split("/");
+  const dateArray = date.split("/");
   const newDate = dateArray[0] + "/" + dateArray[2];
   try {
     const findAttandance = await attendance.findOne({ designation, date });
@@ -107,6 +125,7 @@ const add = async (req, res) => {
         date,
         monthYear: newDate,
         employee: employeeArray,
+        department
       });
       const result = await newAttendance.save();
       if (result) {

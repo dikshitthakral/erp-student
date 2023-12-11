@@ -21,7 +21,12 @@ const employeeAttendanceSchema = new mongoose.Schema(
     designation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Designation",
-      required: true,
+      required: false,
+    },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
+      required: false,
     },
     date: {
       type: String,
