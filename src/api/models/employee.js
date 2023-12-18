@@ -21,6 +21,14 @@ const employeeSchema = new mongoose.Schema({
     },
     name: {
         type: String,
+        required: false
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
         required: true
     },
     gender: {

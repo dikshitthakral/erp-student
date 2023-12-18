@@ -14,7 +14,7 @@ const save = async (req, res) => {
           presentAddressHouseNo, presentAddressStreet, presentAddressZipCode, presentAddressCity, presentAddressState, 
           premanentAddressHouseNo, premanentAddressStreet, premanentAddressZipCode, premanentAddressCity, premanentAddressState
           ,userName, password, facebook, twitter, linkedin, skipBankDetails, bankName, holderName, bankBranch, 
-          bankAddress, ifscCode, accountNumber, designation, department } = req.body;
+          bankAddress, ifscCode, accountNumber, designation, department, firstName, lastName } = req.body;
         const file = req.file;
         let image = '';
         if(!isEmpty(file)) {
@@ -23,7 +23,8 @@ const save = async (req, res) => {
         if (
           !isEmpty(joiningDate) &&
           !isEmpty(qualification) &&
-          !isEmpty(name) &&
+          !isEmpty(firstName) &&
+          !isEmpty(lastName) &&
           !isEmpty(number) &&
           !isEmpty(userName) &&
           !isEmpty(email)
@@ -31,7 +32,8 @@ const save = async (req, res) => {
           let employeeCreation = {
             joiningDate,
             qualification,
-            name,
+            firstName,
+            lastName,
             number,
             userName,
             email
@@ -51,6 +53,7 @@ const save = async (req, res) => {
           if(!isEmpty(bloodGroup)){
               employeeCreation['bloodGroup'] = bloodGroup;
           }
+          if(!isEmpty(name)){ employeeCreation['name'] = name; }
           if(!isEmpty(religion)){ employeeCreation['religion'] = religion; }
           if(!isEmpty(dob)){ employeeCreation['dob'] = dob; }
           if(!isEmpty(presentAddressHouseNo)){ employeeCreation['presentAddressHouseNo'] = presentAddressHouseNo; }
@@ -114,7 +117,13 @@ const getAll = async (req, res) => {
             allEmployees !== null
         ) {
           return res.status(200).send({
-            employees: allEmployees,
+            employees: allEmployees.map((employee) => {
+              if(employee.name) {
+                let emp = employee.name.split(' ');
+                employee.firstName = emp && emp[0];
+                employee.lastName = emp && emp[1];
+              }
+            }),
             totalCount: totalCount,
             messge: "All Employees",
             success: true,
@@ -178,7 +187,7 @@ const update = async (req, res) => {
         const { employeeId, joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, presentAddressHouseNo, presentAddressStreet, 
           presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, 
           premanentAddressZipCode, premanentAddressCity, premanentAddressState ,userName, password, facebook, twitter, linkedin, 
-          skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = req.body;
+          skipBankDetails, bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department, firstName, lastName } = req.body;
 
         if (!employeeId) {
             return res.status(400)
@@ -193,6 +202,8 @@ const update = async (req, res) => {
         profile.joiningDate = !isEmpty(joiningDate) ? joiningDate : employee.joiningDate;
         profile.qualification = !isEmpty(qualification) ? qualification : employee.qualification;
         profile.name = !isEmpty(name) ? name : employee.name;
+        profile.firstName = !isEmpty(firstName) ? firstName : employee.firstName;
+        profile.lastName = !isEmpty(lastName) ? lastName : employee.lastName;
         profile.number = !isEmpty(number) ? number : employee.number;
         profile.userName = !isEmpty(userName) ? userName : employee.userName;
         profile.email = !isEmpty(email) ? email : employee.email;
@@ -264,11 +275,12 @@ const bulkSave = async (req, res) => {
             const { joiningDate, qualification, experienceDetails, totalExperience, name, gender, bloodGroup, religion, dob, number, email, presentAddressHouseNo, 
               presentAddressStreet, presentAddressZipCode, presentAddressCity, presentAddressState, premanentAddressHouseNo, premanentAddressStreet, 
               premanentAddressZipCode, premanentAddressCity, premanentAddressState ,userName, password, facebook, twitter, linkedin, skipBankDetails, 
-              bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department } = employeeObj;
+              bankName, holderName, bankBranch, bankAddress, ifscCode, accountNumber, designation, department, firstName, lastName } = employeeObj;
             if (
               !isEmpty(joiningDate) &&
               !isEmpty(qualification) &&
-              !isEmpty(name) &&
+              !isEmpty(firstName) &&
+              !isEmpty(lastName) &&
               !isEmpty(number) &&
               !isEmpty(userName) &&
               !isEmpty(email)
@@ -276,7 +288,8 @@ const bulkSave = async (req, res) => {
               let employeeCreation = {
                 joiningDate,
                 qualification,
-                name,
+                firstName,
+                lastName,
                 number,
                 userName,
                 email
@@ -293,6 +306,7 @@ const bulkSave = async (req, res) => {
               if(!isEmpty(bloodGroup)){
                   employeeCreation['bloodGroup'] = bloodGroup;
               }
+              if(!isEmpty(name)){ employeeCreation['name'] = name; }
               if(!isEmpty(religion)){ employeeCreation['religion'] = religion; }
               if(!isEmpty(dob)){ employeeCreation['dob'] = dob; }
               if(!isEmpty(presentAddressHouseNo)){ employeeCreation['presentAddressHouseNo'] = presentAddressHouseNo; }
@@ -349,7 +363,13 @@ const getByDesignation = async (req, res) => {
           .populate('designation').populate('department').exec()
       if (!isEmpty(getEmployeesByDesignation)) {
         return res.status(200).send({
-          employees: getEmployeesByDesignation,
+          employees: getEmployeesByDesignation.map((employee) => {
+            if(employee.name) {
+              let emp = employee.name.split(' ');
+              employee.firstName = emp && emp[0];
+              employee.lastName = emp && emp[1];
+            }
+          }),
           messge: "Employee By Designation",
           success: true,
         });
@@ -446,6 +466,11 @@ const getById = async (req, res) => {
           employeeById !== undefined &&
           employeeById !== null
       ) {
+        if(employeeById.name) {
+          let splitName = employeeById.name.split(' ');
+          employeeById['firstName'] = splitName && splitName[0];
+          employeeById['lastName'] = splitName && splitName[1];
+        }
         return res.status(200).send({
           employee: employeeById,
           messge: "Fetched Employee By Id",
