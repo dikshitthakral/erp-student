@@ -149,6 +149,8 @@ router.post('/employee/teacher/login', employeeController.employeeLogin);
 router.post('/employee/admin/login', employeeController.adminLogin);
 router.post('/employee/admin/search', employeeController.searchEmployees);
 
+
+
 // Academic Routes
 router.post('/academic',academicController.create);
 router.get('/academic/all',academicController.getAll);
