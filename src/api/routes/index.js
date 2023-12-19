@@ -147,6 +147,7 @@ router.get('/employee/designation/:designationId', employeeController.getByDesig
 router.put('/employee/salaryGrade', employeeController.updateSalaryGradeForEmployee);
 router.post('/employee/teacher/login', employeeController.employeeLogin);
 router.post('/employee/admin/login', employeeController.adminLogin);
+router.post('/employee/admin/search', employeeController.searchEmployees);
 
 // Academic Routes
 router.post('/academic',academicController.create);
