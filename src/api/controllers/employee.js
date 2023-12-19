@@ -563,4 +563,59 @@ const adminLogin = async (req, res) => {
   }
 }
 
-module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation, getById, employeeLogin, adminLogin };
+const searchEmployees = async ({ body }, res) => {
+  try {
+    const { searchKey } = body;
+    if (!searchKey) {
+      return res.status(400).send({
+        message: "Search value is required",
+        success: false,
+      });
+    }
+    const searchableFields = ['firstName', 'lastName', 'number', 'email'];
+    const conditions = searchableFields.map((field) => ({
+      [field]: { $regex: searchKey, $options: 'i' },
+    }));
+
+    const employees = await Employee.find({ $or: conditions })
+      .populate('designation')
+      .populate('department')
+      .exec();
+
+    if (employees.length > 0) {
+      const formattedEmployees = await Promise.all(
+        employees.map(async (employee) => {
+          if (employee.name) {
+            const [firstName, lastName] = employee.name.split(' ');
+            return {
+              ...(await employee.toObject()),
+              firstName,
+              lastName,
+            };
+          }
+          return employee.toObject();
+        })
+      );
+
+      return res.status(200).send({
+        employees: formattedEmployees,
+        message: "Employees found",
+        success: true,
+      });
+    } else {
+      return res.status(404).send({
+        message: "No employees found for the given search",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+
+
+
+module.exports = { save, getAll, remove, update, bulkSave, getByDesignation, updateSalaryGradeForEmployee, getAllLeavesRequestByDesignation, getById, employeeLogin, adminLogin,searchEmployees };
