@@ -123,6 +123,7 @@ const getAll = async (req, res) => {
                 employee.firstName = emp && emp[0];
                 employee.lastName = emp && emp[1];
               }
+              return employee;
             }),
             totalCount: totalCount,
             messge: "All Employees",
@@ -369,6 +370,7 @@ const getByDesignation = async (req, res) => {
               employee.firstName = emp && emp[0];
               employee.lastName = emp && emp[1];
             }
+            return employee;
           }),
           messge: "Employee By Designation",
           success: true,
