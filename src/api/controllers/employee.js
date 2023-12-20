@@ -365,7 +365,7 @@ const getByDesignation = async (req, res) => {
       if (!isEmpty(getEmployeesByDesignation)) {
         return res.status(200).send({
           employees: getEmployeesByDesignation.map((employee) => {
-            if(employee.name) {
+            if(employee.name && !employee.firstName && !employee.lastName) {
               let emp = employee.name.split(' ');
               employee.firstName = emp && emp[0];
               employee.lastName = emp && emp[1];
