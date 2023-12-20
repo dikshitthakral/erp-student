@@ -98,13 +98,15 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-      const designation = req.body.designation;
-      const searchKey = req.body.searchKey;
-      const perPage = 15, page = Math.max(0, req.body.page || 0);
+      const { designation, searchKey, page = 0 } = req.body;
+      const perPage = 15;
+      
       let query = {};
+
       if (!isEmpty(designation)) {
-          query['designation'] = designation;
+          query.designation = designation;
       }
+
       if (!isEmpty(searchKey)) {
           query.$or = [
               { firstName: { $regex: searchKey, $options: 'i' } },
@@ -114,31 +116,29 @@ const getAll = async (req, res) => {
               { number: { $regex: searchKey, $options: 'i' } }
           ];
       }
+
       const totalCount = await Employee.countDocuments(query);
-      let allEmployees = await Employee.find(query)
+      
+      const allEmployees = await Employee.find(query)
           .limit(perPage)
           .skip(perPage * page)
-          .sort({
-              name: 'asc'
-          })
-          .populate('designation')
-          .populate('department')
+          .sort({ name: 'asc' })
+          .populate(['designation', 'department'])
           .exec();
-      if (
-          allEmployees !== undefined &&
-          allEmployees.length !== 0 &&
-          allEmployees !== null
-      ) {
+
+      if (allEmployees.length > 0) {
+          const employees = allEmployees.map((employee) => {
+              if (employee.name) {
+                  const [firstName, lastName] = employee.name.split(' ');
+                  employee.firstName = firstName;
+                  employee.lastName = lastName;
+              }
+              return employee;
+          });
+
           return res.status(200).send({
-              employees: allEmployees.map((employee) => {
-                  if (employee.name) {
-                      let emp = employee.name.split(' ');
-                      employee.firstName = emp && emp[0];
-                      employee.lastName = emp && emp[1];
-                  }
-                  return employee;
-              }),
-              totalCount: totalCount,
+              employees,
+              totalCount,
               message: "All Employees",
               success: true,
           });
