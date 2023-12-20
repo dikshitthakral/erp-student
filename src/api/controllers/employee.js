@@ -97,50 +97,63 @@ const save = async (req, res) => {
 }
 
 const getAll = async (req, res) => {
-    try {
-        const designation = req.params.designation;
-        const perPage = 15, page = Math.max(0, req.params.page || 0);
-        let query = {};
-        if(!isEmpty(designation)) {
+  try {
+      const designation = req.body.designation;
+      const searchKey = req.body.searchKey;
+      const perPage = 15, page = Math.max(0, req.body.page || 0);
+      let query = {};
+      if (!isEmpty(designation)) {
           query['designation'] = designation;
-        }
-        const totalCount = await Employee.count(query);
-        let allEmployees = await Employee.find(query).limit(perPage)
-        .skip(perPage * page)
-        .sort({
-            name: 'asc'
-        })
-        .populate('designation').populate('department').exec();
-        if (
-            allEmployees !== undefined &&
-            allEmployees.length !== 0 &&
-            allEmployees !== null
-        ) {
-          return res.status(200).send({
-            employees: allEmployees.map((employee) => {
-              if(employee.name && !employee.firstName && !employee.lastName) {
-                let emp = employee.name.split(' ');
-                employee.firstName = emp && emp[0];
-                employee.lastName = emp && emp[1];
-              }
-              return employee;
-            }),
-            totalCount: totalCount,
-            messge: "All Employees",
-            success: true,
-          });
-        } else {
-          return res.status(200).send({
-            messge: "Employee does not exist",
-            success: false,
-          });
-        }
-      } catch (error) {
-        return res.status(400).send({
-          messge: "Somethig went wrong",
-          success: false,
-        });
       }
+      if (!isEmpty(searchKey)) {
+          query.$or = [
+              { firstName: { $regex: searchKey, $options: 'i' } },
+              { lastName: { $regex: searchKey, $options: 'i' } },
+              { name: { $regex: searchKey, $options: 'i' } },
+              { email: { $regex: searchKey, $options: 'i' } },
+              { number: { $regex: searchKey, $options: 'i' } }
+          ];
+      }
+      const totalCount = await Employee.countDocuments(query);
+      let allEmployees = await Employee.find(query)
+          .limit(perPage)
+          .skip(perPage * page)
+          .sort({
+              name: 'asc'
+          })
+          .populate('designation')
+          .populate('department')
+          .exec();
+      if (
+          allEmployees !== undefined &&
+          allEmployees.length !== 0 &&
+          allEmployees !== null
+      ) {
+          return res.status(200).send({
+              employees: allEmployees.map((employee) => {
+                  if (employee.name) {
+                      let emp = employee.name.split(' ');
+                      employee.firstName = emp && emp[0];
+                      employee.lastName = emp && emp[1];
+                  }
+                  return employee;
+              }),
+              totalCount: totalCount,
+              message: "All Employees",
+              success: true,
+          });
+      } else {
+          return res.status(200).send({
+              message: "No employees found based on the search criteria",
+              success: false,
+          });
+      }
+  } catch (error) {
+      return res.status(400).send({
+          message: "Something went wrong",
+          success: false,
+      });
+  }
 }
 
 const remove = async (req, res) => {
