@@ -76,8 +76,8 @@ const createAdmission = async (req, res) => {
       isEmpty(type) ||
       isEmpty(dob) ||
       isEmpty(number) ||
-      isEmpty(email) ||
-      isEmpty(permanentEducationNumber)
+      isEmpty(email)
+      // isEmpty(permanentEducationNumber)
     ) {
       return res.status(400).send({
         message: "Empty Fields found.",
@@ -85,13 +85,14 @@ const createAdmission = async (req, res) => {
       });
     }
     const studentObj = {
-      // rollNo,
+      rollNo,
       admissionDate,
       firstName,
       type,
       dob,
       number,
       email,
+      permanentEducationNumber
     };
     // academic section
     const academicId = await studentService.fetchAcademicsId({
