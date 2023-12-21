@@ -189,8 +189,8 @@ const studentSchema = new mongoose.Schema({
     active: { type: Boolean, default: true },
     permanentEducationNumber: {
         type: String,
-        required: true,
-        default: null
+        required: false,
+        default: ""
     }
 });
   
