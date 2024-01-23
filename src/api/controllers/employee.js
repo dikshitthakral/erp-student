@@ -98,63 +98,80 @@ const save = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-      const { designation, searchKey, page = 0 } = req.body;
-      const perPage = 15;
-      
-      let query = {};
+    const { designation, searchKey, page = 0 } = req.body;
+    const perPage = 15;
 
-      if (!isEmpty(designation)) {
-          query.designation = designation;
-      }
+    let query = {};
 
-      if (!isEmpty(searchKey)) {
-          query.$or = [
-              { firstName: { $regex: searchKey, $options: 'i' } },
-              { lastName: { $regex: searchKey, $options: 'i' } },
-              { name: { $regex: searchKey, $options: 'i' } },
-              { email: { $regex: searchKey, $options: 'i' } },
-              { number: { $regex: searchKey, $options: 'i' } }
-          ];
-      }
+    if (!isEmpty(searchKey)) {
+      query.$or = [
+        { firstName: { $regex: searchKey, $options: 'i' } },
+        { lastName: { $regex: searchKey, $options: 'i' } },
+        { name: { $regex: searchKey, $options: 'i' } },
+        { email: { $regex: searchKey, $options: 'i' } },
+        { number: { $regex: searchKey, $options: 'i' } }
+      ];
+    }
 
-      const totalCount = await Employee.countDocuments(query);
-      
-      const allEmployees = await Employee.find(query)
-          .limit(perPage)
-          .skip(perPage * page)
-          .sort({ name: 'asc' })
-          .populate(['designation', 'department'])
-          .exec();
+    const totalCount = await Employee.countDocuments(query);
 
-      if (allEmployees.length > 0) {
-          const employees = allEmployees.map((employee) => {
-              if (employee.name) {
-                  const [firstName, lastName] = employee.name.split(' ');
-                  employee.firstName = firstName;
-                  employee.lastName = lastName;
-              }
-              return employee;
-          });
+    let allEmployees;
 
-          return res.status(200).send({
-              employees,
-              totalCount,
-              message: "All Employees",
-              success: true,
-          });
-      } else {
-          return res.status(200).send({
-              message: "No employees found based on the search criteria",
-              success: false,
-          });
-      }
-  } catch (error) {
-      return res.status(400).send({
-          message: "Something went wrong",
-          success: false,
+    if (designation && designation.toLowerCase() !== "all") {
+      // If a specific designation is provided, fetch employees with that designation
+      query.designation = designation;
+      allEmployees = await Employee.find(query)
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({ name: 'asc' })
+        .populate(['designation', 'department'])
+        .exec();
+    } else {
+      // If "all" is provided, fetch all employees and group by designation
+      allEmployees = await Employee.find(query)
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({ name: 'asc' })
+        .populate(['designation', 'department'])
+        .exec();
+    }
+
+    if (allEmployees.length > 0) {
+      // Group employees by designation
+      console.log(allEmployees)
+      const groupedEmployees = {};
+
+      allEmployees.forEach((employee) => {
+        const designationName = employee.designation ? employee.designation.name : 'Uncategorized';
+
+        // if (!groupedEmployees[designationName]) {
+        //   groupedEmployees[designationName] = [];
+        // }
+
+        // groupedEmployees.push(employee);
       });
+
+      return res.status(200).send({
+        employees: allEmployees,
+        totalCount,
+        message: "All Employees",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        message: "No employees found based on the search criteria",
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+    return res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
   }
-}
+};
+
 
 const remove = async (req, res) => {
     try {
@@ -352,12 +369,12 @@ const bulkSave = async (req, res) => {
                 continue;
               }
             } else {
-              console.log(`Employee with Name ${name} not created`);
+              console.log(Employee with Name ${name} not created);
             }
         }
         const unlinkFile = util.promisify(fs.unlink);
         await unlinkFile(file.path);
-        console.log(`successfully deleted file from path : ${file.path}`);
+        console.log(successfully deleted file from path : ${file.path});
         return res.status(200).send({
             messge: "Successfull",
             success: true,
