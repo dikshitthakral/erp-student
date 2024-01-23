@@ -91,8 +91,8 @@ filter = async (req, res) => {
 
 // add employee attendance
 const add = async (req, res) => {
-  const { designation, date, employee, department } = req.body;
-  if (isEmpty(designation) || isEmpty(department) || isEmpty(date) || isEmpty(employee)) {
+  const { designation, date, employee } = req.body;
+  if (isEmpty(designation) || isEmpty(date) || isEmpty(employee)) {
     return res
       .status(400)
       .json([{ msg: "All fields are required", res: "error" }]);
@@ -125,7 +125,7 @@ const add = async (req, res) => {
         date,
         monthYear: newDate,
         employee: employeeArray,
-        department
+        // department
       });
       const result = await newAttendance.save();
       if (result) {
