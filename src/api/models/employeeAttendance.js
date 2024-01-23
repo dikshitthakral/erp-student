@@ -23,11 +23,11 @@ const employeeAttendanceSchema = new mongoose.Schema(
       ref: "Designation",
       required: false,
     },
-    department: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Department',
-      required: false,
-    },
+    // department: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Department',
+    //   required: false,
+    // },
     date: {
       type: String,
       default: "",
