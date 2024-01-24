@@ -369,12 +369,10 @@ const bulkSave = async (req, res) => {
                 continue;
               }
             } else {
-              console.log(Employee with Name ${name} not created);
             }
         }
         const unlinkFile = util.promisify(fs.unlink);
         await unlinkFile(file.path);
-        console.log(successfully deleted file from path : ${file.path});
         return res.status(200).send({
             messge: "Successfull",
             success: true,
