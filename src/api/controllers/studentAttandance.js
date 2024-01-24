@@ -23,7 +23,7 @@ const create = async (req, res) => {
       studentArray.push({ student: student });
     });
      const dateArray = date.split("/");
-    const newDate = dateArray[0] + "/" + dateArray[2];
+    const newDate = dateArray[1] + "/" + dateArray[2];
     const newAttendance = new attendance({
       classId,
       sectionId,
